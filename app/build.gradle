@@ -75,4 +75,11 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    //DI (https://insert-koin.io/docs/setup/stable#androidx)
+    implementation 'org.koin:koin-core:2.2.1'
+    implementation 'org.koin:koin-android:2.2.1'
+    implementation 'org.koin:koin-androidx-scope:2.2.1'
+    implementation 'org.koin:koin-androidx-viewmodel:2.2.1'
+    implementation 'org.koin:koin-androidx-fragment:2.2.1'
 }

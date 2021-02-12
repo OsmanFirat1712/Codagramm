@@ -1,4 +1,4 @@
-package com.example.navigationgraph.ui
+package com.example.navigationgraph.ui.secondView
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.navigationgraph.databinding.FragmentSecondBinding
+import com.example.navigationgraph.ui.SecondScreenDirections
 
 class SecondScreen : Fragment() {
     lateinit var binding: FragmentSecondBinding

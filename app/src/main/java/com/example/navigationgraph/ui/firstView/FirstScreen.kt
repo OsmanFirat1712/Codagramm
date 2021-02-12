@@ -10,19 +10,23 @@ import androidx.navigation.ui.onNavDestinationSelected
 import com.example.navigationgraph.R
 import com.example.navigationgraph.databinding.FragmentFirstBinding
 import com.example.navigationgraph.models.Country
+import com.example.navigationgraph.remote.CountriesApi
 import com.example.navigationgraph.remote.Remote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class FirstScreen : Fragment() {
 
-    private val viewModel: FirstScreenViewModel by viewModels()
+//    private val viewModel: FirstScreenViewModel by viewModels()
+    private val viewModel:FirstScreenViewModel by inject()
 
     private val navController by lazy(::findNavController)  //Method referencing
     private lateinit var binding: FragmentFirstBinding
 
-    private val adapter = CountryAdapter()
+//    private val adapter = CountryAdapter()
+    private val adapter: CountryAdapter by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,7 +66,7 @@ class FirstScreen : Fragment() {
     }
 }
 
-class FirstScreenViewModel : ViewModel() {
+class FirstScreenViewModel(private val countriesApi: CountriesApi) : ViewModel() {
 
     private val countries = MutableLiveData<List<Country>>()
     fun getCountries(): LiveData<List<Country>> = countries
@@ -70,13 +74,13 @@ class FirstScreenViewModel : ViewModel() {
     init {
         viewModelScope.launch(Dispatchers.IO) {
             try{
-                val apiResponse = Remote.getApi().getAllCountries()
+                val apiResponse = countriesApi.getAllCountries()
                 updateCountries(apiResponse)
             } catch (e:Exception){
                 Timber.e(e)
             }
 
-            
+
 
         }
     }

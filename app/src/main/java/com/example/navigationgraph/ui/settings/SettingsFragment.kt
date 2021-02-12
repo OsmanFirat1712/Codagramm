@@ -1,4 +1,4 @@
-package com.example.navigationgraph.ui
+package com.example.navigationgraph.ui.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.navigationgraph.R
 
-class ThirdScreen : Fragment() {
+class SettingsFragment:Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_third,container,false)
+        return inflater.inflate(R.layout.fragment_settings,container,false)
     }
 }
