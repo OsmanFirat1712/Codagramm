@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.navigationgraph.databinding.FragmentDetailsBinding
-import com.example.navigationgraph.ui.FragmentDetailsArgs
 
 class FragmentDetails:Fragment() {
     private lateinit var binding: FragmentDetailsBinding
@@ -15,11 +14,7 @@ class FragmentDetails:Fragment() {
     val args: FragmentDetailsArgs by navArgs()
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDetailsBinding.inflate(inflater,container,false)
         return binding.root
     }

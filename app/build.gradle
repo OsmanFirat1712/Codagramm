@@ -82,4 +82,8 @@ dependencies {
     implementation 'org.koin:koin-androidx-scope:2.2.1'
     implementation 'org.koin:koin-androidx-viewmodel:2.2.1'
     implementation 'org.koin:koin-androidx-fragment:2.2.1'
+
+
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
 }

@@ -11,10 +11,10 @@ internal val remoteModule = module { single { provideGson() }
 
 private fun provideGson():Gson = Gson()
 
-private fun provideApi(globalAppData: GlobalAppData,gson:Gson): CountriesApi = Retrofit.Builder()
+private fun provideApi(globalAppData: GlobalAppData,gson:Gson): CodagramApi = Retrofit.Builder()
     .apply {
         baseUrl(globalAppData.baseUrl)
         addConverterFactory(GsonConverterFactory.create(Gson()))
     }
     .build()
-    .create(CountriesApi::class.java)
+    .create(CodagramApi::class.java)

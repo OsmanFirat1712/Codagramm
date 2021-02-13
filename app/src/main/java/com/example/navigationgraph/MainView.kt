@@ -2,6 +2,7 @@ package com.example.navigationgraph
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.collection.arraySetOf
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -18,11 +19,13 @@ class MainView : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        binding.toolbar.setupWithNavController(navController, AppBarConfiguration(setOf(        //alle 3 Views am selben Level
+        binding.toolbar.setupWithNavController(navController, AppBarConfiguration(
+            arraySetOf(        //alle 3 Views am selben Level
             R.id.firstView,
             R.id.secondView,
             R.id.thirdView
-        )))
+        )
+        ))
         binding.bnvMain.setupWithNavController(navController)
 
     }

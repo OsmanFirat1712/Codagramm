@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/secondView"
-        android:name="com.example.navigationgraph.ui.secondView.SecondScreen"
+        android:name="com.example.navigationgraph.ui.newStoryScreen.NewStoryFragment"
         android:label="Second View"
         tool:layout="@layout/fragment_second" >
 
