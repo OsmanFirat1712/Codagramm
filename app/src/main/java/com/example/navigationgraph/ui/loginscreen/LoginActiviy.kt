@@ -2,28 +2,25 @@ package com.example.navigationgraph.ui.loginscreen
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.Color.BLUE
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.app.AppCompatActivity
 import com.example.navigationgraph.MainView
 import com.example.navigationgraph.R
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 
+
+
 class LoginActiviy : AppCompatActivity() {
+
 
     private lateinit var loginButton: Button
     private lateinit var createButton: Button
@@ -50,14 +47,13 @@ class LoginActiviy : AppCompatActivity() {
 
 
 
-
         createAlertDialog()
         
         loginButton.setOnClickListener {
             if (userEmail.text.trim().toString().isNotEmpty() || userPassword.text.trim().toString().isNotEmpty()){
                 login(userEmail.text.trim().toString(),userPassword.text.trim().toString())
                 val tokenId = auth.currentUser!!.getIdToken(true)
-                Log.e("token",tokenId.toString())
+                Log.e("token",auth.currentUser!!.getIdToken(true).toString())
 
             }
             else{
@@ -70,24 +66,33 @@ class LoginActiviy : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener(this){task ->
                 if (task.isSuccessful){
-                    Log.e("task message","Successfully")
-                    saveUserInfo(firstNameFire,lastNameFire,nickNameFire)
-                    retrieveAndStoreToken()
-                    var intent = Intent(this,MainView::class.java)
-                    startActivity(intent)
+                    auth.currentUser?.sendEmailVerification()
+                        ?.addOnCompleteListener{task->
+                            if (task.isSuccessful){
+                                Log.e("task message","Successfully")
+                                saveUserInfo(firstNameFire,lastNameFire,nickNameFire)
+                                retrieveAndStoreToken()
+                                var intent = Intent(this,MainView::class.java)
+                                startActivity(intent)
+                            }
+
+                            else{
+                                Log.e("task message","Failed"+task.exception)
+                            }
+                        }
+                    }
                 }
-                else{
-                    Log.e("task message","Failed"+task.exception)
-                }
-            }
-    }
+             }
 
     fun login(email: String,password:String){
         auth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener(this){task ->
                 if (task.isSuccessful){
                     Log.e("task message","Successfully")
+                    val user = auth.currentUser
+                    updateUI(user,userEmail.text.trim().toString())
                     retrieveAndStoreToken()
+                    getToken()
                     var intent = Intent(this,MainView::class.java)
                     startActivity(intent)
                 }
@@ -139,7 +144,35 @@ class LoginActiviy : AppCompatActivity() {
         }
     }
 
+    private fun updateUI(currentUser:FirebaseUser?,email: String){
+        if (currentUser != null){
+            if (currentUser.isEmailVerified){
+                var intent = Intent(this,MainView::class.java)
+                startActivity(intent)
+            }
+            else{
+                Toast.makeText(this,"Email address is not verified.Please verify your email address!",Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     private fun saveUserInfo(firstName:String,lastName:String,nickName:String){
+        val currentUserId = FirebaseAuth.getInstance().currentUser!!.uid
+        val usersRef:DatabaseReference = FirebaseDatabase.getInstance().reference.child("users")
+        val userMap = HashMap<String,Any>()
+        userMap["uid"] = currentUserId
+        userMap["lastName"] = currentUserId
+        userMap["firstName"] = currentUserId
+        userMap["nickName"] = currentUserId
+        userMap["bio"] = "hey iam using sex"
+        userMap["image"] = "https://firebasestorage.googleapis.com/v0/b/codagram-2bc9b.appspot.com/o/images%2Fpokemon-7-282136.png?alt=media&token=e96a7882-485c-4cde-8f74-b00efc600860"
+
+        usersRef.child(currentUserId).setValue(userMap)
+            .addOnCompleteListener{task ->
+                if (task.isSuccessful){
+                    Toast.makeText(this,"Account has been created !",Toast.LENGTH_LONG).show()
+                }
+            }
 
     }
 
@@ -162,6 +195,22 @@ class LoginActiviy : AppCompatActivity() {
                 }
             }
     }
+
+    fun getToken(){
+        val mUser = FirebaseAuth.getInstance().currentUser
+        mUser!!.getIdToken(true)
+            .addOnCompleteListener{task ->
+                    if (task.isSuccessful()) {
+                        val idToken: String = task.result!!.token.toString()
+                        Log.e("idtoken",idToken)
+                        // Send token to your backend via HTTPS
+                        // ...
+                    } else {
+                        // Handle error -> task.getException();
+                    }
+                }
+            }
+
 
 /*
     override fun onStart() {
