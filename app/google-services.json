@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "197816927587",
+    "project_id": "codagram-2bc9b",
+    "storage_bucket": "codagram-2bc9b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:197816927587:android:4e195f6fa1105ee249bf56",
+        "android_client_info": {
+          "package_name": "com.example.navigationgraph"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "197816927587-o06g45t7t6lpq6fkvtao6vrf0snghutp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLjyVTFkt-C-vy9trNr7XMqPcO1wAk-TY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "197816927587-o06g45t7t6lpq6fkvtao6vrf0snghutp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
