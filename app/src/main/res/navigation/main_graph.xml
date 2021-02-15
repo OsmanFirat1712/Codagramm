@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/firstView"
-        android:name="com.example.navigationgraph.ui.FirstScreen"
+        android:name="com.tailoredapps.codagram.ui.FirstScreen"
         android:label="First View"
         tool:layout="@layout/fragment_first">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/secondView"
-        android:name="com.example.navigationgraph.ui.newStoryScreen.NewStoryFragment"
+        android:name="com.tailoredapps.codagram.ui.newStoryScreen.NewStoryFragment"
         android:label="Second View"
         tool:layout="@layout/fragment_second" >
 
@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/detailsView"
-        android:name="com.example.navigationgraph.ui.details.FragmentDetails"
+        android:name="com.tailoredapps.codagram.ui.details.FragmentDetails"
         android:label="Details"
         tool:layout="@layout/fragment_details">
 
@@ -50,13 +50,13 @@
 
     <fragment
         android:id="@+id/thirdView"
-        android:name="com.example.navigationgraph.ui.thirdView.ThirdScreen"
+        android:name="com.tailoredapps.codagram.ui.thirdView.ThirdScreen"
         android:label="Third View"
         tool:layout="@layout/fragment_third" />
 
     <fragment
         android:id="@+id/settings"
-        android:name="com.example.navigationgraph.ui.settings.SettingsFragment"
+        android:name="com.tailoredapps.codagram.ui.settings.SettingsFragment"
         android:label="Settings"
         tool:layout="@layout/fragment_settings" />
 </navigation>
