@@ -18,30 +18,26 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.tailoredapps.codagram.MainView
 import com.tailoredapps.codagram.R
-import com.tailoredapps.codagram.databinding.ActivityLoginActiviyBinding
 import com.tailoredapps.codagram.databinding.LoginFragmentBinding
+import org.koin.android.ext.android.inject
+import org.koin.java.KoinJavaComponent.inject
+import timber.log.Timber
+import javax.inject.Inject
 
 class LoginFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = LoginFragment()
-    }
 
-    private lateinit var viewModel: LoginViewModel
+    private  val viewModel: LoginViewModel by inject()
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: LoginFragmentBinding
 
+    val action = LoginFragmentDirections.actionLoginToHome()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = LoginFragmentBinding.inflate(layoutInflater)
-
-
         auth = FirebaseAuth.getInstance()
-        viewModel = LoginViewModel(requireContext())
-
 
 
 
@@ -56,8 +52,12 @@ class LoginFragment : Fragment() {
 
             } else {
                 Toast.makeText(requireContext(), "input required", Toast.LENGTH_LONG).show()
-            }
+            }        }
+
+        binding.btnNewAccount.setOnClickListener {
+            it.findNavController().navigate(LoginFragmentDirections.actionLoginToRegister())
         }
+
     }
 
     override fun onCreateView(
@@ -65,14 +65,10 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.login_fragment, container, false)
+        binding = LoginFragmentBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
     fun login(email: String, password: String) {
         auth = FirebaseAuth.getInstance()
@@ -84,6 +80,8 @@ class LoginFragment : Fragment() {
                     updateUI(user, binding.etEmail.text.toString())
                     viewModel.retrieveAndStoreToken()
                     viewModel.getToken()
+                    findNavController().navigate(action)
+
                     //var intent = Intent(context, MainView::class.java)
                     //ContextCompat.startActivity(intent)
                 } else {
@@ -95,6 +93,7 @@ class LoginFragment : Fragment() {
     fun updateUI(currentUser: FirebaseUser?, email: String) {
         if (currentUser != null) {
             if (currentUser.isEmailVerified) {
+                findNavController().navigate(action)
                 //var intent = Intent(context,MainView::class.java)
                 //ContextCompat.startActivity(intent)
             } else {

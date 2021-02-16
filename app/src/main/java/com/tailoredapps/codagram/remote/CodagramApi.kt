@@ -2,8 +2,9 @@ package com.tailoredapps.codagram.remote
 
 import com.tailoredapps.codagram.models.User
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface CodagramApi {
-    @GET("all")
-    suspend fun getAllCountries():List<User>
+    @POST("user")
+    suspend fun addUser()
 }

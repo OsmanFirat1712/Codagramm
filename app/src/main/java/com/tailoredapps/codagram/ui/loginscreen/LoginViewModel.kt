@@ -1,20 +1,16 @@
 package com.tailoredapps.codagram.ui.loginscreen
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
-import com.tailoredapps.codagram.MainView
-import kotlin.math.log
+import com.tailoredapps.codagram.remote.CodagramApi
 
-class LoginViewModel(private val context: Context) : ViewModel() {
+class LoginViewModel(private val context: Context,private val codagramApi: CodagramApi) : ViewModel() {
 
      fun retrieveAndStoreToken(){
         FirebaseMessaging.getInstance().token
@@ -29,7 +25,6 @@ class LoginViewModel(private val context: Context) : ViewModel() {
                 }
             }
     }
-
 
     fun getToken(){
         val mUser = FirebaseAuth.getInstance().currentUser

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import com.tailoredapps.codagram.MainView
 import com.tailoredapps.codagram.R
 
 
@@ -17,7 +18,7 @@ class SplashScreen : AppCompatActivity() {
         handler = Handler()
         handler.postDelayed({
 
-            val intent = Intent(this,LoginFragment::class.java)
+            val intent = Intent(this, MainView::class.java)
             startActivity(intent)
             finish()
         },2000)

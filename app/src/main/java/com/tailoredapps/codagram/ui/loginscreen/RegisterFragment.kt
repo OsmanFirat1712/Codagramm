@@ -1,39 +1,32 @@
 package com.tailoredapps.codagram.ui.loginscreen
 
-import android.content.Intent
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
+import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.tailoredapps.codagram.MainView
-import com.tailoredapps.codagram.R
-import com.tailoredapps.codagram.databinding.ActivityLoginActiviyBinding
-import com.tailoredapps.codagram.databinding.LoginFragmentBinding
 import com.tailoredapps.codagram.databinding.RegisterFragmentBinding
+import org.koin.android.ext.android.inject
 
 class RegisterFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = RegisterFragment()
-    }
-
-    private lateinit var viewModel: LoginViewModel
+    private  val viewModel: LoginViewModel by inject()
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: RegisterFragmentBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = RegisterFragmentBinding.inflate(layoutInflater)
+        auth = FirebaseAuth.getInstance()
+
 
         binding.btnDialogCreate.setOnClickListener {
             createUser(binding.dialogEmail.text.toString(),binding.dialogPassword.text.toString())
+            it.findNavController().navigate(RegisterFragmentDirections.actionLoginToHome())
+
         }
 
     }
@@ -42,12 +35,13 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.register_fragment, container, false)
+        binding = RegisterFragmentBinding.inflate(layoutInflater,container,false)
+
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         // TODO: Use the ViewModel
     }
 
