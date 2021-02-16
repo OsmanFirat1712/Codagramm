@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.tailoredapps.codagram.MainView
@@ -30,6 +32,7 @@ class LoginFragment : Fragment() {
     private lateinit var binding: LoginFragmentBinding
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -38,6 +41,8 @@ class LoginFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
         viewModel = LoginViewModel(requireContext())
+
+
 
 
 
