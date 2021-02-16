@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
@@ -10,8 +11,8 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.example.navigationgraph"
-        minSdkVersion 30
+        applicationId "com.tailoredapps.codagram"
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -70,6 +71,8 @@ dependencies {
 
     //log
     implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     //test
     testImplementation 'junit:junit:4.+'
@@ -83,7 +86,13 @@ dependencies {
     implementation 'org.koin:koin-androidx-viewmodel:2.2.1'
     implementation 'org.koin:koin-androidx-fragment:2.2.1'
 
-
+    implementation platform('com.google.firebase:firebase-bom:26.5.0')
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-database:'
+    'com.google.android.gms:play-services-auth:19.0.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+
 
 }
