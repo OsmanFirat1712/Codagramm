@@ -12,8 +12,6 @@ import com.tailoredapps.codagram.remote.CodagramApi
 
 class LoginViewModel(private val context: Context,private val codagramApi: CodagramApi) : ViewModel() {
 
-
-
      fun retrieveAndStoreToken(){
         FirebaseMessaging.getInstance().token
             .addOnCompleteListener{task->
@@ -27,7 +25,6 @@ class LoginViewModel(private val context: Context,private val codagramApi: Codag
                 }
             }
     }
-
 
     fun getToken(){
         val mUser = FirebaseAuth.getInstance().currentUser

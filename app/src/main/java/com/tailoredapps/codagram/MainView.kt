@@ -41,8 +41,13 @@ class MainView : AppCompatActivity() {
                 R.id.RegisterScreen -> {
                     binding.toolbar.visibility = View.GONE
                     binding.bnvMain.visibility = View.GONE
+                    
+                }else ->{
+                    binding.toolbar.visibility = View.VISIBLE
+                binding.bnvMain.visibility = View.VISIBLE
 
                 }
+
 
             }
 
