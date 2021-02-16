@@ -12,38 +12,45 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.tailoredapps.codagram.MainView
 import com.tailoredapps.codagram.R
-import com.tailoredapps.codagram.databinding.ActivityLoginActiviyBinding
 import com.tailoredapps.codagram.databinding.LoginFragmentBinding
+import org.koin.android.ext.android.inject
+import org.koin.java.KoinJavaComponent.inject
+import timber.log.Timber
+import javax.inject.Inject
 
 class LoginFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = LoginFragment()
-    }
 
-    private lateinit var viewModel: LoginViewModel
+    private  val viewModel: LoginViewModel by inject()
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: LoginFragmentBinding
+    private lateinit var getView: View
 
+    val action = LoginFragmentDirections.actionLoginToHome()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = LoginFragmentBinding.inflate(layoutInflater)
 
+        val action = LoginFragmentDirections.actionLoginToHome()
+
+
+        getView = View(context)
 
         auth = FirebaseAuth.getInstance()
-        viewModel = LoginViewModel(requireContext())
-
 
 
         binding.btnLogin.setOnClickListener {
             if (binding.etEmail.text.trim().toString().isNotEmpty() || binding.etPassword.text.trim().toString()
                     .isNotEmpty()
+
             ) {
                 login(binding.etEmail.text.trim().toString(), binding.etPassword.text.trim().toString())
                 //val tokenId = auth.currentUser!!.getIdToken(true)
@@ -51,8 +58,12 @@ class LoginFragment : Fragment() {
 
             } else {
                 Toast.makeText(requireContext(), "input required", Toast.LENGTH_LONG).show()
-            }
+            }        }
+
+        binding.btnNewAccount.setOnClickListener {
+            it.findNavController().navigate(LoginFragmentDirections.actionLoginToRegister())
         }
+
     }
 
     override fun onCreateView(
@@ -60,14 +71,10 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.login_fragment, container, false)
+        binding = LoginFragmentBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
     fun login(email: String, password: String) {
         auth = FirebaseAuth.getInstance()
@@ -79,6 +86,8 @@ class LoginFragment : Fragment() {
                     updateUI(user, binding.etEmail.text.toString())
                     viewModel.retrieveAndStoreToken()
                     viewModel.getToken()
+                    findNavController().navigate(action)
+
                     //var intent = Intent(context, MainView::class.java)
                     //ContextCompat.startActivity(intent)
                 } else {
@@ -90,6 +99,7 @@ class LoginFragment : Fragment() {
     fun updateUI(currentUser: FirebaseUser?, email: String) {
         if (currentUser != null) {
             if (currentUser.isEmailVerified) {
+                findNavController().navigate(action)
                 //var intent = Intent(context,MainView::class.java)
                 //ContextCompat.startActivity(intent)
             } else {

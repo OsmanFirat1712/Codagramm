@@ -3,7 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/firstView">
+    app:startDestination="@id/LoginScreen">
+
+
+    <fragment
+        android:id="@+id/LoginScreen"
+        android:name="com.tailoredapps.codagram.ui.loginscreen.LoginFragment"
+        android:label="Login View"
+        tool:layout="@layout/login_fragment">
+
+        <action
+            android:id="@+id/action_LoginToHome"
+            app:destination="@+id/firstView" />
+
+        <action
+            android:id="@+id/action_LoginToRegister"
+            app:destination="@+id/RegisterScreen" >
+        </action>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/RegisterScreen"
+        android:name="com.tailoredapps.codagram.ui.loginscreen.RegisterFragment"
+        android:label="Login View"
+        tool:layout="@layout/register_fragment">
+        <action
+            android:id="@+id/action_LoginToHome"
+            app:destination="@+id/firstView" />
+    </fragment>
 
     <fragment
         android:id="@+id/firstView"
