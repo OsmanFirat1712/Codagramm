@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"/>
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogin"
         android:background="@drawable/button_design"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
@@ -134,11 +134,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnNewAccount"
         android:layout_marginTop="20dp"
         android:text="Create Now"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/tvNewAccount"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"

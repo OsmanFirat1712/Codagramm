@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.tailoredapps.codagram.MainView
 import com.tailoredapps.codagram.R
+import com.tailoredapps.codagram.databinding.ActivityLoginActiviyBinding
+import com.tailoredapps.codagram.databinding.LoginFragmentBinding
 
 class LoginFragment : Fragment() {
 
@@ -24,28 +26,26 @@ class LoginFragment : Fragment() {
     }
 
     private lateinit var viewModel: LoginViewModel
-    private lateinit var loginButton: Button
-    private lateinit var createButton: Button
-    private lateinit var userEmail: EditText
-    private lateinit var userPassword: EditText
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: LoginFragmentBinding
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding = LoginFragmentBinding.inflate(layoutInflater)
+
+
         auth = FirebaseAuth.getInstance()
         viewModel = LoginViewModel(requireContext())
 
-        createButton = view.findViewById(R.id.btnNewAccount)
-        userEmail = view.findViewById(R.id.etEmail)
-        userPassword = view.findViewById(R.id.etPassword)
-        loginButton = view.findViewById(R.id.btnLogin)
 
-        loginButton.setOnClickListener {
-            if (userEmail.text.trim().toString().isNotEmpty() || userPassword.text.trim().toString()
+
+        binding.btnLogin.setOnClickListener {
+            if (binding.etEmail.text.trim().toString().isNotEmpty() || binding.etPassword.text.trim().toString()
                     .isNotEmpty()
             ) {
-                login(userEmail.text.trim().toString(), userPassword.text.trim().toString())
+                login(binding.etEmail.text.trim().toString(), binding.etPassword.text.trim().toString())
                 //val tokenId = auth.currentUser!!.getIdToken(true)
                 Log.e("token", auth.currentUser!!.getIdToken(true).toString())
 
@@ -76,7 +76,7 @@ class LoginFragment : Fragment() {
                 if (task.isSuccessful) {
                     Log.e("task message", "Successfully")
                     val user = auth.currentUser
-                    updateUI(user, userEmail.text.toString())
+                    updateUI(user, binding.etEmail.text.toString())
                     viewModel.retrieveAndStoreToken()
                     viewModel.getToken()
                     //var intent = Intent(context, MainView::class.java)
@@ -100,6 +100,15 @@ class LoginFragment : Fragment() {
             }
         }
 
-
     }
+/*
+    override fun onStart() {
+        super.onStart()
+        val user = auth.currentUser
+        if (user != null){
+            var intent = Intent(this,MainView::class.java)
+            startActivity(intent)
+    }
+    */
+
 }

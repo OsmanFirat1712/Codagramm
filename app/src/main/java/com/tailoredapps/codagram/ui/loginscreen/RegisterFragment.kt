@@ -13,6 +13,9 @@ import android.widget.EditText
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.MainView
 import com.tailoredapps.codagram.R
+import com.tailoredapps.codagram.databinding.ActivityLoginActiviyBinding
+import com.tailoredapps.codagram.databinding.LoginFragmentBinding
+import com.tailoredapps.codagram.databinding.RegisterFragmentBinding
 
 class RegisterFragment : Fragment() {
 
@@ -22,23 +25,15 @@ class RegisterFragment : Fragment() {
 
     private lateinit var viewModel: LoginViewModel
     private lateinit var auth: FirebaseAuth
-    private lateinit var firstNameFire:String
-    private lateinit var lastNameFire:String
-    private lateinit var nickNameFire:String
-    private lateinit var createButton: Button
-
-    private lateinit var etEmail:EditText
-    private lateinit var etPassword:EditText
+    private lateinit var binding: RegisterFragmentBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        createButton = view.findViewById(R.id.btnDialogCreate)
-        etEmail = view.findViewById(R.id.dialogEmail)
-        etPassword = view.findViewById(R.id.dialogPassword)
+        binding = RegisterFragmentBinding.inflate(layoutInflater)
 
-        createButton.setOnClickListener {
-            createUser(etEmail.text.toString(),etPassword.text.toString())
+        binding.btnDialogCreate.setOnClickListener {
+            createUser(binding.dialogEmail.text.toString(),binding.dialogPassword.text.toString())
         }
 
     }
@@ -64,7 +59,7 @@ class RegisterFragment : Fragment() {
                         ?.addOnCompleteListener{task->
                             if (task.isSuccessful){
                                 Log.e("task message","Successfully")
-                                viewModel.saveUserInfo(firstNameFire,lastNameFire,nickNameFire)
+                                viewModel.saveUserInfo(binding.dialogFirstName.text.toString(),binding.dialogLastName.text.toString(),binding.dialogNickName.text.toString())
                                 viewModel.retrieveAndStoreToken()
                                 //var intent = Intent(this, MainView::class.java)
                                 //startActivity(intent)
@@ -74,8 +69,8 @@ class RegisterFragment : Fragment() {
                                 Log.e("task message","Failed"+task.exception)
                             }
                         }
-                }
-            }
-    }
+                     }
+                 }
+             }
 
 }
