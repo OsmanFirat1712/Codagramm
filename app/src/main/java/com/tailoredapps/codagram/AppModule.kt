@@ -2,6 +2,7 @@ package com.tailoredapps.codagram
 
 import com.tailoredapps.codagram.remote.remoteModule
 import com.tailoredapps.codagram.ui.homeFeedScreen.firstViewModule
+import com.tailoredapps.codagram.ui.loginscreen.loginscreenModule
 import okhttp3.internal.immutableListOf
 import org.koin.dsl.module
 
@@ -19,5 +20,6 @@ data class GlobalAppData(
 internal val appModules = immutableListOf(
     appModule,
     firstViewModule,
-    remoteModule
+    remoteModule,
+    loginscreenModule
 )

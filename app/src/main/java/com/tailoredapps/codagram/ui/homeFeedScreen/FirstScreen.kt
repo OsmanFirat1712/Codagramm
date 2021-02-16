@@ -13,18 +13,13 @@ import org.koin.android.ext.android.inject
 
 class FirstScreen : Fragment() {
 
-    private val viewModel:HomeFeedViewModel by inject()
     private val adapter: HomeFeedAdapter by inject()
 
     private val navController by lazy(::findNavController)  //Method referencing
     private lateinit var binding: FragmentFirstBinding
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
     }
