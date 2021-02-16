@@ -8,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.tailoredapps.codagram.databinding.ActivityMainBinding
 
+
 class MainView : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val navController by lazy { (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController }

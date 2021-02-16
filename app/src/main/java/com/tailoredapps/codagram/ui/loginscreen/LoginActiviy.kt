@@ -51,7 +51,7 @@ class LoginActiviy : AppCompatActivity() {
         loginButton.setOnClickListener {
             if (userEmail.text.trim().toString().isNotEmpty() || userPassword.text.trim().toString().isNotEmpty()){
                 login(userEmail.text.trim().toString(),userPassword.text.trim().toString())
-                val tokenId = auth.currentUser!!.getIdToken(true)
+                //val tokenId = auth.currentUser!!.getIdToken(true)
                 Log.e("token",auth.currentUser!!.getIdToken(true).toString())
 
             }
@@ -100,7 +100,6 @@ class LoginActiviy : AppCompatActivity() {
                 }
             }
     }
-
 
     fun createAlertDialog(){
         createButton.setOnClickListener {
