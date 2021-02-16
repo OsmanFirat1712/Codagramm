@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.databinding.RegisterFragmentBinding
 import org.koin.android.ext.android.inject
@@ -24,6 +25,8 @@ class RegisterFragment : Fragment() {
 
         binding.btnDialogCreate.setOnClickListener {
             createUser(binding.dialogEmail.text.toString(),binding.dialogPassword.text.toString())
+            it.findNavController().navigate(RegisterFragmentDirections.actionLoginToHome())
+
         }
 
     }

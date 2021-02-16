@@ -35,9 +35,11 @@ class MainView : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.LoginScreen -> {
+                    binding.toolbar.visibility = View.GONE
                     binding.bnvMain.visibility = View.GONE
                 }
                 R.id.RegisterScreen -> {
+                    binding.toolbar.visibility = View.GONE
                     binding.bnvMain.visibility = View.GONE
 
                 }

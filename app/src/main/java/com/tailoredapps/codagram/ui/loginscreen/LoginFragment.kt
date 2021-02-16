@@ -31,18 +31,11 @@ class LoginFragment : Fragment() {
     private  val viewModel: LoginViewModel by inject()
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: LoginFragmentBinding
-    private lateinit var getView: View
 
     val action = LoginFragmentDirections.actionLoginToHome()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        val action = LoginFragmentDirections.actionLoginToHome()
-
-
-        getView = View(context)
 
         auth = FirebaseAuth.getInstance()
 
@@ -50,7 +43,6 @@ class LoginFragment : Fragment() {
         binding.btnLogin.setOnClickListener {
             if (binding.etEmail.text.trim().toString().isNotEmpty() || binding.etPassword.text.trim().toString()
                     .isNotEmpty()
-
             ) {
                 login(binding.etEmail.text.trim().toString(), binding.etPassword.text.trim().toString())
                 //val tokenId = auth.currentUser!!.getIdToken(true)
