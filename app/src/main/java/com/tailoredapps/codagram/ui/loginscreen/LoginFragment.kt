@@ -13,9 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.tailoredapps.codagram.MainView
@@ -35,16 +33,17 @@ class LoginFragment : Fragment() {
 
     val action = LoginFragmentDirections.actionLoginToHome()
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
 
 
+
+
         binding.btnLogin.setOnClickListener {
-            if (binding.etEmail.text.trim().toString().isNotEmpty() || binding.etPassword.text.trim().toString()
-                    .isNotEmpty()
-            ) {
+            if (binding.etEmail.text.trim().toString().isNotEmpty() || binding.etPassword.text.trim().toString().isNotEmpty()) {
                 login(binding.etEmail.text.trim().toString(), binding.etPassword.text.trim().toString())
                 //val tokenId = auth.currentUser!!.getIdToken(true)
                 Log.e("token", auth.currentUser!!.getIdToken(true).toString())
@@ -91,7 +90,7 @@ class LoginFragment : Fragment() {
 
     fun updateUI(currentUser: FirebaseUser?, email: String) {
         if (currentUser != null) {
-            if (currentUser.isEmailVerified) {
+            if (!currentUser.isEmailVerified) {
                 findNavController().navigate(action)
                 //var intent = Intent(context,MainView::class.java)
                 //ContextCompat.startActivity(intent)
@@ -104,14 +103,16 @@ class LoginFragment : Fragment() {
         }
 
     }
-/*
+    /*
     override fun onStart() {
         super.onStart()
         val user = auth.currentUser
-        if (user != null){
-            var intent = Intent(this,MainView::class.java)
-            startActivity(intent)
-    }
-    */
+        if (user != null) {
+            findNavController().navigate(action)
 
+        }
+
+    }
+
+     */
 }
