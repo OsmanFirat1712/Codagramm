@@ -23,16 +23,17 @@ class LoginFragment : Fragment() {
 
     private val action = LoginFragmentDirections.actionLoginToHome()
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
 
 
+
+
         binding.btnLogin.setOnClickListener {
-            if (binding.etEmail.text.trim().toString().isNotEmpty() || binding.etPassword.text.trim().toString()
-                    .isNotEmpty()
-            ) {
+            if (binding.etEmail.text.trim().toString().isNotEmpty() || binding.etPassword.text.trim().toString().isNotEmpty()) {
                 login(binding.etEmail.text.trim().toString(), binding.etPassword.text.trim().toString())
                 //val tokenId = auth.currentUser!!.getIdToken(true)
                 Log.e("token", auth.currentUser!!.getIdToken(true).toString())
@@ -89,14 +90,16 @@ class LoginFragment : Fragment() {
         }
 
     }
-/*
+    /*
     override fun onStart() {
         super.onStart()
         val user = auth.currentUser
-        if (user != null){
-            var intent = Intent(this,MainView::class.java)
-            startActivity(intent)
-    }
-    */
+        if (user != null) {
+            findNavController().navigate(action)
 
+        }
+
+    }
+
+     */
 }

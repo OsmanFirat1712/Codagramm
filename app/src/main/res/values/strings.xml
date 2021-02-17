@@ -5,5 +5,5 @@
     <string name="screen_2">Screen 2</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="msg_token_fmt" ></string>
+    <string name="msg_token_fmt"></string>
 </resources>
