@@ -5,6 +5,14 @@
     android:id="@+id/main_graph"
     app:startDestination="@id/LoginScreen">
 
+    <fragment
+        android:id="@+id/GroupScreen"
+        android:name="com.tailoredapps.codagram.ui.groupscreen.GroupFragment"
+        android:label="group view"
+        tool:layout="@layout/fragment_group">
+
+    </fragment>
+
 
     <fragment
         android:id="@+id/LoginScreen"
@@ -81,7 +89,13 @@
         android:id="@+id/thirdView"
         android:name="com.tailoredapps.codagram.ui.thirdView.ThirdScreen"
         android:label="Third View"
-        tool:layout="@layout/fragment_third" />
+        tool:layout="@layout/fragment_third" >
+
+        <action
+            android:id="@+id/action_first_view_to_groupscreen"
+            app:destination="@+id/GroupScreen" ></action>
+
+    </fragment>
 
     <fragment
         android:id="@+id/settings"
