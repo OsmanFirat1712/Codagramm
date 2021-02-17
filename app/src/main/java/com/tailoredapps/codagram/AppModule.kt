@@ -13,7 +13,7 @@ import org.koin.dsl.module
 internal val appModule = module { single { provideGlobalAppData() } }
 
 private fun provideGlobalAppData(): GlobalAppData = GlobalAppData(
-    baseUrl = "https://codagram.tailored-apps.com/"
+    baseUrl = "https://codagram.tailored-apps.com/api/"
 )
 
 data class GlobalAppData(
@@ -28,7 +28,7 @@ class AuthInterceptor(context: Context) : Interceptor {
 
         // If token has been saved, add it to the request
         sessionManager.fetchAuthToken()?.let {
-            requestBuilder.addHeader("Authorization", "Bea")
+            requestBuilder.addHeader("X-FIREBASE-TOKEN",  " $it")
         }
 
         return chain.proceed(requestBuilder.build())
