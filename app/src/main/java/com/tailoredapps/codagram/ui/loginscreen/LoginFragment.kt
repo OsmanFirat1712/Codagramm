@@ -43,9 +43,7 @@ class LoginFragment : Fragment() {
 
 
         binding.btnLogin.setOnClickListener {
-            if (binding.etEmail.text.trim().toString().isNotEmpty() || binding.etPassword.text.trim().toString()
-                    .isNotEmpty()
-            ) {
+            if (binding.etEmail.text.trim().toString().isNotEmpty() || binding.etPassword.text.trim().toString().isNotEmpty()) {
                 login(binding.etEmail.text.trim().toString(), binding.etPassword.text.trim().toString())
                 //val tokenId = auth.currentUser!!.getIdToken(true)
                 Log.e("token", auth.currentUser!!.getIdToken(true).toString())
@@ -92,7 +90,7 @@ class LoginFragment : Fragment() {
 
     fun updateUI(currentUser: FirebaseUser?, email: String) {
         if (currentUser != null) {
-            if (currentUser.isEmailVerified) {
+            if (!currentUser.isEmailVerified) {
                 findNavController().navigate(action)
                 //var intent = Intent(context,MainView::class.java)
                 //ContextCompat.startActivity(intent)
@@ -105,14 +103,16 @@ class LoginFragment : Fragment() {
         }
 
     }
-/*
+    /*
     override fun onStart() {
         super.onStart()
         val user = auth.currentUser
-        if (user != null){
-            var intent = Intent(this,MainView::class.java)
-            startActivity(intent)
-    }
-    */
+        if (user != null) {
+            findNavController().navigate(action)
 
+        }
+
+    }
+
+     */
 }
