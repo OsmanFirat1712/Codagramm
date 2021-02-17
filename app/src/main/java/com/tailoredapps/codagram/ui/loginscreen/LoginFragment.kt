@@ -39,9 +39,6 @@ class LoginFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
 
-
-
-
         binding.btnLogin.setOnClickListener {
             if (binding.etEmail.text.trim().toString().isNotEmpty() || binding.etPassword.text.trim().toString().isNotEmpty()) {
                 login(binding.etEmail.text.trim().toString(), binding.etPassword.text.trim().toString())
@@ -103,7 +100,7 @@ class LoginFragment : Fragment() {
         }
 
     }
-    /*
+
     override fun onStart() {
         super.onStart()
         val user = auth.currentUser
@@ -114,5 +111,5 @@ class LoginFragment : Fragment() {
 
     }
 
-     */
+
 }
