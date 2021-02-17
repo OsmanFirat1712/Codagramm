@@ -1,5 +1,6 @@
 package com.tailoredapps.codagram.remote
 
+import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.User
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -15,4 +16,11 @@ interface CodagramApi {
 
     @GET("user")
     suspend fun getSearchedUser(@Query ("query")query:String?):List<User>
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                   POST ///
+
+    @POST
+    suspend fun createGroup(@Body group: Group):Group
+
 }
