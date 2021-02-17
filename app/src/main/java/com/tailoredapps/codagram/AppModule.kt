@@ -3,6 +3,7 @@ package com.tailoredapps.codagram
 import android.content.Context
 import com.tailoredapps.codagram.remote.SessionManager
 import com.tailoredapps.codagram.remote.remoteModule
+import com.tailoredapps.codagram.ui.groupscreen.groupscreenmodule
 import com.tailoredapps.codagram.ui.homeFeedScreen.firstViewModule
 import com.tailoredapps.codagram.ui.loginscreen.loginscreenModule
 import okhttp3.Interceptor
@@ -39,5 +40,6 @@ internal val appModules = immutableListOf(
     appModule,
     firstViewModule,
     remoteModule,
-    loginscreenModule
+    loginscreenModule,
+    groupscreenmodule
 )

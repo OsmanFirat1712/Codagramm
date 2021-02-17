@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName
     val user: User,
 )*/
 data class Group(
-    val creator: Creator,
-    val id: String,
-    val image: Image,
+    val creator: Creator?,
+    val id: String?,
+    val image: Image?,
     val members: List<Member>,
     val name: String
 )
