@@ -55,8 +55,8 @@ class GroupFragment : Fragment() {
     fun createButtonAction() {
         binding.btnCreateGroup.setOnClickListener {
             val nameGroup = binding.etCreateGroup.text.toString()
-
-            //api must be here
+            //getSelectedlist
+            //apiaddgroup must be here
         }
     }
 }
