@@ -14,11 +14,11 @@ data class Group(
 )
 
 data class Creator(
-    val user:User
+    val user: User
 
 )
 
 data class Member(
- val user:User
+ val user: User
 )
 
