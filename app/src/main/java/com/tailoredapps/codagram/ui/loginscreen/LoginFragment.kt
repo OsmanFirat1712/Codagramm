@@ -1,28 +1,19 @@
 package com.tailoredapps.codagram.ui.loginscreen
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.auth.GoogleAuthUtil.getToken
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.tailoredapps.codagram.MainView
-import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.LoginFragmentBinding
 import org.koin.android.ext.android.inject
-import org.koin.java.KoinJavaComponent.inject
-import timber.log.Timber
-import javax.inject.Inject
 
 class LoginFragment : Fragment() {
 
@@ -31,7 +22,7 @@ class LoginFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: LoginFragmentBinding
 
-    val action = LoginFragmentDirections.actionLoginToHome()
+    private val action = LoginFragmentDirections.actionLoginToHome()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,12 +64,9 @@ class LoginFragment : Fragment() {
                     Log.e("task message", "Successfully")
                     val user = auth.currentUser
                     updateUI(user, binding.etEmail.text.toString())
-                    viewModel.retrieveAndStoreToken()
                     viewModel.getToken()
+                    viewModel.getUser()
                     findNavController().navigate(action)
-
-                    //var intent = Intent(context, MainView::class.java)
-                    //ContextCompat.startActivity(intent)
                 } else {
                     Log.e("task message", "Failed" + task.exception)
                 }
@@ -104,6 +92,7 @@ class LoginFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         val user = auth.currentUser
+        viewModel.getToken()
         if (user != null) {
             findNavController().navigate(action)
 

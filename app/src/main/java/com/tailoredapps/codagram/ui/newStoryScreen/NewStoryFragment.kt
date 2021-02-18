@@ -1,16 +1,10 @@
 package com.tailoredapps.codagram.ui.newStoryScreen
 
 import android.Manifest
-import android.app.Activity
 import android.app.Activity.RESULT_OK
-import android.content.ContentResolver
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -18,16 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ImageView
-import android.widget.SearchView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.tailoredapps.codagram.databinding.FragmentSecondBinding
-import com.theartofdev.edmodo.cropper.CropImage
-import java.io.ByteArrayOutputStream
-import java.io.IOException
 
 
 class NewStoryFragment : Fragment() {

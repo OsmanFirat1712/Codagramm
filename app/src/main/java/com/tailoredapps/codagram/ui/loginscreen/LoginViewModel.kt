@@ -4,35 +4,32 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.messaging.FirebaseMessaging
+import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodagramApi
+import com.tailoredapps.codagram.remote.SessionManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class LoginViewModel(private val context: Context,private val codagramApi: CodagramApi) : ViewModel() {
 
-     fun retrieveAndStoreToken(){
-        FirebaseMessaging.getInstance().token
-            .addOnCompleteListener{task->
-                if (task.isSuccessful){
-                    val token = task.result
-                    val userId = FirebaseAuth.getInstance().currentUser!!.uid
-                    FirebaseDatabase.getInstance()
-                        .getReference("tokens")
-                        .child(userId)
-                        .setValue(token)
-                }
-            }
-    }
+class LoginViewModel(private val context: Context, private val codagramApi: CodagramApi) :
+    ViewModel() {
 
-    fun getToken(){
+
+    private val sessionManager = SessionManager(context)
+
+    fun getToken() {
         val mUser = FirebaseAuth.getInstance().currentUser
         mUser!!.getIdToken(true)
-            .addOnCompleteListener{task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful()) {
                     val idToken: String = task.result!!.token.toString()
-                    Log.e("idtoken",idToken)
+                    Log.e("idtoken", idToken)
+                    sessionManager.saveAuthToken(idToken)
+                    Log.e("savetoken", "dssd")
+
                     // Send token to your backend via HTTPS
                     // ...
                 } else {
@@ -41,26 +38,30 @@ class LoginViewModel(private val context: Context,private val codagramApi: Codag
             }
     }
 
-    fun saveUserInfo(firstName:String,lastName:String,nickName:String){
-        val currentUserId = FirebaseAuth.getInstance().currentUser!!.uid
-        val usersRef:DatabaseReference = FirebaseDatabase.getInstance().reference.child("users")
-        val userMap = HashMap<String,Any>()
-        userMap["uid"] = currentUserId
-        userMap["lastName"] = currentUserId
-        userMap["firstName"] = currentUserId
-        userMap["nickName"] = currentUserId
-        userMap["bio"] = "hey iam using sex"
-        userMap["image"] = "https://firebasestorage.googleapis.com/v0/b/codagram-2bc9b.appspot.com/o/images%2Fpokemon-7-282136.png?alt=media&token=e96a7882-485c-4cde-8f74-b00efc600860"
 
-        usersRef.child(currentUserId).setValue(userMap)
-            .addOnCompleteListener{task ->
-                if (task.isSuccessful){
-                    Toast.makeText(context,"Account has been created !",Toast.LENGTH_LONG).show()
-                }
+    fun postUser(user: User) {
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+/*
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword("","").auth
+*/
+                codagramApi.addUser(user)
             }
+        } catch (ie: Exception) {
+            Timber.e(ie)
+        }
 
     }
 
+    fun getUser(){
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                codagramApi.getUser()
+            }
+        }catch (ie:Exception){
+            Timber.e(ie)
+        }
+    }
 }
 
 

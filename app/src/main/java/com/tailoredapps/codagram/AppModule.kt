@@ -3,6 +3,7 @@ package com.tailoredapps.codagram
 import android.content.Context
 import com.tailoredapps.codagram.remote.SessionManager
 import com.tailoredapps.codagram.remote.remoteModule
+import com.tailoredapps.codagram.ui.groupscreen.groupscreenmodule
 import com.tailoredapps.codagram.ui.homeFeedScreen.firstViewModule
 import com.tailoredapps.codagram.ui.loginscreen.loginscreenModule
 import okhttp3.Interceptor
@@ -13,7 +14,7 @@ import org.koin.dsl.module
 internal val appModule = module { single { provideGlobalAppData() } }
 
 private fun provideGlobalAppData(): GlobalAppData = GlobalAppData(
-    baseUrl = "https://codagram.tailored-apps.com/"
+    baseUrl = "https://codagram.tailored-apps.com/api/"
 )
 
 data class GlobalAppData(
@@ -28,7 +29,7 @@ class AuthInterceptor(context: Context) : Interceptor {
 
         // If token has been saved, add it to the request
         sessionManager.fetchAuthToken()?.let {
-            requestBuilder.addHeader("Authorization", "Bea")
+            requestBuilder.addHeader("X-FIREBASE-TOKEN",  " $it")
         }
 
         return chain.proceed(requestBuilder.build())
@@ -39,5 +40,6 @@ internal val appModules = immutableListOf(
     appModule,
     firstViewModule,
     remoteModule,
-    loginscreenModule
+    loginscreenModule,
+    groupscreenmodule
 )

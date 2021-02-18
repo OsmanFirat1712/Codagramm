@@ -111,7 +111,7 @@
     <Button
         android:id="@+id/btnDialogCreate"
         app:layout_constraintTop_toBottomOf="@id/footer_line"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="1dp"
         android:text="Create Now"
         android:textSize="20dp"
         android:textColor="@color/white"
