@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.auth.GoogleAuthUtil.getToken
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.tailoredapps.codagram.databinding.LoginFragmentBinding
@@ -91,6 +92,7 @@ class LoginFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         val user = auth.currentUser
+        viewModel.getToken()
         if (user != null) {
             findNavController().navigate(action)
 

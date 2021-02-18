@@ -21,31 +21,33 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="20dp" />
 
-    <AutoCompleteTextView
+
+    <EditText
         android:id="@+id/auto"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         android:layout_marginTop="20dp"
         android:completionThreshold="1"
         android:hint="Select a User"
+        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
 
     <EditText
         android:id="@+id/etCreateGroup"
-        app:layout_constraintTop_toBottomOf="@id/auto"
-        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="228dp"
         android:background="@drawable/edittext_design"
+        android:hint="Create a Group"
         android:padding="8dp"
         android:textColorHint="@android:color/white"
-        android:layout_marginTop="150dp"
-        android:layout_width="0dp"
-        android:hint="Create a Group"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@id/auto" />
 
     <Button
         android:id="@+id/btnCreateGroup"
@@ -58,7 +60,7 @@
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         android:layout_height="wrap_content"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
         android:layout_marginTop="100dp"
@@ -68,5 +70,16 @@
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchResult"
+        android:layout_width="363dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/etCreateGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/auto" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
