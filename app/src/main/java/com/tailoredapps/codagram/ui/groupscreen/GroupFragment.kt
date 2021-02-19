@@ -100,9 +100,7 @@ class GroupFragment : Fragment() {
 
             viewModel.createGroup(nameGroup)
 
-            user.forEach{user ->
-                val id:String? = user.id
-            }
+            it.findNavController().navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreen())
 
         }
     }

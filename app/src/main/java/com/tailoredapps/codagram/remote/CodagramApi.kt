@@ -27,7 +27,7 @@ interface CodagramApi {
     suspend fun sendGroupInvites(@Body groupInviteBody: GroupInviteBody):Group
 
     @GET("group/{id}")
-    suspend fun getGroupbyId(@Path("Id" )id:String):Group
+    suspend fun getGroupbyId(@Path("id" )id:String):Group
 
 
 }
