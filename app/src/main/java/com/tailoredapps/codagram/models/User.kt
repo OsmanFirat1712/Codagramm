@@ -9,6 +9,11 @@ data class User(
     val email: String?,
 
 )
+data class SendUser(
+    val nickname: String,
+    val firstname: String,
+    val lastname: String
+)
 
 
 

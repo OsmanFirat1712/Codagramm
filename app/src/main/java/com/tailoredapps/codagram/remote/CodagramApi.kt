@@ -1,9 +1,6 @@
 package com.tailoredapps.codagram.remote
 
-import com.tailoredapps.codagram.models.Group
-import com.tailoredapps.codagram.models.GroupCreate
-import com.tailoredapps.codagram.models.SearchResult
-import com.tailoredapps.codagram.models.User
+import com.tailoredapps.codagram.models.*
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -11,7 +8,7 @@ import retrofit2.http.Query
 
 interface CodagramApi {
     @POST("user")
-    suspend fun addUser(@Body user: User): User
+    suspend fun addUser(@Body user: SendUser): User
 
     @GET("user")
     suspend fun getUser(): User

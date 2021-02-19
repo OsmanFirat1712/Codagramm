@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.common.util.CollectionUtils.listOf
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.GroupCreate
 import com.tailoredapps.codagram.models.SearchResult
@@ -51,7 +52,6 @@ class GroupViewModel(private val context: Context, private val codagramApi: Coda
 
     }
 
-
     @ExperimentalCoroutinesApi
     fun createGroup(group: String){
        try {
@@ -60,31 +60,14 @@ class GroupViewModel(private val context: Context, private val codagramApi: Coda
 
 
                 codagramApi.createGroup(GroupCreate(group, selectedUsers as List<String>))
+
             }
         }catch (ie:Exception){
             Timber.e(ie)
         }
     }
 
-    fun infoMessage(statusIcon: ImageView){
-        statusIcon.setOnClickListener {
-            Toast.makeText(context,"Group name have to more than 6 character", Toast.LENGTH_LONG).show()
-        }
-    }
 
-    fun statusRules(groupEditText: String,statusIcon: ImageView){
-        when{
-            groupEditText.isNotEmpty() -> {
-                Toast.makeText(context,"Group name cannot be Empty!",Toast.LENGTH_LONG).show()
-                
-            }
-            else ->{
-                Toast.makeText(context,"Successfully!",Toast.LENGTH_LONG).show()
-
-            }
-
-        }
-    }
 
 
 }
