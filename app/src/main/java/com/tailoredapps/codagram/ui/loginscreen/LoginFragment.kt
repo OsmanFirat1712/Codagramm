@@ -89,7 +89,7 @@ class LoginFragment : Fragment() {
 
     }
 
-    /*
+
     override fun onStart() {
         super.onStart()
         val user = auth.currentUser
@@ -100,8 +100,6 @@ class LoginFragment : Fragment() {
         }
 
     }
-
-     */
 
 
 

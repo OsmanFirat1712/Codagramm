@@ -8,3 +8,8 @@ data class GroupInvite(
     val invitedAt: String
 
 )
+
+data class GroupInviteBody(
+    val groupId: String,
+    val invitees:List<String>
+)
