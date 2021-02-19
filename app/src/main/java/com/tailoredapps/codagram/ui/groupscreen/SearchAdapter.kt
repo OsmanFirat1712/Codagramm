@@ -42,6 +42,12 @@ class SearchViewHolder(private val binding:SearchItemsBinding) : RecyclerView.Vi
     fun bind(postData: SelectedUser) {
         binding.root.setOnClickListener {
             postData.selected = postData.selected.not()
+
+            binding.selectedUser.visibility = if (postData.selected){
+                View.VISIBLE
+            }else {
+                View.GONE
+            }
         }
 
         binding.selectedUser.visibility = if (postData.selected){
