@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.tailoredapps.codagram.models.SendUser
 import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodagramApi
 import com.tailoredapps.codagram.remote.SessionManager
@@ -39,7 +40,7 @@ class LoginViewModel(private val context: Context, private val codagramApi: Coda
     }
 
 
-    fun postUser(user: User) {
+    fun postUser(user: SendUser) {
         try {
             viewModelScope.launch(Dispatchers.IO) {
 /*

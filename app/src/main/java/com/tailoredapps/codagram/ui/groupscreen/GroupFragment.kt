@@ -11,13 +11,16 @@ import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupBinding
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.SearchResult
 import com.tailoredapps.codagram.models.User
+import com.tailoredapps.codagram.ui.loginscreen.LoginFragmentDirections
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import okhttp3.internal.immutableListOf
@@ -58,6 +61,8 @@ class GroupFragment : Fragment() {
         bindToLiveData()
         createButtonAction()
 
+
+
         binding.auto.setOnClickListener {
             searchKey() }
 
@@ -84,23 +89,25 @@ class GroupFragment : Fragment() {
 */
     }
 
+
     @ExperimentalCoroutinesApi
     @RequiresApi(Build.VERSION_CODES.N)
     fun createButtonAction() {
         binding.btnCreateGroup.setOnClickListener {
+
             val nameGroup = binding.etCreateGroup.text.toString()
             adapter1.currentList
 
             viewModel.createGroup(nameGroup)
-            user.forEach { user ->
-                val id: String? = user.id
+
+            user.forEach{user ->
+                val id:String? = user.id
             }
 
-    /*        val newGroup = Group(null,null,null,)
-            viewModel.createGroup(nameGroup)*/
-            //api must be here
         }
     }
+
+
 
     @ExperimentalCoroutinesApi
     fun bindToLiveData() {
@@ -109,5 +116,7 @@ class GroupFragment : Fragment() {
         })
 
     }
+
+
 
 }
