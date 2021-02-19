@@ -84,10 +84,14 @@ class GroupFragment : Fragment() {
 */
     }
 
+    @ExperimentalCoroutinesApi
     @RequiresApi(Build.VERSION_CODES.N)
     fun createButtonAction() {
         binding.btnCreateGroup.setOnClickListener {
             val nameGroup = binding.etCreateGroup.text.toString()
+            adapter1.currentList
+
+            viewModel.createGroup(nameGroup)
             user.forEach { user ->
                 val id: String? = user.id
             }
