@@ -1,4 +1,5 @@
 package com.tailoredapps.codagram.models
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -6,19 +7,20 @@ import com.google.gson.annotations.SerializedName
     val user: User,
 )*/
 data class Group(
-    val creator: Creator?,
+    val creator: User?,
     val id: String?,
     val image: Image?,
-    val members: List<Member>,
+    val members: List<User>,
     val name: String
 )
 
-data class Creator(
-    val user: User
+
+data class GroupCreate(
+   val name: String,
+   val members: List<String>,
+
 
 )
 
-data class Member(
- val user: User
-)
+
 

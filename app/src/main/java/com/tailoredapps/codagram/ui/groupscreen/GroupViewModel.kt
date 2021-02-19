@@ -19,10 +19,10 @@ import timber.log.Timber
 
 class GroupViewModel(private val context: Context, private val codagramApi: CodagramApi) : ViewModel() {
     @ExperimentalCoroutinesApi
-    private val searchForUser = MutableLiveData<List<SearchResult>>()
+    private val searchForUser = MutableLiveData<List<SelectedUser>>()
 
     @ExperimentalCoroutinesApi
-    fun getSearchedUser(): LiveData<List<SearchResult>> = searchForUser
+    fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
 
 
 
@@ -31,7 +31,7 @@ class GroupViewModel(private val context: Context, private val codagramApi: Coda
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codagramApi.getSearchedUser(input)
-                updateSearchList(response)
+                updateSearchList(response.users.map { SelectedUser(it)})
             }
         }catch (ie:Exception){
             Timber.e(ie)
@@ -39,9 +39,9 @@ class GroupViewModel(private val context: Context, private val codagramApi: Coda
     }
 
     @ExperimentalCoroutinesApi
-    fun updateSearchList(userSearch:SearchResult){
+    fun updateSearchList(userSearch:List<SelectedUser>){
         viewModelScope.launch (Dispatchers.Main){
-            searchForUser.value = listOf(userSearch)
+            searchForUser.value = userSearch
         }
 
     }
