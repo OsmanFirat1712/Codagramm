@@ -1,6 +1,7 @@
 package com.tailoredapps.codagram.remote
 
 import com.tailoredapps.codagram.models.Group
+import com.tailoredapps.codagram.models.GroupCreate
 import com.tailoredapps.codagram.models.SearchResult
 import com.tailoredapps.codagram.models.User
 import retrofit2.http.Body
@@ -22,6 +23,6 @@ interface CodagramApi {
     //                   POST ///
 
     @POST("group")
-    suspend fun createGroup(@Body group: Group):Group
+    suspend fun createGroup(@Body group: GroupCreate):Group
 
 }
