@@ -12,4 +12,5 @@ internal val groupscreenmodule = module {
     factory { SearchAdapter() }
     fragment { GroupFragment() }
     viewModel { GroupViewModel (codagramApi = get(), context = androidContext()) }
+
 }

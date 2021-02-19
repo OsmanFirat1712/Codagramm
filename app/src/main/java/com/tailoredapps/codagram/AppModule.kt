@@ -3,6 +3,7 @@ package com.tailoredapps.codagram
 import android.content.Context
 import com.tailoredapps.codagram.remote.SessionManager
 import com.tailoredapps.codagram.remote.remoteModule
+import com.tailoredapps.codagram.ui.groupscreen.groupscree
 import com.tailoredapps.codagram.ui.groupscreen.groupscreenmodule
 import com.tailoredapps.codagram.ui.homeFeedScreen.firstViewModule
 import com.tailoredapps.codagram.ui.loginscreen.loginscreenModule
@@ -41,5 +42,6 @@ internal val appModules = immutableListOf(
     firstViewModule,
     remoteModule,
     loginscreenModule,
-    groupscreenmodule
+    groupscreenmodule,
+    groupscree
 )

@@ -15,10 +15,11 @@ data class Group(
 )
 
 
+
+
 data class GroupCreate(
    val name: String,
    val members: List<String>,
-
 
 )
 

@@ -58,12 +58,16 @@ class GroupViewModel(private val context: Context, private val codagramApi: Coda
             viewModelScope.launch(Dispatchers.IO) {
                 val selectedUsers = searchForUser.value?.filter {it.selected}?.map {it.user.id}
 
-
                 codagramApi.createGroup(GroupCreate(group, selectedUsers as List<String>))
 
             }
         }catch (ie:Exception){
             Timber.e(ie)
+        }
+
+
+        fun getGroups(){
+
         }
     }
 
