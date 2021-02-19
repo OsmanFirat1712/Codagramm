@@ -46,6 +46,7 @@ class GroupFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -104,4 +105,5 @@ class GroupFragment : Fragment() {
         })
 
     }
+
 }
