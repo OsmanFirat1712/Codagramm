@@ -61,12 +61,12 @@ class LoginFragment : Fragment() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
+                    findNavController().navigate(action)
                     Log.e("task message", "Successfully")
                     val user = auth.currentUser
-                    updateUI(user, binding.etEmail.text.toString())
                     viewModel.getToken()
                     viewModel.getUser()
-                    findNavController().navigate(action)
+
                 } else {
                     Log.e("task message", "Failed" + task.exception)
                 }
@@ -75,7 +75,7 @@ class LoginFragment : Fragment() {
 
     fun updateUI(currentUser: FirebaseUser?, email: String) {
         if (currentUser != null) {
-            if (!currentUser.isEmailVerified) {
+            if (currentUser.isEmailVerified) {
                 findNavController().navigate(action)
                 //var intent = Intent(context,MainView::class.java)
                 //ContextCompat.startActivity(intent)
@@ -89,6 +89,7 @@ class LoginFragment : Fragment() {
 
     }
 
+
     override fun onStart() {
         super.onStart()
         val user = auth.currentUser
@@ -99,6 +100,10 @@ class LoginFragment : Fragment() {
         }
 
     }
+
+
+
+
 
 
 }

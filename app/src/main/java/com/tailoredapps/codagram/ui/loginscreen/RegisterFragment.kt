@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.databinding.RegisterFragmentBinding
+import com.tailoredapps.codagram.models.SendUser
 import com.tailoredapps.codagram.models.User
 import org.koin.android.ext.android.inject
 import java.io.IOException
@@ -82,7 +83,7 @@ class RegisterFragment : Fragment() {
                                 val firstName = binding.dialogFirstName.text.toString()
                                 val lastName = binding.dialogLastName.text.toString()
                                 val user = User(nickname, firstName, lastName, null, null, null)
-                                viewModel.postUser(user)
+                                viewModel.postUser(SendUser(nickname,firstName,lastName) )
                             } else {
                                 Log.e("task message", "Failed" + task.exception)
                             }

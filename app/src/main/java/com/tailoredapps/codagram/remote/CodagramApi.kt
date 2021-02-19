@@ -1,16 +1,12 @@
 package com.tailoredapps.codagram.remote
 
-import com.tailoredapps.codagram.models.Group
-import com.tailoredapps.codagram.models.SearchResult
-import com.tailoredapps.codagram.models.User
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import com.tailoredapps.codagram.models.*
+import com.tailoredapps.codagram.remoteModels.GroupList
+import retrofit2.http.*
 
 interface CodagramApi {
     @POST("user")
-    suspend fun addUser(@Body user: User): User
+    suspend fun addUser(@Body user: SendUser): User
 
     @GET("user")
     suspend fun getUser(): User
@@ -22,6 +18,16 @@ interface CodagramApi {
     //                   POST ///
 
     @POST("group")
-    suspend fun createGroup(@Body group: Group):Group
+    suspend fun createGroup(@Body group: GroupCreate):Group
+
+    @GET("group")
+    suspend fun getAllGroups(): GroupList
+
+    @GET("group/invites")
+    suspend fun sendGroupInvites(@Body groupInviteBody: GroupInviteBody):Group
+
+    @GET("group/{id}")
+    suspend fun getGroupbyId(@Path("Id" )id:String):Group
+
 
 }
