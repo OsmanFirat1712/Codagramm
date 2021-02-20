@@ -39,7 +39,9 @@ class GroupAdapter : ListAdapter<Group,GroupScreenViewHolder>(object: DiffUtil.I
 
             binding.textView.text = postData.name
             binding.textView2.text = postData.id
+            binding.textView3.text = postData.members.get(0).firstname
 
+            binding.textView3.text = postData.creator?.firstname
         }
     }
 

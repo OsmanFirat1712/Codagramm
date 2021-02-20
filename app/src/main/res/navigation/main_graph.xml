@@ -87,7 +87,7 @@
 
     <fragment
         android:id="@+id/thirdView"
-        android:name="com.tailoredapps.codagram.ui.thirdView.ThirdScreen"
+        android:name="com.tailoredapps.codagram.ui.groupscreen.MyGroupScreen"
         android:label="Third View"
         tool:layout="@layout/fragment_third" >
 
