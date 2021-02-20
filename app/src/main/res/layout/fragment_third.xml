@@ -8,9 +8,17 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myGroups"
+<<<<<<< HEAD
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+=======
+        android:layout_width="400dp"
+        android:layout_height="609dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+>>>>>>> 1833ab50aae9db79138c0d61beeb6aa633a22601
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/groupscreen_mygroups" />
 
