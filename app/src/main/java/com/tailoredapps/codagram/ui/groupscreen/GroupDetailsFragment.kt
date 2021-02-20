@@ -40,8 +40,8 @@ class GroupDetailsFragment : Fragment() {
 
 
     fun getGroupName(){
-        val result = viewModel.getGroupById("843d55cb-2f95-4099-9809-43828ff21836")
-        Log.e("result",result.toString())
-        viewModel.setTitle(binding.tvGroupTitle,result.toString())
+        val id = viewModel.getGroupById("843d55cb-2f95-4099-9809-43828ff21836").toString()
+        Log.e("result",id.toString())
+        viewModel.setTitle(binding.tvGroupTitle,id)
     }
 }

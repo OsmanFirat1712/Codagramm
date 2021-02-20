@@ -17,10 +17,10 @@ class GroupDetailsViewModel(private val context: Context,private val codagramApi
 
 
     @ExperimentalCoroutinesApi
-    fun getGroupById(groupId:String){
+    fun getGroupById(id:String){
         try {
             viewModelScope.launch(Dispatchers.IO){
-                codagramApi.getGroupbyId(groupId)
+                codagramApi.getGroupbyId(id)
 
             }
         }catch (ie:Exception){
