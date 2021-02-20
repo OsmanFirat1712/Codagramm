@@ -8,13 +8,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myGroups"
-        android:layout_width="403dp"
-        android:layout_height="452dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/groupscreen_mygroups"/>
+        tools:listitem="@layout/groupscreen_mygroups" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
