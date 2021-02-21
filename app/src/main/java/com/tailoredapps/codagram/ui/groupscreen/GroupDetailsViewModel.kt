@@ -11,11 +11,12 @@ import kotlinx.coroutines.launch
 import okhttp3.Dispatcher
 import timber.log.Timber
 import java.lang.Exception
+import java.util.*
 
 class GroupDetailsViewModel(private val context: Context,private val codagramApi: CodagramApi) : ViewModel() {
 
 
-/*
+
     @ExperimentalCoroutinesApi
     fun getGroupById(id:String){
         try {
@@ -28,9 +29,7 @@ class GroupDetailsViewModel(private val context: Context,private val codagramApi
         }
     }
 
-    fun setTitle(title:TextView,groupName:String){
-        title.setText(groupName)
-    }
-*/
+
+
 
 }

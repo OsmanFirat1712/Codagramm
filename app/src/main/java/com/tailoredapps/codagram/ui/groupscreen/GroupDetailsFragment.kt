@@ -10,6 +10,7 @@ import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupBinding
 import com.tailoredapps.codagram.databinding.FragmentGroupDetailsBinding
 import org.koin.android.ext.android.inject
+import java.util.*
 
 
 class GroupDetailsFragment : Fragment() {
@@ -37,16 +38,16 @@ class GroupDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //getGroupName()
     }
-/*
+
 
     fun getGroupName(){
-        val id = viewModel.getGroupById("843d55cb-2f95-4099-9809-43828ff21836").toString()
-        Log.e("result",id.toString())
-        viewModel.setTitle(binding.tvGroupTitle,id)
-
 
 
     }
 
- */
+    fun invite(){
+
+    }
+
+
 }
