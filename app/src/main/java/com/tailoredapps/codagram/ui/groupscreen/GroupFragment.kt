@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupBinding
+import com.tailoredapps.codagram.databinding.FragmentThirdBinding
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.SearchResult
 import com.tailoredapps.codagram.models.User
@@ -47,6 +48,7 @@ class GroupFragment : Fragment() {
         return binding.root
 
 
+
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -55,8 +57,11 @@ class GroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.searchResult.apply {
             adapter = this@GroupFragment.adapter1
+            setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
         }
+
+
 
         bindToLiveData()
         createButtonAction()
@@ -101,6 +106,7 @@ class GroupFragment : Fragment() {
         })
 
     }
+
 
 
 

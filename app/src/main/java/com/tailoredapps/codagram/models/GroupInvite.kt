@@ -1,5 +1,7 @@
 package com.tailoredapps.codagram.models
 
+import java.util.*
+
 
 data class GroupInvite(
     val id: String,
@@ -10,6 +12,6 @@ data class GroupInvite(
 )
 
 data class GroupInviteBody(
-    val groupId: String,
+    val groupId:UUID,
     val invitees:List<String>
 )

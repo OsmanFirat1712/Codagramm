@@ -1,7 +1,8 @@
 package com.tailoredapps.codagram.remoteModels
 
 import com.tailoredapps.codagram.models.Group
+import com.tailoredapps.codagram.models.User
 
 data class GroupList(
-    val groupList:List<Group>
+    val groups:List<Group>,
 )

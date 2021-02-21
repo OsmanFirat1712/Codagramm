@@ -2,11 +2,9 @@ package com.tailoredapps.codagram.ui.groupscreen
 
 import com.tailoredapps.codagram.models.User
 
-data class SelectedUser (
+data class SelectedUser(
     val user: User,
-    var selected:Boolean =false
-
-
-    )
+    var selected: Boolean = false
+)
 
 
