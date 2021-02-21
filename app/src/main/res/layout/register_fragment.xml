@@ -106,7 +106,7 @@
         app:layout_constraintTop_toBottomOf="@+id/dialogPassword"
         android:background="@android:color/white"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/btnDialogCreate"
@@ -124,7 +124,7 @@
 
     <Button
         android:id="@+id/btnDialogCancel"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="Cancel"
         android:textSize="20dp"
         android:textColor="@color/white"

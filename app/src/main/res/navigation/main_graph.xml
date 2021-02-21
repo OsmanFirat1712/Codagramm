@@ -6,12 +6,23 @@
     app:startDestination="@id/LoginScreen">
 
     <fragment
+        android:id="@+id/GroupDetailScreen"
+        android:name="com.tailoredapps.codagram.ui.groupscreen.GroupDetailsFragment"
+        android:label="GroupDetail view"
+        tool:layout="@layout/fragment_group_details"/>
+
+
+    <fragment
         android:id="@+id/GroupScreen"
         android:name="com.tailoredapps.codagram.ui.groupscreen.GroupFragment"
         android:label="group view"
         tool:layout="@layout/fragment_group">
 
+        <action
+            android:id="@+id/action_GroupScreen_to_GroupDetailScreen"
+            app:destination="@id/GroupDetailScreen" />
     </fragment>
+
 
 
     <fragment

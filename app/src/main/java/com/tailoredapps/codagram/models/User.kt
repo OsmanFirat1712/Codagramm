@@ -12,7 +12,8 @@ data class User(
 data class SendUser(
     val nickname: String,
     val firstname: String,
-    val lastname: String
+    val lastname: String,
+    val url:String?
 )
 
 

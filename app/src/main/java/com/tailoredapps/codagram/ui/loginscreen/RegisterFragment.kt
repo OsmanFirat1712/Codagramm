@@ -33,9 +33,11 @@ class RegisterFragment : Fragment() {
     private val viewModel: LoginViewModel by inject()
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: RegisterFragmentBinding
+    val REQUEST_IMAGE_CAPTURE = 2
     lateinit var imageData: Uri
     var selectedImage: Bitmap? = null
     var selectImage: ImageView? = null
+    var image:String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,6 +58,7 @@ class RegisterFragment : Fragment() {
                     Array(1){ Manifest.permission.READ_EXTERNAL_STORAGE},121)
             }
             listImages()
+
         }
 
     }
@@ -67,6 +70,14 @@ class RegisterFragment : Fragment() {
         binding = RegisterFragmentBinding.inflate(layoutInflater, container, false)
 
         return binding.root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && data != null){
+            imageData = data.data!!
+            var bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver,imageData)
+            image = binding.ivImageView.setImageBitmap(bitmap).toString()
+        }
     }
 
 
@@ -83,7 +94,7 @@ class RegisterFragment : Fragment() {
                                 val firstName = binding.dialogFirstName.text.toString()
                                 val lastName = binding.dialogLastName.text.toString()
                                 val user = User(nickname, firstName, lastName, null, null, null)
-                                viewModel.postUser(SendUser(nickname,firstName,lastName) )
+                                viewModel.postUser(SendUser(nickname,firstName,lastName,image) )
                             } else {
                                 Log.e("task message", "Failed" + task.exception)
                             }
@@ -93,8 +104,12 @@ class RegisterFragment : Fragment() {
     }
 
     private fun listImages(){
-        val intentToGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intentToGallery, 2)
+        var i = Intent()
+        i.setType("image/*")
+        i.setAction(Intent.ACTION_GET_CONTENT)
+        startActivityForResult(Intent.createChooser(i, "Choose Picture"), REQUEST_IMAGE_CAPTURE)
     }
+
+
 
 }

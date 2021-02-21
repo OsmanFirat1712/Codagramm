@@ -1,6 +1,7 @@
 package com.tailoredapps.codagram.ui.groupscreen
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupBinding
 import com.tailoredapps.codagram.databinding.FragmentGroupDetailsBinding
 import org.koin.android.ext.android.inject
+import java.util.*
 
 
 class GroupDetailsFragment : Fragment() {
@@ -29,7 +31,22 @@ class GroupDetailsFragment : Fragment() {
         binding = FragmentGroupDetailsBinding.inflate(layoutInflater, container, false)
         return binding.root
 
-        //binding.tvGroupTitle.setText()
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //getGroupName()
+    }
+
+
+    fun getGroupName(){
+
+
+    }
+
+    fun invite(){
+
     }
 
 

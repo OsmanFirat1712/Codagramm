@@ -70,23 +70,10 @@ class GroupFragment : Fragment() {
     @ExperimentalCoroutinesApi
     private fun searchKey() {
 
-        val menu: MutableList<User> = ArrayList<User>()
-/*        val gson:Gson = Gson()
-        val restaurantJson = gson.toJson(menu)*/
-/*
-        val user = immutableListOf(user.firstName, user.lastName,user.nickname)
-
-*//*
-        val names = arrayOf("user", "irstname", "user", "firstname", "user.lastname")
-*/
-
         val input = binding.auto.text.toString()
-       /* val adapter2: ArrayAdapter<List<SearchResult>> =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, users2)*/
+
             viewModel.searchUser(input)
-/*
-        val user = arrayOf(response)
-*/
+
     }
 
 
@@ -100,9 +87,7 @@ class GroupFragment : Fragment() {
 
             viewModel.createGroup(nameGroup)
 
-            user.forEach{user ->
-                val id:String? = user.id
-            }
+            it.findNavController().navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreen())
 
         }
     }
