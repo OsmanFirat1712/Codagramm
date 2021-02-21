@@ -58,7 +58,7 @@
         android:label="Second View"
         tool:layout="@layout/fragment_second" >
 
-        <action android:id="@+id/action_second_to_third"
+       <!-- <action android:id="@+id/action_second_to_third"
             app:destination="@id/thirdView"/>
 
         <action android:id="@+id/action_second_to_details"
@@ -66,11 +66,13 @@
 
             <argument android:name="detailArgument"
                 app:argType="string"/>
-
+-->
+<!--
         </action>
+-->
     </fragment>
 
-    <fragment
+   <!-- <fragment
         android:id="@+id/detailsView"
         android:name="com.tailoredapps.codagram.ui.details.FragmentDetails"
         android:label="Details"
@@ -82,7 +84,7 @@
             app:argType="string"/>
 
 
-    </fragment>
+    </fragment>-->
 
 
     <fragment
@@ -93,7 +95,7 @@
 
         <action
             android:id="@+id/action_first_view_to_groupscreen"
-            app:destination="@+id/GroupScreen" ></action>
+            app:destination="@+id/GroupScreen" />
 
     </fragment>
 

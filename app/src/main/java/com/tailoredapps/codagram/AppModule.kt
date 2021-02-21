@@ -7,6 +7,7 @@ import com.tailoredapps.codagram.ui.groupscreen.groupscree
 import com.tailoredapps.codagram.ui.groupscreen.groupscreenmodule
 import com.tailoredapps.codagram.ui.homeFeedScreen.firstViewModule
 import com.tailoredapps.codagram.ui.loginscreen.loginscreenModule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.internal.immutableListOf
@@ -37,6 +38,7 @@ class AuthInterceptor(context: Context) : Interceptor {
     }
 }
 
+@ExperimentalCoroutinesApi
 internal val appModules = immutableListOf(
     appModule,
     firstViewModule,

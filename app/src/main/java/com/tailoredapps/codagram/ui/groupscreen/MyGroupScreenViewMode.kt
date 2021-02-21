@@ -12,23 +12,25 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-class MyGroupScreenViewMode(private val context: Context, private val codagramApi: CodagramApi) : ViewModel() {
+class MyGroupScreenViewMode(private val context: Context, private val codagramApi: CodagramApi) :
+    ViewModel() {
 
     @ExperimentalCoroutinesApi
     private val myGroups = MutableLiveData<List<Group>>()
-
     @ExperimentalCoroutinesApi
     fun getMyGroups(): LiveData<List<Group>> = myGroups
 
+
     init {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             val response = codagramApi.getAllGroups()
-            updateUi(response.groupList)
+            updateUi(response.groups)
         }
     }
+
     @ExperimentalCoroutinesApi
-    private fun updateUi(update:List<Group>){
-        viewModelScope.launch(Dispatchers.Main){
+    private fun updateUi(update: List<Group>) {
+        viewModelScope.launch(Dispatchers.Main) {
             myGroups.value = update
         }
     }

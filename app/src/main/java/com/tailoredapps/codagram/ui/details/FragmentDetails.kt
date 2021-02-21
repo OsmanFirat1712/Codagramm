@@ -1,3 +1,4 @@
+/*
 package com.tailoredapps.codagram.ui.details
 
 import android.os.Bundle
@@ -25,4 +26,4 @@ class FragmentDetails:Fragment() {
         binding.tvDetails.text = args.detailArgument
 
     }
-}
+}*/

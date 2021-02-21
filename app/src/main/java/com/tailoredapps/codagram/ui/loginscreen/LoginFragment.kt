@@ -94,6 +94,7 @@ class LoginFragment : Fragment() {
         super.onStart()
         val user = auth.currentUser
         viewModel.getToken()
+        viewModel.getUser()
         if (user != null) {
             findNavController().navigate(action)
 

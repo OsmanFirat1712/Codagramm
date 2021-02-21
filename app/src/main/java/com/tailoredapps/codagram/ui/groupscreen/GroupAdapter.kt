@@ -12,7 +12,7 @@ import com.tailoredapps.codagram.models.Group
 
 class GroupAdapter : ListAdapter<Group,GroupScreenViewHolder>(object: DiffUtil.ItemCallback<Group>(){
 
-    override fun areItemsTheSame(oldItem: Group, newItem: Group): Boolean = oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: Group, newItem: Group): Boolean = oldItem.creator?.id == newItem.creator?.id
 
 
     override fun areContentsTheSame(oldItem: Group, newItem: Group): Boolean =
@@ -37,11 +37,10 @@ class GroupAdapter : ListAdapter<Group,GroupScreenViewHolder>(object: DiffUtil.I
         @RequiresApi(Build.VERSION_CODES.N)
         fun bind(postData: Group) {
 
-            binding.textView.text = postData.name
-            binding.textView2.text = postData.id
-            binding.textView3.text = postData.members.get(0).firstname
+            binding.textView.text = postData.name.toString()
+            binding.textView2.text = postData.creator?.lastname.toString()
 
-            binding.textView3.text = postData.creator?.firstname
+
         }
     }
 

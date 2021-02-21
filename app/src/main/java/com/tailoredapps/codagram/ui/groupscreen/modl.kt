@@ -10,7 +10,7 @@ import org.koin.dsl.module
 internal val groupscree = module {
     factory { GroupAdapter() }
     fragment { MyGroupScreen() }
-    viewModel { MyGroupScreenViewMode (codagramApi = get(), context = androidContext()) }
+    viewModel { MyGroupScreenViewMode(codagramApi = get(), context = androidContext()) }
 
 
 

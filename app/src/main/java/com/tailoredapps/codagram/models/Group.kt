@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 )*/
 data class Group(
     val creator: User?,
-    val id: String?,
+    val id: String,
     val image: Image?,
     val members: List<User>,
     val name: String
