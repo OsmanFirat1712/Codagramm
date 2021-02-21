@@ -35,13 +35,18 @@ class GroupDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getGroupName()
+        //getGroupName()
     }
-
+/*
 
     fun getGroupName(){
         val id = viewModel.getGroupById("843d55cb-2f95-4099-9809-43828ff21836").toString()
         Log.e("result",id.toString())
         viewModel.setTitle(binding.tvGroupTitle,id)
+
+
+
     }
+
+ */
 }

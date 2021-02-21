@@ -15,7 +15,7 @@ import java.lang.Exception
 class GroupDetailsViewModel(private val context: Context,private val codagramApi: CodagramApi) : ViewModel() {
 
 
-
+/*
     @ExperimentalCoroutinesApi
     fun getGroupById(id:String){
         try {
@@ -31,6 +31,6 @@ class GroupDetailsViewModel(private val context: Context,private val codagramApi
     fun setTitle(title:TextView,groupName:String){
         title.setText(groupName)
     }
-
+*/
 
 }
