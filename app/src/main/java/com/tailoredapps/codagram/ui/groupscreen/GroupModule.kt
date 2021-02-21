@@ -11,6 +11,7 @@ import org.koin.dsl.module
 internal val groupscreenmodule = module {
     factory { SearchAdapter() }
     fragment { GroupFragment() }
+    fragment { GroupDetailsFragment()}
     viewModel { GroupViewModel (codagramApi = get(), context = androidContext()) }
-
+    viewModel { GroupDetailsViewModel (codagramApi = get(), context = androidContext()) }
 }

@@ -4,7 +4,10 @@ import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.ImageDecoder
+import android.icu.number.NumberFormatter.with
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -13,9 +16,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.squareup.picasso.Picasso
 import com.tailoredapps.codagram.databinding.FragmentSecondBinding
+import java.lang.Exception
 
 
 class NewStoryFragment : Fragment() {
@@ -62,15 +68,29 @@ class NewStoryFragment : Fragment() {
         startActivityForResult(Intent.createChooser(i, "Choose Picture"), REQUEST_IMAGE_CAPTURE)
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null){
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+
             imageData = data.data!!
-            var bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver,imageData)
-            val image = binding.tvUpload.setImageBitmap(bitmap)
+
+            try {
+
+                if (imageData != null) {
+                    val source =
+                        ImageDecoder.createSource(requireActivity().contentResolver, imageData!!)
+                    val bitmap = ImageDecoder.decodeBitmap(source)
+                    binding.tvUpload.setImageBitmap(bitmap)
+                } else {
+                    var bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, imageData)
+                    val test =binding.tvUpload.setImageBitmap(bitmap).toString()
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
         }
+
     }
-
-
 
     private fun uploadClickAction(){
         binding.tvUpload.setOnClickListener {
