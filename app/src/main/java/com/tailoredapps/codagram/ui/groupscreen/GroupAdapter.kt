@@ -41,6 +41,7 @@ class GroupAdapter : ListAdapter<Group,GroupScreenViewHolder>(object: DiffUtil.I
             binding.textView2.text = postData.creator?.lastname.toString()
 
 
+
         }
     }
 

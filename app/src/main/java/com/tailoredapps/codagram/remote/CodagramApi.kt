@@ -28,11 +28,9 @@ interface CodagramApi {
     suspend fun sendGroupInvites(@Body groupInviteBody: GroupInviteBody):Group
 
     @GET("group/{id}")
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
     suspend fun getGroupbyId(@Path("id" )id:String):Group
-=======
-    suspend fun getGroupbyId(@Path("id" )id: String):Group
->>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+
+
 
 
 }

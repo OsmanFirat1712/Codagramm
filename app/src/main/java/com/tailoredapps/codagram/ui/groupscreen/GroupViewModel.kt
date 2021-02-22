@@ -53,33 +53,11 @@ class GroupViewModel(private val context: Context, private val codagramApi: Coda
                 val response =codagramApi.createGroup(GroupCreate(group, selectedUsers as List<String>))
                 codagramApi.getGroupbyId(response.id)
 
-
-               val response = codagramApi.createGroup(GroupCreate(group, selectedUsers as List<String>))
-                codagramApi.getGroupbyId(response.id)
-/*
-                codagramApi.sendGroupInvites(GroupInviteBody("",selectedUsers))
-*/
             }
         } catch (ie: Exception) {
             Timber.e(ie)
         }
 
-
-        fun getGroups() {
-            try {
-                viewModelScope.launch(Dispatchers.IO) {
-
-                    val response = codagramApi.createGroup(GroupCreate(group, selectedUsers as List<String>))
-                    codagramApi.getGroupbyId(response.id)
-/*
-                codagramApi.sendGroupInvites(GroupInviteBody("",selectedUsers))
-*/
-                }
-            } catch (ie: Exception) {
-                Timber.e(ie)
-            }
-
-        }
     }
 
 

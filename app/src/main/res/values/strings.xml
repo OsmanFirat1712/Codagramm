@@ -6,4 +6,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="msg_token_fmt"></string>
+
+
+    <string name="register_firstName_rules">Group name have to more than 3 character</string>
+    <string name="register_lastName_rules">Group name have to more than 5 character</string>
+    <string name="register_nickName_rules">Group name have to more than 5 character</string>
+    <string name="register_email_rules">Group name have to more than 4 character</string>
+    <string name="register_password_rules">Group name have to more than 6 character</string>
+
 </resources>
