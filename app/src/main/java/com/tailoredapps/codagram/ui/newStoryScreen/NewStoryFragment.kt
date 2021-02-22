@@ -20,11 +20,15 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentSecondBinding
+import com.tailoredapps.codagram.ui.groupscreen.GroupViewModel
+import org.koin.android.ext.android.inject
 import java.lang.Exception
 
 
 class NewStoryFragment : Fragment() {
+    private val viewModel: NewStoryViewModel by inject()
     private lateinit var binding: FragmentSecondBinding
     lateinit var imageData: Uri
     val REQUEST_IMAGE_CAPTURE = 2
@@ -51,6 +55,8 @@ class NewStoryFragment : Fragment() {
                 Toast.makeText(requireContext(),"You Selected ${adapterView?.getItemAtPosition(position).toString()}",Toast.LENGTH_LONG).show()
                 getSpinnerItem = adapterView?.getItemAtPosition(position).toString()
                 Log.e("spinner",getSpinnerItem)
+                val test = R.array.groups.toString()
+
             }
         }
 
@@ -58,6 +64,7 @@ class NewStoryFragment : Fragment() {
         //Click listener methods
         uploadClickAction()
         postButtonAction()
+        getGroups()
 
     }
 
@@ -109,6 +116,11 @@ class NewStoryFragment : Fragment() {
             //getSpinnerItem
             //image
         }
+    }
+
+    private fun getGroups(){
+        val test = viewModel.getGroups().toString()
+        Log.e("groups",test)
     }
 
 

@@ -27,7 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.tailoredapps.codagram.MainView"></activity>
+        <activity android:name="com.tailoredapps.codagram.MainView"
+            android:theme="@style/AppTheme.FullScreenLogin">
+
+        </activity>
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
