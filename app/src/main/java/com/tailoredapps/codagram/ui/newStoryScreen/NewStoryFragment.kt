@@ -36,10 +36,6 @@ class NewStoryFragment : Fragment() {
     val REQUEST_IMAGE_CAPTURE = 2
     private lateinit var getSpinnerItem:String
 
-
-
-    private val spinnerAdapter:SpinnerAdapter by inject()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,7 +52,9 @@ class NewStoryFragment : Fragment() {
         val adapter = SpinnerAdapter(requireContext(),createGroupModelList())
         binding.spinner1.adapter = adapter
 
-        //Click listener methods
+
+
+        spinnerSelectedItem()
         uploadClickAction()
         postButtonAction()
         getGroups()
@@ -110,6 +108,20 @@ class NewStoryFragment : Fragment() {
             val description = binding.etDescription.text.toString()
             //getSpinnerItem
             //image
+        }
+    }
+
+    private fun spinnerSelectedItem(){
+        binding.spinner1.onItemSelectedListener =object :AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Toast.makeText(requireContext(),"You Selected ${adapterView?.getItemAtPosition(position).toString()}",Toast.LENGTH_LONG).show()
+                getSpinnerItem = adapterView?.getItemAtPosition(position).toString()
+                Log.e("spinner",getSpinnerItem)
+
+            }
         }
     }
 
