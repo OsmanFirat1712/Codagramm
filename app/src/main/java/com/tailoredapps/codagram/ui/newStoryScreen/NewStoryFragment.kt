@@ -17,11 +17,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.Group
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentSecondBinding
+import com.tailoredapps.codagram.remoteModels.GroupList
 import com.tailoredapps.codagram.ui.groupscreen.GroupViewModel
 import org.koin.android.ext.android.inject
 import java.lang.Exception
@@ -33,6 +35,10 @@ class NewStoryFragment : Fragment() {
     lateinit var imageData: Uri
     val REQUEST_IMAGE_CAPTURE = 2
     private lateinit var getSpinnerItem:String
+
+
+
+    private val spinnerAdapter:SpinnerAdapter by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,19 +53,8 @@ class NewStoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.spinner1.onItemSelectedListener =object :AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Toast.makeText(requireContext(),"You Selected ${adapterView?.getItemAtPosition(position).toString()}",Toast.LENGTH_LONG).show()
-                getSpinnerItem = adapterView?.getItemAtPosition(position).toString()
-                Log.e("spinner",getSpinnerItem)
-                val test = R.array.groups.toString()
-
-            }
-        }
-
+        val adapter = SpinnerAdapter(requireContext(),createGroupModelList())
+        binding.spinner1.adapter = adapter
 
         //Click listener methods
         uploadClickAction()
@@ -121,6 +116,17 @@ class NewStoryFragment : Fragment() {
     private fun getGroups(){
         val test = viewModel.getGroups().toString()
         Log.e("groups",test)
+    }
+
+    private fun createGroupModelList():ArrayList<GroupList>{
+
+        val test = viewModel.getGroups()
+        val list = ArrayList<GroupList>()
+        for (i in 0 until 20){
+            list.add(GroupList(test))
+        }
+
+        return list
     }
 
 

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.remote.CodagramApi
+import com.tailoredapps.codagram.remoteModels.GroupList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -20,19 +21,18 @@ class NewStoryViewModel(private val codagramApi: CodagramApi):ViewModel() {
     @ExperimentalCoroutinesApi
     fun getMyGroups(): LiveData<List<Group>> = myGroups
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = codagramApi.getAllGroups()
-            updateUi(response.groups)
-        }
-    }
+    private lateinit var response:GroupList
 
     @ExperimentalCoroutinesApi
-     fun getGroups(){
+     fun getGroups():List<Group>{
+        //var response:GroupList = GroupList(getGroups())
+
         viewModelScope.launch(Dispatchers.IO) {
-            val response = codagramApi.getAllGroups()
+            var response = codagramApi.getAllGroups()
             updateUi(response.groups)
+
         }
+        return response.groups
     }
 
 
@@ -42,7 +42,5 @@ class NewStoryViewModel(private val codagramApi: CodagramApi):ViewModel() {
             myGroups.value = update
         }
     }
-
-
 
 }

@@ -19,6 +19,15 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="20dp" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myGroups"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        tools:listitem="@layout/custom_spinner_adapter"
+        tools:ignore="MissingConstraints" />
+
+
     <ImageView
         android:id="@+id/tvUpload"
         android:layout_width="0dp"
@@ -65,8 +74,7 @@
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         android:layout_marginTop="30dp"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        android:entries="@array/groups"/>
+        android:spinnerMode="dropdown" />
 
     <Button
         android:id="@+id/btnPost"

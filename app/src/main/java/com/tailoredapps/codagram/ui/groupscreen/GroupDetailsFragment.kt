@@ -22,9 +22,12 @@ class GroupDetailsFragment : Fragment() {
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        /*
         countryName = arguments?.getString("name")
         countryFlag = arguments?.getString("id")
         viewModel.getGroupById(countryFlag.toString())
+        
+         */
 
     }
 

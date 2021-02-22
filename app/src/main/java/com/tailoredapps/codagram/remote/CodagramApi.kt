@@ -30,10 +30,7 @@ interface CodagramApi {
     @GET("group/{id}")
     suspend fun getGroupbyId(@Path("id" )id:String):Group
 
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
-=======
 
->>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 
 
 }
