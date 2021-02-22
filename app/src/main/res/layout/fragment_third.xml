@@ -9,7 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myGroups"
         android:layout_width="402dp"
-        android:layout_height="662dp"
+        android:layout_height="700dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="4dp"
         app:layout_constraintBottom_toBottomOf="parent"

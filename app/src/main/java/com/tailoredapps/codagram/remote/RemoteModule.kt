@@ -3,7 +3,7 @@ package com.tailoredapps.codagram.remote
 import android.content.Context
 import com.tailoredapps.codagram.GlobalAppData
 import com.google.gson.Gson
-import com.tailoredapps.codagram.AuthInterceptor
+import com.tailoredapps.codagram.FirebaseUserIdTokenInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -26,7 +26,7 @@ private fun provideApi(globalAppData: GlobalAppData,gson:Gson,context: Context):
             .client(
             OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .addInterceptor(AuthInterceptor(context))
+                .addInterceptor(FirebaseUserIdTokenInterceptor())
                 .build()
         )
     }

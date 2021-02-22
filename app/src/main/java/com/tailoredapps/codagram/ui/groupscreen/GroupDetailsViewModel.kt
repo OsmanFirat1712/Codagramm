@@ -13,23 +13,20 @@ import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
-class GroupDetailsViewModel(private val context: Context,private val codagramApi: CodagramApi) : ViewModel() {
-
+class GroupDetailsViewModel(private val context: Context, private val codagramApi: CodagramApi) :
+    ViewModel() {
 
 
     @ExperimentalCoroutinesApi
-    fun getGroupById(id:String){
+    fun getGroupById(id: String) {
         try {
-            viewModelScope.launch(Dispatchers.IO){
+            viewModelScope.launch(Dispatchers.IO) {
                 codagramApi.getGroupbyId(id)
-
             }
-        }catch (ie:Exception){
+        } catch (ie: Exception) {
             Timber.e(ie)
         }
     }
-
-
 
 
 }
