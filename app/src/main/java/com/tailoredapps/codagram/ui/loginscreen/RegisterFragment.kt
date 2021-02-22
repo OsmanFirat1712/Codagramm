@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.databinding.RegisterFragmentBinding
 import com.tailoredapps.codagram.models.SendUser
 import com.tailoredapps.codagram.models.User
+import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
 import java.io.IOException
 
@@ -39,27 +40,19 @@ class RegisterFragment : Fragment() {
     var selectImage: ImageView? = null
     var image:String? = null
 
+    val check:Boolean? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
 
 
-        binding.btnDialogCreate.setOnClickListener {
-            createUser(binding.dialogEmail.text.toString(), binding.dialogPassword.text.toString())
-            it.findNavController().navigate(RegisterFragmentDirections.actionLoginToHome())
+        statusInfo()
+        createActive(view)
+        uploadImage(view)
 
-        }
 
-        binding.ivImageView.setOnClickListener {
-            Toast.makeText(requireContext(),"Clicked", Toast.LENGTH_LONG).show()
-            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(requireActivity(),
-                    Array(1){ Manifest.permission.READ_EXTERNAL_STORAGE},121)
-            }
-            listImages()
-
-        }
 
     }
 
@@ -81,6 +74,8 @@ class RegisterFragment : Fragment() {
     }
 
 
+
+
     fun createUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
@@ -93,7 +88,7 @@ class RegisterFragment : Fragment() {
                                 val nickname = binding.dialogNickName.text.toString()
                                 val firstName = binding.dialogFirstName.text.toString()
                                 val lastName = binding.dialogLastName.text.toString()
-                                val user = User(nickname, firstName, lastName, null, null, null)
+                                val password = binding.dialogPassword.text.toString()
                                 viewModel.postUser(SendUser(nickname,firstName,lastName,image) )
                             } else {
                                 Log.e("task message", "Failed" + task.exception)
@@ -110,6 +105,41 @@ class RegisterFragment : Fragment() {
         startActivityForResult(Intent.createChooser(i, "Choose Picture"), REQUEST_IMAGE_CAPTURE)
     }
 
+    private fun statusInfo(){
+        viewModel.infoMessage(binding.ivFirstNameStatus,binding.ivLastNameStatus,binding.ivNickNameStatus,binding.ivEmailStatus,binding.ivPasswordStatus)
+
+    }
+
+    private fun createActive(view: View){
+        binding.btnDialogCreate.setOnClickListener {
+
+            if (!viewModel.statusRulesFirstName(binding.dialogFirstName,binding.ivFirstNameStatus) || !viewModel.statusRulesLastName(binding.dialogLastName,binding.ivLastNameStatus) || !viewModel.statusRulesNickName(binding.dialogNickName,binding.ivNickNameStatus) || !viewModel.statusRulesEmail(binding.dialogEmail) || !viewModel.statusRulesPassword(binding.dialogPassword,binding.ivPasswordStatus)){
+                return@setOnClickListener
+            }else{
+                createUser(binding.dialogEmail.toString(),binding.dialogPassword.toString())
+                it.findNavController().navigate(RegisterFragmentDirections.actionLoginToHome())
+            }
+
+        }
+    }
+
+    private fun uploadImage(view: View) {
+        binding.ivImageView.setOnClickListener {
+            Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_LONG).show()
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(requireActivity(),
+                    Array(1) { Manifest.permission.READ_EXTERNAL_STORAGE }, 121
+                )
+            }
+            listImages()
+        }
+
+
+    }
 
 
 }

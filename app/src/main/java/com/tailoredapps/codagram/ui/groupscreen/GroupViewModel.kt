@@ -54,15 +54,10 @@ class GroupViewModel(private val context: Context, private val codagramApi: Coda
                     codagramApi.createGroup(GroupCreate(group, selectedUsers as List<String>))
                 codagramApi.getGroupbyId(response.id)
 
-
-/*
-                codagramApi.sendGroupInvites(GroupInviteBody("",selectedUsers))
-*/
             }
         } catch (ie: Exception) {
             Timber.e(ie)
         }
-
 
     }
 
