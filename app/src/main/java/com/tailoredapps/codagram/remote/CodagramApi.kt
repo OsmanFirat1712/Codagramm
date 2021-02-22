@@ -2,8 +2,10 @@ package com.tailoredapps.codagram.remote
 
 import com.tailoredapps.codagram.models.*
 import com.tailoredapps.codagram.remoteModels.GroupList
+import com.tailoredapps.codagram.remoteModels.InvitesList
+import com.tailoredapps.codagram.remoteModels.ReplyToInvite
+import retrofit2.Response
 import retrofit2.http.*
-import java.util.*
 
 interface CodagramApi {
     @POST("user")
@@ -24,16 +26,20 @@ interface CodagramApi {
     @GET("group")
     suspend fun getAllGroups(): GroupList
 
-    @GET("group/invites")
-    suspend fun sendGroupInvites(@Body groupInviteBody: GroupInviteBody):Group
+    @POST("group/invites")
+    suspend fun sendGroupInvites(@Body groupInviteBody: GroupInviteBody?):Response<Unit>
 
     @GET("group/{id}")
     suspend fun getGroupbyId(@Path("id" )id:String):Group
 
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
-=======
+    @GET("group/invites")
+    suspend fun getGroupInvitees(): InvitesList
 
->>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+    @GET("group/invites/{id}")
+    suspend fun replyToanyInvite(@Path("id" ) id:String, @Body accept: ReplyToInvite)
+
+
+
 
 
 }

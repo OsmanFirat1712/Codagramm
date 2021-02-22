@@ -1,28 +1,29 @@
 package com.tailoredapps.codagram.ui.groupscreen
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentThirdBinding
+import com.tailoredapps.codagram.interfaces.ReplyInviteCallBack
 import com.tailoredapps.codagram.models.Group
+import com.tailoredapps.codagram.models.GroupInvite
+import com.tailoredapps.codagram.remoteModels.ReplyToInvite
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kulloveth.developer.com.countrydetails.ui.countrys.GroupInviteAdapter
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 import java.util.*
 
-class MyGroupScreen : Fragment() {
+class MyGroupScreen : Fragment() ,ReplyInviteCallBack {
     private lateinit var bindingGroup: FragmentThirdBinding
 
     @ExperimentalCoroutinesApi
     private val viewModel: MyGroupScreenViewMode by inject()
     private val myGroupsAdapter: GroupAdapter by inject()
+    private val myGroupInviteAdapter: GroupInviteAdapter by inject()
 
 
     override fun onCreateView(
@@ -42,14 +43,26 @@ class MyGroupScreen : Fragment() {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
 
+            viewModel.getInvites()
         }
+
+        bindingGroup.membersRecyclerview.apply {
+            adapter = this@MyGroupScreen.myGroupInviteAdapter
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+        }
+
+
         bindingGroup.fabAdd.setOnClickListener {
             it.findNavController().navigate(MyGroupScreenDirections.actionFirstViewToGroupscreen())
+
         }
+        bindgetMyInvites()
+
         bindgetmyGroupToLiveData()
 
-    }
 
+    }
 
 
     @ExperimentalCoroutinesApi
@@ -61,5 +74,21 @@ class MyGroupScreen : Fragment() {
     }
 
 
+    @ExperimentalCoroutinesApi
+    private fun bindgetMyInvites() {
+        viewModel.getMyInvites().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            myGroupInviteAdapter.submitList(it)
+
+
+        })
+
+    }
+
+   @ExperimentalCoroutinesApi
+    override fun replyInvite(accept: Group) {
+        viewModel.getInvites(accept)
+        TODO("Not yet implemented")
+    }
 
 }
+

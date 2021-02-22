@@ -6,25 +6,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tailoredapps.codagram.databinding.FragmentGroupDetailsBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
 
 class GroupDetailsFragment : Fragment() {
 
-    private lateinit var binding:FragmentGroupDetailsBinding
-    private val viewModel : GroupDetailsViewModel by inject()
-    val args: GroupDetailsFragmentArgs by navArgs()
-    var countryName: String? = null
-    private var countryFlag: String? = null
+    private lateinit var binding: FragmentGroupDetailsBinding
+    @ExperimentalCoroutinesApi
+    private val viewModel: GroupDetailsViewModel by inject()
+    private val adapter: SearchAdapter by inject()
+    private val groupAdapter: GroupDetailsAdapter by inject()
+
 
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        countryName = arguments?.getString("name")
-        countryFlag = arguments?.getString("id")
-        viewModel.getGroupById(countryFlag.toString())
+
+
 
     }
 
@@ -39,25 +42,67 @@ class GroupDetailsFragment : Fragment() {
 
     }
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 /*
         binding.tvGroupTitle.text = args.groupId?.name
 */
         //getGroupName()
-        binding.tvGroupTitle.text = countryName.toString()
+       val groupName = arguments?.getString("name")
+       val groupId = arguments?.getString("id")
+        //if post crashes, comment theses
+        viewModel.getGroupById(groupId.toString())
+        bindToLiveData()
+        bindgetmyGroupToLiveData()
+
+        binding.tvGroupTitle.text = groupName.toString()
+
+        binding.searchEditRecyclerview.apply {
+            adapter = this@GroupDetailsFragment.adapter
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+        }
+
+        binding.membersRecyclerview.apply {
+            adapter = this@GroupDetailsFragment.groupAdapter
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+        }
+
+        binding.auto.setOnClickListener {
+            searchKey()
+        }
     }
 
 
-    fun getGroupName(){
 
+    @ExperimentalCoroutinesApi
+    fun bindToLiveData() {
+        viewModel.getSearchedUser().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            adapter.submitList(it)
+        })
 
     }
 
-    fun invite(){
+    @ExperimentalCoroutinesApi
+    private fun searchKey() {
+
+        val input = binding.auto.text.toString()
+
+        viewModel.searchUser(input)
+        Timber.d(input)
 
     }
 
 
+
+    @ExperimentalCoroutinesApi
+    private fun bindgetmyGroupToLiveData() {
+        viewModel.getMyGroupMembers().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            groupAdapter.submitList(it)
+
+        })
+    }
 }
 

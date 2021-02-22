@@ -13,7 +13,9 @@ data class Group(
     val id: String,
     val image: Image?,
     val members: List<User>,
-    val name: String
+    val name: String,
+    val inviter:User,
+    val selected:Boolean  = false
 ):Serializable
 
 

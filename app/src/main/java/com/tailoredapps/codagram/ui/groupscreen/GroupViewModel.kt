@@ -9,6 +9,7 @@ import com.tailoredapps.codagram.models.GroupCreate
 import com.tailoredapps.codagram.models.GroupInvite
 import com.tailoredapps.codagram.models.GroupInviteBody
 import com.tailoredapps.codagram.remote.CodagramApi
+import com.tailoredapps.codagram.remoteModels.GroupList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ class GroupViewModel(private val context: Context, private val codagramApi: Coda
     ViewModel() {
     @ExperimentalCoroutinesApi
     private val searchForUser = MutableLiveData<List<SelectedUser>>()
+
 
     @ExperimentalCoroutinesApi
     fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
@@ -47,12 +49,18 @@ class GroupViewModel(private val context: Context, private val codagramApi: Coda
     @ExperimentalCoroutinesApi
     fun createGroup(group: String) {
         try {
+
             viewModelScope.launch(Dispatchers.IO) {
                 val selectedUsers = searchForUser.value?.filter { it.selected }?.map { it.user.id }
 
                 val response =
                     codagramApi.createGroup(GroupCreate(group, selectedUsers as List<String>))
+
                 codagramApi.getGroupbyId(response.id)
+
+
+                codagramApi.sendGroupInvites(GroupInviteBody(response.id, selectedUsers as List<String>,))
+
 
             }
         } catch (ie: Exception) {

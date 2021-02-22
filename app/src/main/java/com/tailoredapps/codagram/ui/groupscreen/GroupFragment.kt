@@ -5,37 +5,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doAfterTextChanged
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupBinding
-import com.tailoredapps.codagram.databinding.FragmentThirdBinding
 import com.tailoredapps.codagram.models.Group
-import com.tailoredapps.codagram.models.SearchResult
 import com.tailoredapps.codagram.models.User
-import com.tailoredapps.codagram.ui.loginscreen.LoginFragmentDirections
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
-import okhttp3.internal.immutableListOf
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 import java.util.*
 import java.util.Collections.emptyList
 
 
-class GroupFragment : Fragment() {
+class GroupFragment : Fragment(), Get {
 
     private val adapter1: SearchAdapter by inject()
     private lateinit var binding: FragmentGroupBinding
     private val viewModel: GroupViewModel by inject()
     private var user: List<User> = emptyList()
+    private var bundle: Bundle? = null
+    var navController: NavController? = null
 
 
     override fun onCreateView(
@@ -78,21 +71,33 @@ class GroupFragment : Fragment() {
         val input = binding.auto.text.toString()
 
         viewModel.searchUser(input)
+        Timber.d(input)
 
     }
 
+    override fun onItemClicked(group: Group) {
+        bundle = bundleOf(
+            "names" to group.name,
+            "ids" to group.id
+        )
+
+    }
 
     @ExperimentalCoroutinesApi
     @RequiresApi(Build.VERSION_CODES.N)
     fun createButtonAction() {
-        binding.btnCreateGroup.setOnClickListener {
+        binding.btnCreateGroup.setOnClickListener { view ->
 
             val nameGroup = binding.etCreateGroup.text.toString()
             adapter1.currentList
-            viewModel.createGroup(nameGroup)
+            (viewModel.createGroup(nameGroup))
 
-            it.findNavController()
-                .navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreens(null))
+
+            view.findNavController()
+                .navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreens())
+/*
+            view?.findNavController()?.navigate(R.id.action_GroupScreen_to_GroupDetailScreens,bundle)
+*/
 
         }
     }
@@ -107,4 +112,8 @@ class GroupFragment : Fragment() {
     }
 
 
+}
+
+interface Get {
+    fun onItemClicked(group: Group)
 }
