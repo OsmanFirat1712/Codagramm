@@ -1,13 +1,17 @@
 package com.tailoredapps.codagram.ui.groupscreen
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentThirdBinding
+import com.tailoredapps.codagram.models.Group
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -46,17 +50,16 @@ class MyGroupScreen : Fragment() {
 
     }
 
+
+
     @ExperimentalCoroutinesApi
     private fun bindgetmyGroupToLiveData() {
         viewModel.getMyGroups().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             myGroupsAdapter.submitList(it)
 
-            val str = "3db4cadc-769d-4af0-9336-71ea9c599fbf"
-            val uuid: UUID = UUID.nameUUIDFromBytes(str.toByteArray())
-
-            Timber.e("lalal + $uuid.toString())")
         })
     }
+
 
 
 }

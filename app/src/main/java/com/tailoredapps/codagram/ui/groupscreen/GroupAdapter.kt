@@ -4,11 +4,16 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.GroupscreenMygroupsBinding
 import com.tailoredapps.codagram.models.Group
+import com.tailoredapps.codagram.ui.homeFeedScreen.firstViewModule
+import timber.log.Timber
 
 class GroupAdapter : ListAdapter<Group,GroupScreenViewHolder>(object: DiffUtil.ItemCallback<Group>(){
 
@@ -29,13 +34,29 @@ class GroupAdapter : ListAdapter<Group,GroupScreenViewHolder>(object: DiffUtil.I
     override fun onBindViewHolder(holder: GroupScreenViewHolder, position: Int) {
         holder.bind(getItem(position))
 
+
     }
+
+
 }
+
     class GroupScreenViewHolder(private val binding: GroupscreenMygroupsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @RequiresApi(Build.VERSION_CODES.N)
         fun bind(postData: Group) {
+            val bundle = bundleOf(
+                "name" to postData.name,
+                "id" to postData.id,
+            )
+            val name = postData.name
+            Timber.e("gesndet")
+
+
+            binding.root.setOnClickListener { view ->
+                    view.findNavController().navigate(R.id.action_group_view_to_groupdetails,bundle)
+
+            }
 
             binding.textView.text = postData.name.toString()
             binding.textView2.text = postData.creator?.lastname.toString()
@@ -43,5 +64,6 @@ class GroupAdapter : ListAdapter<Group,GroupScreenViewHolder>(object: DiffUtil.I
 
 
         }
+
     }
 

@@ -32,11 +32,10 @@ import java.util.Collections.emptyList
 
 class GroupFragment : Fragment() {
 
-    private val adapter1:SearchAdapter by inject()
+    private val adapter1: SearchAdapter by inject()
     private lateinit var binding: FragmentGroupBinding
     private val viewModel: GroupViewModel by inject()
     private var user: List<User> = emptyList()
-
 
 
     override fun onCreateView(
@@ -46,7 +45,6 @@ class GroupFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentGroupBinding.inflate(layoutInflater, container, false)
         return binding.root
-
 
 
     }
@@ -69,15 +67,17 @@ class GroupFragment : Fragment() {
 
 
         binding.auto.setOnClickListener {
-            searchKey() }
+            searchKey()
+        }
 
     }
+
     @ExperimentalCoroutinesApi
     private fun searchKey() {
 
         val input = binding.auto.text.toString()
 
-            viewModel.searchUser(input)
+        viewModel.searchUser(input)
 
     }
 
@@ -89,14 +89,13 @@ class GroupFragment : Fragment() {
 
             val nameGroup = binding.etCreateGroup.text.toString()
             adapter1.currentList
-
             viewModel.createGroup(nameGroup)
 
-            it.findNavController().navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreen())
+            it.findNavController()
+                .navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreens(null))
 
         }
     }
-
 
 
     @ExperimentalCoroutinesApi
@@ -106,8 +105,6 @@ class GroupFragment : Fragment() {
         })
 
     }
-
-
 
 
 }

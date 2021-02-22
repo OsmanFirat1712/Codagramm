@@ -1,6 +1,7 @@
 package com.tailoredapps.codagram.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 import java.util.*
 
 
@@ -13,7 +14,7 @@ data class Group(
     val image: Image?,
     val members: List<User>,
     val name: String
-)
+):Serializable
 
 
 
