@@ -20,21 +20,29 @@ import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.Group
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentSecondBinding
 import com.tailoredapps.codagram.remoteModels.GroupList
+import com.tailoredapps.codagram.ui.groupscreen.GroupFragmentDirections
 import com.tailoredapps.codagram.ui.groupscreen.GroupViewModel
+import com.tailoredapps.codagram.ui.groupscreen.SearchAdapter
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import java.lang.Exception
 
 
 class NewStoryFragment : Fragment() {
     private val viewModel: NewStoryViewModel by inject()
+    private val searchAdapter: SearchAdapter by inject ()
     private lateinit var binding: FragmentSecondBinding
     lateinit var imageData: Uri
     val REQUEST_IMAGE_CAPTURE = 2
     private lateinit var getSpinnerItem:String
+    private lateinit var adapter: SpinnerAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,16 +57,35 @@ class NewStoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = SpinnerAdapter(requireContext(),createGroupModelList())
+        adapter = SpinnerAdapter(requireContext(), EmptyArray())
         binding.spinner1.adapter = adapter
 
+        binding.searchResult.apply {
+            adapter = this@NewStoryFragment.searchAdapter
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+        }
 
+        binding.auto.setOnClickListener {
+            searchKey()
+        }
 
-        spinnerSelectedItem()
+        binding.spinner1.onItemSelectedListener =object :AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                Toast.makeText(requireContext(), "You Selected .toString()}", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Toast.makeText(requireContext(), "You Selected ${adapterView?.getItemAtPosition(position).toString()}", Toast.LENGTH_LONG).show()
+                getSpinnerItem = adapterView?.getItemAtPosition(position).toString()
+                Log.e("spinner", getSpinnerItem)
+            }
+        }
+        bindToLiveData()
+        test()
         uploadClickAction()
         postButtonAction()
         getGroups()
-
     }
 
     private fun listImages(){
@@ -103,11 +130,18 @@ class NewStoryFragment : Fragment() {
         }
     }
 
+    @ExperimentalCoroutinesApi
+    private fun searchKey() {
+        val input = binding.auto.text.toString()
+        viewModel.searchUser(input)
+    }
+
     private fun postButtonAction(){
         binding.btnPost.setOnClickListener {
             val description = binding.etDescription.text.toString()
-            //getSpinnerItem
-            //image
+            viewModel.post(description,getSpinnerItem)
+            it.findNavController()
+                .navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
         }
     }
 
@@ -120,26 +154,41 @@ class NewStoryFragment : Fragment() {
                 Toast.makeText(requireContext(),"You Selected ${adapterView?.getItemAtPosition(position).toString()}",Toast.LENGTH_LONG).show()
                 getSpinnerItem = adapterView?.getItemAtPosition(position).toString()
                 Log.e("spinner",getSpinnerItem)
-
             }
         }
     }
 
     private fun getGroups(){
-        val test = viewModel.getGroups().toString()
-        Log.e("groups",test)
+        val test = viewModel.getGroups()
+
     }
 
-    private fun createGroupModelList():ArrayList<GroupList>{
+    private fun EmptyArray():ArrayList<String>{
 
-        val test = viewModel.getGroups()
-        val list = ArrayList<GroupList>()
+        val list = ArrayList<String>()
         for (i in 0 until 20){
-            list.add(GroupList(test))
         }
-
         return list
     }
 
+    fun test(){
+        viewModel.getMyGroups().observe(viewLifecycleOwner,androidx.lifecycle.Observer{
+                it.forEach {
+                    //val groupName = it.name
+                    val groupId = it.id
+                    //adapter.data.add(groupName)
+                    adapter.data.add(groupId)
+                    adapter.notifyDataSetChanged()
+                }
+        })
+    }
 
+    @ExperimentalCoroutinesApi
+    fun bindToLiveData() {
+        viewModel.getSearchedUser().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            searchAdapter.submitList(it)
+        })
+    }
 }
+
+

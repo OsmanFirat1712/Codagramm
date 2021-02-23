@@ -26,4 +26,14 @@
         android:id="@+id/nameTextView"
         android:layout_marginLeft="20dp"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:text="id"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/idTextView"
+        android:layout_marginLeft="20dp"/>
+
 </LinearLayout>

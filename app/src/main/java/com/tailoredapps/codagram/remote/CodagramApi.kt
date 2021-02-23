@@ -30,6 +30,9 @@ interface CodagramApi {
     @GET("group/{id}")
     suspend fun getGroupbyId(@Path("id" )id:String):Group
 
+    @POST("post")
+    suspend fun newStoryPost(@Body postBody: PostBody):Post
+
 
 
 

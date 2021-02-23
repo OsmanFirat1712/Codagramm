@@ -15,7 +15,7 @@ import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.remoteModels.GroupList
 
 
-class SpinnerAdapter(context: Context,val data:ArrayList<GroupList>): BaseAdapter(){
+class SpinnerAdapter(context: Context,val data:ArrayList<String>,): BaseAdapter(){
     private val infalate:LayoutInflater
 
     init {
@@ -36,10 +36,11 @@ class SpinnerAdapter(context: Context,val data:ArrayList<GroupList>): BaseAdapte
 
         }
         view?.tag = viewHolder
-        viewHolder.tvGroupName.text = data[postition].groups.toString()
-
+        viewHolder.tvGroupName.text = data[postition]
+        viewHolder.idTextView.text = data[postition]
         return view
     }
+
 
     override fun getItem(postition: Int): Any =data[postition]
 
@@ -51,9 +52,11 @@ class SpinnerAdapter(context: Context,val data:ArrayList<GroupList>): BaseAdapte
 
     class ViewHolder(view:View){
         lateinit var tvGroupName:TextView
+        lateinit var idTextView: TextView
 
         init {
             tvGroupName = view.findViewById(R.id.nameTextView)
+            idTextView = view.findViewById(R.id.idTextView)
         }
     }
 
