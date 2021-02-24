@@ -1,14 +1,17 @@
 package com.tailoredapps.codagram.ui.newStoryScreen
 
+import android.os.Build
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.PostBody
+import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodagramApi
 import com.tailoredapps.codagram.remoteModels.GroupList
 import com.tailoredapps.codagram.ui.groupscreen.SelectedUser
@@ -18,6 +21,12 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class NewStoryViewModel(private val codagramApi: CodagramApi):ViewModel() {
+    private lateinit var id: String
+    @ExperimentalCoroutinesApi
+    private val myGroupMembers = MutableLiveData<List<User>>()
+
+    @ExperimentalCoroutinesApi
+    fun getMyGroupMembers(): LiveData<List<User>> = myGroupMembers
 
     @ExperimentalCoroutinesApi
     private val myGroups = MutableLiveData<List<Group>>()
@@ -51,8 +60,8 @@ class NewStoryViewModel(private val codagramApi: CodagramApi):ViewModel() {
     fun searchUser(input: String) {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                val response = codagramApi.getSearchedUser(input)
-                updateSearchList(response.users.map { (SelectedUser(it)) })
+                val response = codagramApi.getGroupbyId(input)
+                updateSearchList(response.members.map { (SelectedUser(it)) })
             }
         } catch (ie: Exception) {
             Timber.e(ie)
@@ -77,5 +86,64 @@ class NewStoryViewModel(private val codagramApi: CodagramApi):ViewModel() {
         }
 
     }
+/*    @RequiresApi(Build.VERSION_CODES.N)
+    @ExperimentalCoroutinesApi
+    fun getGroupById(id: String) {
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+               *//* val responses = codagramApi.getAllGroups()
+                responses.groups.forEach { it->
+                     id  = it.id
+                }*//*
 
+                val response = codagramApi.getGroupbyId(id)
+
+                updateMembersList(response.members)
+                *//*   response.members.forEach {
+                       val users = it.id
+                   }
+                   codagramApi.deleteMember(id)*//*
+            }
+        } catch (ie: java.lang.Exception) {
+            Timber.e(ie)
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun updateMembersList(update: List<User>) {
+        viewModelScope.launch(Dispatchers.Main) {
+            myGroupMembers.value = update
+        }
+    }*/
+
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    @ExperimentalCoroutinesApi
+    fun getGroupById(id: String) {
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                /* val responses = codagramApi.getAllGroups()
+                 responses.groups.forEach { it->
+                      id  = it.id
+                 }*/
+
+                val response = codagramApi.getGroupbyId(id)
+
+                updateMembersList(response.members)
+                /*   response.members.forEach {
+                       val users = it.id
+                   }
+                   codagramApi.deleteMember(id)*/
+            }
+        } catch (ie: java.lang.Exception) {
+            Timber.e(ie)
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun updateMembersList(update: List<User>) {
+        viewModelScope.launch(Dispatchers.Main) {
+            myGroupMembers.value = update
+        }
+    }
 }

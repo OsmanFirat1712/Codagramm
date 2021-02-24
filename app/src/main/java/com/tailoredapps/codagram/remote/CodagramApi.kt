@@ -3,13 +3,10 @@ package com.tailoredapps.codagram.remote
 import com.tailoredapps.codagram.models.*
 import com.tailoredapps.codagram.remoteModels.CommentList
 import com.tailoredapps.codagram.remoteModels.GroupList
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 import com.tailoredapps.codagram.remoteModels.InvitesList
 import com.tailoredapps.codagram.remoteModels.ReplyToInvite
 import retrofit2.Response
-=======
 import com.tailoredapps.codagram.remoteModels.PostList
->>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 import retrofit2.http.*
 
 interface CodagramApi {
@@ -37,7 +34,6 @@ interface CodagramApi {
     @GET("group/{id}")
     suspend fun getGroupbyId(@Path("id" )id:String):Group
 
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
     @GET("group/invites")
     suspend fun getGroupInvitees(): InvitesList
 
@@ -56,7 +52,7 @@ interface CodagramApi {
 
     @PUT("group/{id}")
     suspend fun updateGroup(@Path("id") id:String, @Body updateGroup:UpdateGroup):Group
-=======
+
     @POST("post")
     suspend fun newStoryPost(@Body postBody: PostBody):PostList
 
@@ -73,7 +69,6 @@ interface CodagramApi {
     suspend fun getComment(@Query("id")id:String?):CommentList
 
 
->>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 
 
 }
