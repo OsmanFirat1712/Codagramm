@@ -4,7 +4,10 @@ import android.content.Context
 import com.tailoredapps.codagram.GlobalAppData
 import com.google.gson.Gson
 
+<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/RemoteModule.kt
+=======
 
+>>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/RemoteModule.kt
 import com.tailoredapps.codagram.FirebaseUserIdTokenInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

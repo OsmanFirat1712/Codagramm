@@ -42,7 +42,8 @@
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         android:hint="Group Name"
-        android:textSize="30dp"/>
+        android:drawableRight="@drawable/ic_baseline_delete_24"
+        android:textSize="15sp"/>
 
     <EditText
         android:id="@+id/auto"
@@ -61,25 +62,24 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchEditRecyclerview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/auto"
+        android:layout_width="367dp"
+        android:layout_height="201dp"
+        android:layout_marginTop="52dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layout_constraintTop_toBottomOf="@id/auto" />
+
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvShowPostRecyclerview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@id/searchEditRecyclerview"
-        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/group_details_items"/>
-
+        android:id="@+id/membersRecyclerview"
+        android:layout_width="367dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchEditRecyclerview" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

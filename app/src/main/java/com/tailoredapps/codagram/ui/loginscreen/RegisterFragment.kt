@@ -21,7 +21,9 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.RegisterFragmentBinding
 import com.tailoredapps.codagram.models.SendUser
 import com.tailoredapps.codagram.models.User
@@ -118,6 +120,8 @@ class RegisterFragment : Fragment() {
             }else{
                 createUser(binding.dialogEmail.toString(),binding.dialogPassword.toString())
                 it.findNavController().navigate(RegisterFragmentDirections.actionLoginToHome())
+                findNavController().popBackStack(R.id.action_LoginToHome, true)
+
             }
 
         }

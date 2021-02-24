@@ -3,9 +3,14 @@ package com.tailoredapps.codagram.remote
 import com.tailoredapps.codagram.models.*
 import com.tailoredapps.codagram.remoteModels.CommentList
 import com.tailoredapps.codagram.remoteModels.GroupList
+<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+import com.tailoredapps.codagram.remoteModels.InvitesList
+import com.tailoredapps.codagram.remoteModels.ReplyToInvite
+import retrofit2.Response
+=======
 import com.tailoredapps.codagram.remoteModels.PostList
+>>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 import retrofit2.http.*
-import java.util.*
 
 interface CodagramApi {
     @POST("user")
@@ -18,7 +23,7 @@ interface CodagramApi {
     suspend fun getSearchedUser(@Query ("query") input:String?): SearchResult
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                   POST ///
+    //                   GROUP ///
 
     @POST("group")
     suspend fun createGroup(@Body group: GroupCreate):Group
@@ -26,12 +31,32 @@ interface CodagramApi {
     @GET("group")
     suspend fun getAllGroups(): GroupList
 
-    @GET("group/invites")
-    suspend fun sendGroupInvites(@Body groupInviteBody: GroupInviteBody):Group
+    @POST("group/invites")
+    suspend fun sendGroupInvites(@Body groupInviteBody: GroupInviteBody?):Response<Unit>
 
     @GET("group/{id}")
     suspend fun getGroupbyId(@Path("id" )id:String):Group
 
+<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+    @GET("group/invites")
+    suspend fun getGroupInvitees(): InvitesList
+
+    @PUT("group/invites/{id}")
+    suspend fun replyToanyInvite(@Path("id" ) id:String, @Body accept: ReplyToInvite?):Response<Unit>
+
+    @DELETE("group/{id}")
+    suspend fun deleteGroup(@Path("id") id: String):Response<Unit>
+
+    @DELETE("group/{id}/remove/{uId}")
+    suspend fun deleteMember(@Path("id") id: String, @Path("uId")uId:String):Response<Unit>
+
+    @DELETE("group/{id}/exit")
+    suspend fun exitGroup(@Path("id") id: String):Response<Unit>
+
+
+    @PUT("group/{id}")
+    suspend fun updateGroup(@Path("id") id:String, @Body updateGroup:UpdateGroup):Group
+=======
     @POST("post")
     suspend fun newStoryPost(@Body postBody: PostBody):PostList
 
@@ -48,6 +73,7 @@ interface CodagramApi {
     suspend fun getComment(@Query("id")id:String?):CommentList
 
 
+>>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 
 
 }

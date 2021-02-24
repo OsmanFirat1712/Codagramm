@@ -5,6 +5,7 @@
     android:id="@+id/main_graph"
     app:startDestination="@id/LoginScreen">
 
+
     <fragment
         android:id="@+id/CommentScreenFragment"
         android:name="com.tailoredapps.codagram.ui.homeFeedScreen.CommentScreenFragment"
@@ -19,10 +20,7 @@
         android:name="com.tailoredapps.codagram.ui.groupscreen.GroupDetailsFragment"
         android:label="GroupDetail view"
         tool:layout="@layout/fragment_group_details" >
-    <argument
-        android:name="groupId"
-        app:argType="com.tailoredapps.codagram.models.Group"
-        app:nullable="true" />
+
 
     </fragment>
 
@@ -132,10 +130,7 @@
             android:id="@+id/action_group_view_to_groupdetails"
             app:destination="@+id/GroupDetailScreen">
 
-            <argument
-                android:name="groupId"
-                app:argType="com.tailoredapps.codagram.models.Group"
-                app:nullable="true" />
+
         </action>
     </fragment>
 
