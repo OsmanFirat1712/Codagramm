@@ -52,8 +52,6 @@ class GroupFragment : Fragment(), Get {
             layoutManager = LinearLayoutManager(context)
         }
 
-
-
         bindToLiveData()
         createButtonAction()
 

@@ -1,17 +1,26 @@
 package com.tailoredapps.codagram.models
 
+import com.tailoredapps.codagram.remoteModels.ReplyToInvite
 import java.util.*
 
 
 data class GroupInvite(
     val id: String,
     val inviter: User,
-    val name: String,
+    var name: String,
     val group: Group,
     val invitedAt: String,
     val members:List<User>,
-    var selected: Boolean = false
+/*
+    val replyToInvite: ReplyToInvite
+*/
+    var replyToInvite: Boolean = false
 
+)
+
+data class Groui(
+    val selected: Boolean = false,
+    val group: GroupInvite
 )
 
 data class GroupInviteBody(

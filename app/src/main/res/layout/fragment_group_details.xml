@@ -42,6 +42,7 @@
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         android:hint="Group Name"
+        android:drawableRight="@drawable/ic_baseline_delete_24"
         android:textSize="15sp"/>
 
     <EditText

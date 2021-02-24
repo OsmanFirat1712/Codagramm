@@ -1,11 +1,14 @@
 package com.tailoredapps.codagram.ui.groupscreen
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tailoredapps.codagram.models.Group
+import com.tailoredapps.codagram.models.UpdateGroup
 import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodagramApi
 import com.tailoredapps.codagram.remoteModels.GroupList
@@ -24,14 +27,16 @@ class GroupDetailsViewModel(private val context: Context, private val codagramAp
 
     @ExperimentalCoroutinesApi
     private val myGroupMembers = MutableLiveData<List<User>>()
+
     @ExperimentalCoroutinesApi
     fun getMyGroupMembers(): LiveData<List<User>> = myGroupMembers
 
     @ExperimentalCoroutinesApi
     private val myGroups = MutableLiveData<List<Group>>()
+
     @ExperimentalCoroutinesApi
     fun getMyGroups(): LiveData<List<Group>> = myGroups
-    private val response:GroupList = GroupList(emptyList())
+    private val response: GroupList = GroupList(emptyList())
 
 
     init {
@@ -56,12 +61,17 @@ class GroupDetailsViewModel(private val context: Context, private val codagramAp
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @ExperimentalCoroutinesApi
     fun getGroupById(id: String) {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-             val response =    codagramApi.getGroupbyId(id)
-               updateMembersList(response.members)
+                val response = codagramApi.getGroupbyId(id)
+                updateMembersList(response.members)
+                /*   response.members.forEach {
+                       val users = it.id
+                   }
+                   codagramApi.deleteMember(id)*/
             }
         } catch (ie: Exception) {
             Timber.e(ie)
@@ -95,4 +105,27 @@ class GroupDetailsViewModel(private val context: Context, private val codagramAp
 
     }
 
+    fun deleteGroup(id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            codagramApi.deleteGroup(id)
+
+        }
+
+    }
+
+    fun deleteMember(id: String, uId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            codagramApi.deleteMember(id, uId)
+
+        }
+
+
+    }
+
+    fun updateGroup(id: String, name: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            codagramApi.updateGroup(id, UpdateGroup(name))
+
+        }
+    }
 }

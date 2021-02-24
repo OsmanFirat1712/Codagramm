@@ -15,7 +15,7 @@ data class Group(
     val members: List<User>,
     val name: String,
     val inviter:User,
-    val selected:Boolean  = false
+
 ):Serializable
 
 

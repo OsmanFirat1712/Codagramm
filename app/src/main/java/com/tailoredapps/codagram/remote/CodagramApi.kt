@@ -18,7 +18,7 @@ interface CodagramApi {
     suspend fun getSearchedUser(@Query ("query") input:String?): SearchResult
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                   POST ///
+    //                   GROUP ///
 
     @POST("group")
     suspend fun createGroup(@Body group: GroupCreate):Group
@@ -35,11 +35,17 @@ interface CodagramApi {
     @GET("group/invites")
     suspend fun getGroupInvitees(): InvitesList
 
-    @GET("group/invites/{id}")
-    suspend fun replyToanyInvite(@Path("id" ) id:String, @Body accept: ReplyToInvite)
+    @PUT("group/invites/{id}")
+    suspend fun replyToanyInvite(@Path("id" ) id:String, @Body accept: ReplyToInvite?):Response<Unit>
 
+    @DELETE("group/{id}")
+    suspend fun deleteGroup(@Path("id") id: String):Response<Unit>
 
+    @DELETE("group/{id}/remove/{uId}")
+    suspend fun deleteMember(@Path("id") id: String, @Path("uId")uId:String):Response<Unit>
 
+    @PUT("group/{id}")
+    suspend fun updateGroup(@Path("id") id:String, @Body updateGroup:UpdateGroup):Group
 
 
 }

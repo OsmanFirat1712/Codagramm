@@ -47,9 +47,13 @@ class GroupScreenViewHolder(private val binding: GroupscreenMygroupsBinding) :
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun bind(postData: Group) {
+
         val bundle = bundleOf(
+
+
             "name" to postData.name,
             "id" to postData.id,
+            "member" to postData.members
         )
         val name = postData.name
         Timber.e("gesndet")
@@ -60,7 +64,7 @@ class GroupScreenViewHolder(private val binding: GroupscreenMygroupsBinding) :
 
         }
         postData.members.forEach {
-            val userName = it.firstname
+            val userName = it.id
         }
 
         binding.textView.text = postData.name.toString()

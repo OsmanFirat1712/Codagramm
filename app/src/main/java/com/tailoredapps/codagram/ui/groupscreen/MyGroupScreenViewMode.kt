@@ -19,11 +19,11 @@ class MyGroupScreenViewMode(private val context: Context, private val codagramAp
     ViewModel() {
 
     @ExperimentalCoroutinesApi
-    private val searchForUser = MutableLiveData<ReplyToInvite>()
+    private val searchForUser = MutableLiveData<GroupInvite>()
 
 
     @ExperimentalCoroutinesApi
-    fun getSearchedUser(): LiveData<ReplyToInvite> = searchForUser
+    fun getSearchedUser(): LiveData<GroupInvite> = searchForUser
 
     @ExperimentalCoroutinesApi
     private val myInvites = MutableLiveData<List<GroupInvite>>()
@@ -51,14 +51,19 @@ class MyGroupScreenViewMode(private val context: Context, private val codagramAp
         }
     }
 
-    fun getInvites(accept:ReplyToInvite){
+    fun getInvites(){
         try {
             viewModelScope.launch(Dispatchers.IO) {
                val response = codagramApi.getGroupInvitees()
                 updateList(response.invites)
-                val selectedUsers = myInvites.value?.filter { it.selected }?.map { it.selected }
 
-                codagramApi.replyToanyInvite(response.invites[1].id,accept)
+
+/*
+                val selectedUsers = myInvites.value?.filter{}
+*/
+                val selectedUsers = searchForUser.value?.replyToInvite
+
+
             }
         } catch (ie: Exception) {
             Timber.e(ie)
@@ -73,6 +78,27 @@ class MyGroupScreenViewMode(private val context: Context, private val codagramAp
         viewModelScope.launch(Dispatchers.Main) {
             myInvites.value = update
         }
+    }
+
+    fun answerInvites(id: String, accept: Boolean){
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = codagramApi.replyToanyInvite(id,ReplyToInvite(accept))
+
+
+/*
+                val selectedUsers = myInvites.value?.filter{}
+*/
+                val selectedUsers = searchForUser.value?.replyToInvite
+
+
+            }
+        } catch (ie: Exception) {
+            Timber.e(ie)
+
+        }
+
+
     }
 
 

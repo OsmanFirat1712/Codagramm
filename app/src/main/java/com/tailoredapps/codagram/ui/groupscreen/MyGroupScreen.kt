@@ -8,16 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tailoredapps.codagram.databinding.FragmentThirdBinding
-import com.tailoredapps.codagram.interfaces.ReplyInviteCallBack
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.GroupInvite
-import com.tailoredapps.codagram.remoteModels.ReplyToInvite
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kulloveth.developer.com.countrydetails.ui.countrys.GroupInviteAdapter
 import org.koin.android.ext.android.inject
 import java.util.*
 
-class MyGroupScreen : Fragment() ,ReplyInviteCallBack {
+class MyGroupScreen() : Fragment()  {
     private lateinit var bindingGroup: FragmentThirdBinding
 
     @ExperimentalCoroutinesApi
@@ -43,7 +40,6 @@ class MyGroupScreen : Fragment() ,ReplyInviteCallBack {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
 
-            viewModel.getInvites()
         }
 
         bindingGroup.membersRecyclerview.apply {
@@ -57,11 +53,11 @@ class MyGroupScreen : Fragment() ,ReplyInviteCallBack {
             it.findNavController().navigate(MyGroupScreenDirections.actionFirstViewToGroupscreen())
 
         }
+        respond()
         bindgetMyInvites()
 
         bindgetmyGroupToLiveData()
-
-
+        viewModel.getInvites()
     }
 
 
@@ -71,6 +67,7 @@ class MyGroupScreen : Fragment() ,ReplyInviteCallBack {
             myGroupsAdapter.submitList(it)
 
         })
+
     }
 
 
@@ -79,16 +76,41 @@ class MyGroupScreen : Fragment() ,ReplyInviteCallBack {
         viewModel.getMyInvites().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             myGroupInviteAdapter.submitList(it)
 
+        })
+        myGroupInviteAdapter.setUpListener(object : GroupInviteAdapter.ItemCLickedListener {
+            override fun onItemClicked(accept: Boolean,id:String,) {
+
+                viewModel.answerInvites(id,accept)
+                viewModel.getInvites()
+                myGroupInviteAdapter.currentList
+                myGroupInviteAdapter.notifyDataSetChanged()
+            }
+
+        })
+
+
+    }
+
+
+
+    @ExperimentalCoroutinesApi
+    private fun respond() {
+        viewModel.getSearchedUser().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+
 
         })
 
     }
 
-   @ExperimentalCoroutinesApi
+    }
+
+
+/*   @ExperimentalCoroutinesApi
     override fun replyInvite(accept: Group) {
         viewModel.getInvites(accept)
         TODO("Not yet implemented")
-    }
+    }*/
 
-}
+
 
