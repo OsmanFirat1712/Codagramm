@@ -37,8 +37,7 @@ class GroupDetailsFragment : Fragment() {
     private val groupAdapter: GroupDetailsAdapter by inject()
     private var groupId: String? = null
     private var memberid:String? = null
-    private lateinit var button: Button
-    private lateinit var edit: EditText
+
 
 
     @ExperimentalCoroutinesApi
@@ -65,8 +64,7 @@ class GroupDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-         button  = view.findViewById(R.id.button)
-         edit  = view.findViewById(R.id.editTextTextPersonName)
+
 /*
         binding.tvGroupTitle.text = args.groupId?.name
 */
@@ -125,22 +123,28 @@ class GroupDetailsFragment : Fragment() {
         viewModel.getMyGroupMembers().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             groupAdapter.submitList(it)
 
-        })
-        groupAdapter.setUpListener(object : GroupDetailsAdapter.ItemRemoveClickListener {
-            override fun onItemClicked(user: User,) {
+            groupAdapter.setUpListener(object : GroupDetailsAdapter.ItemRemoveClickListener {
+                @RequiresApi(Build.VERSION_CODES.N)
+                override fun onItemClicked(user: User,) {
 
-                viewModel.deleteMember(groupId.toString(),user.id.toString(),)
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("löschen")
-                    .setNeutralButton("cancel") { dialogInterface, i ->
-                    }
-                    .setNegativeButton("löschen") { dialogInterface, i ->
-                        viewModel.deleteMember(user.id.toString(),groupId.toString())
-                        groupAdapter.notifyDataSetChanged()
-                    }
-            }
+                    viewModel.deleteMember(groupId.toString(),user.id.toString(),)
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("löschen")
+                        .setNeutralButton("cancel") { dialogInterface, i ->
+                        }
+                        .setNegativeButton("löschen") { dialogInterface, i ->
+                            viewModel.deleteMember(user.id.toString(),groupId.toString())
+                            viewModel.getGroupById(groupId.toString())
+                            groupAdapter.currentList
+                            groupAdapter.notifyDataSetChanged()
+                            groupAdapter.submitList(it)
 
+                        }
+                }
+
+            })
         })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -181,11 +185,10 @@ class GroupDetailsFragment : Fragment() {
             .setNegativeButton("löschen") { dialogInterface, i ->
             }
     }*/
-
+/*
     fun updateGroup(){
 
         val mDialogView = LayoutInflater.from(context).inflate(R.layout.register_dialog, null)
-        val button:Button = findViewById(R.id.button)
 
         //AlertDialogBuilder
         val mBuilder = AlertDialog.Builder(context)
@@ -207,8 +210,8 @@ class GroupDetailsFragment : Fragment() {
         mDialogView.dialogCancelBtn.setOnClickListener {
             //dismiss dialog
             mAlertDialog.dismiss()
-        }
-    }
+        }*/
+
 }
 
 

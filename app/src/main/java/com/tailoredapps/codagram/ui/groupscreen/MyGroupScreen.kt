@@ -76,15 +76,17 @@ class MyGroupScreen() : Fragment()  {
         viewModel.getMyInvites().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             myGroupInviteAdapter.submitList(it)
 
-        })
-        myGroupInviteAdapter.setUpListener(object : GroupInviteAdapter.ItemCLickedListener {
-            override fun onItemClicked(accept: Boolean,id:String,) {
+            myGroupInviteAdapter.setUpListener(object : GroupInviteAdapter.ItemCLickedListener {
+                override fun onItemClicked(accept: Boolean,id:String,) {
 
-                viewModel.answerInvites(id,accept)
-                viewModel.getInvites()
-                myGroupInviteAdapter.currentList
-                myGroupInviteAdapter.notifyDataSetChanged()
-            }
+                    viewModel.answerInvites(id,accept)
+                    viewModel.getInvites()
+                    myGroupInviteAdapter.currentList
+                    myGroupInviteAdapter.notifyDataSetChanged()
+                    myGroupInviteAdapter.submitList(it)
+                }
+
+            })
 
         })
 
