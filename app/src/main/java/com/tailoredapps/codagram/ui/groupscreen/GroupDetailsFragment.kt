@@ -1,33 +1,27 @@
 package com.tailoredapps.codagram.ui.groupscreen
 
-import android.app.AlertDialog
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.view.View.VISIBLE
-import android.widget.Button
-import android.widget.EditText
-import android.widget.PopupMenu
-import android.widget.Toolbar
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupDetailsBinding
 import com.tailoredapps.codagram.databinding.RegisterDialogBinding
+import com.tailoredapps.codagram.models.Group
+import com.tailoredapps.codagram.models.UpdateGroup
 import com.tailoredapps.codagram.models.User
-import com.tailoredapps.codagram.ui.loginscreen.LoginFragmentDirections
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import timber.log.Timber
-import java.util.concurrent.Executors
 
 
 class GroupDetailsFragment : Fragment() {
-    private lateinit var binding2: RegisterDialogBinding
 
     private lateinit var binding: FragmentGroupDetailsBinding
 
@@ -36,7 +30,11 @@ class GroupDetailsFragment : Fragment() {
     private val adapter: SearchAdapter by inject()
     private val groupAdapter: GroupDetailsAdapter by inject()
     private var groupId: String? = null
-    private var memberid:String? = null
+    private var creatorId:String? = null
+    private lateinit var alertDialogBinding: RegisterDialogBinding
+
+
+
 
 
 
@@ -71,7 +69,7 @@ class GroupDetailsFragment : Fragment() {
         //getGroupName()
         val groupName = arguments?.getString("name")
          groupId = arguments?.getString("id")
-        memberid = arguments?.getString("member")
+        creatorId = arguments?.getString("creatorId")
         //if post crashes, comment theses
         viewModel.getGroupById(groupId.toString())
         bindToLiveData()
@@ -95,7 +93,7 @@ class GroupDetailsFragment : Fragment() {
             searchKey()
         }
 
-
+        createAlertDialog()
     }
 
 
@@ -125,20 +123,19 @@ class GroupDetailsFragment : Fragment() {
 
             groupAdapter.setUpListener(object : GroupDetailsAdapter.ItemRemoveClickListener {
                 @RequiresApi(Build.VERSION_CODES.N)
-                override fun onItemClicked(user: User,) {
+                override fun onItemClicked(user: User) {
 
-                    viewModel.deleteMember(groupId.toString(),user.id.toString(),)
+                    viewModel.deleteMember(groupId.toString(), user.id.toString())
                     MaterialAlertDialogBuilder(requireContext())
                         .setTitle("löschen")
                         .setNeutralButton("cancel") { dialogInterface, i ->
                         }
                         .setNegativeButton("löschen") { dialogInterface, i ->
-                            viewModel.deleteMember(user.id.toString(),groupId.toString())
+                            viewModel.deleteMember(user.id.toString(), groupId.toString())
                             viewModel.getGroupById(groupId.toString())
                             groupAdapter.currentList
                             groupAdapter.notifyDataSetChanged()
                             groupAdapter.submitList(it)
-
                         }
                 }
 
@@ -146,6 +143,49 @@ class GroupDetailsFragment : Fragment() {
         })
 
     }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    @ExperimentalCoroutinesApi
+    fun createAlertDialog() {
+        binding.tvGroupTitle.setOnClickListener {
+/*
+            val view: View = layoutInflater.inflate(R.layout.register_dialog, alertDialogBinding.root)
+*/
+            alertDialogBinding = RegisterDialogBinding.inflate(layoutInflater)
+            val alertDialog = MaterialAlertDialogBuilder(requireContext())
+            alertDialog.setView(alertDialogBinding.root)
+            alertDialog.create()
+            val alert = alertDialog.show()
+
+            alertDialogBinding.button.setOnClickListener {
+                val firstNameFire = alertDialogBinding.editTextTextPersonName.text.toString()
+                viewModel.updateGroup(groupId.toString(), UpdateGroup(firstNameFire))
+                viewModel.getMyGroups()
+                groupAdapter.currentList
+                groupAdapter.notifyDataSetChanged()
+
+                when {
+
+                    alertDialogBinding.editTextTextPersonName.text.toString().isEmpty() -> Toast.makeText(
+                        context,
+                        "nick name can not be empty!",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    else -> {
+                    /*    viewModel.getMyGroups()
+                        viewModel.getGroupById(groupId.toString())*/
+                    } }
+
+            }
+            alertDialogBinding.button2.setOnClickListener {
+                Log.e("message", "clicked")
+                alert.dismiss()
+            }
+        }
+    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_group_delete, menu)
@@ -155,7 +195,15 @@ class GroupDetailsFragment : Fragment() {
     }
     @ExperimentalCoroutinesApi
     fun getDelete(){
+        if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId){
             viewModel.deleteGroup(groupId.toString())
+
+
+        }else {
+            viewModel.exitGroup(groupId.toString())
+            val toast = Toast.makeText(requireContext(), "Task Saved", Toast.LENGTH_SHORT)
+            toast.show()
+        }
     }
 
     @ExperimentalCoroutinesApi
@@ -168,6 +216,9 @@ class GroupDetailsFragment : Fragment() {
 
             else -> super.onOptionsItemSelected(item)
         }
+
+
+
 
 
     }

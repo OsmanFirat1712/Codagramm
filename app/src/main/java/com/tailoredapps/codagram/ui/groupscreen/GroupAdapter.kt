@@ -53,7 +53,7 @@ class GroupScreenViewHolder(private val binding: GroupscreenMygroupsBinding) :
 
             "name" to postData.name,
             "id" to postData.id,
-            "member" to postData.members
+            "creatorId" to postData.creator?.id
         )
         val name = postData.name
         Timber.e("gesndet")

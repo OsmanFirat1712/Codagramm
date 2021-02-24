@@ -22,6 +22,12 @@ class MyGroupScreen() : Fragment()  {
     private val myGroupsAdapter: GroupAdapter by inject()
     private val myGroupInviteAdapter: GroupInviteAdapter by inject()
 
+    @ExperimentalCoroutinesApi
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.getMyGroups()
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +61,6 @@ class MyGroupScreen() : Fragment()  {
         }
         respond()
         bindgetMyInvites()
-
         bindgetmyGroupToLiveData()
         viewModel.getInvites()
     }
@@ -81,6 +86,7 @@ class MyGroupScreen() : Fragment()  {
 
                     viewModel.answerInvites(id,accept)
                     viewModel.getInvites()
+                    viewModel.getMyGroups()
                     myGroupInviteAdapter.currentList
                     myGroupInviteAdapter.notifyDataSetChanged()
                     myGroupInviteAdapter.submitList(it)

@@ -36,7 +36,9 @@ class GroupDetailsViewModel(private val context: Context, private val codagramAp
 
     @ExperimentalCoroutinesApi
     fun getMyGroups(): LiveData<List<Group>> = myGroups
+/*
     private val response: GroupList = GroupList(emptyList())
+*/
 
 
     init {
@@ -115,17 +117,26 @@ class GroupDetailsViewModel(private val context: Context, private val codagramAp
 
     fun deleteMember(id: String, uId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            codagramApi.deleteMember(id, uId)
+           val response = codagramApi.deleteMember(id, uId)
 
         }
 
 
     }
 
-    fun updateGroup(id: String, name: String) {
+    fun updateGroup(id: String, name: UpdateGroup) {
         viewModelScope.launch(Dispatchers.IO) {
-            codagramApi.updateGroup(id, UpdateGroup(name))
+            val  response = codagramApi.updateGroup(id, name)
+            updateMembersList(response.members)
 
         }
     }
+
+    fun exitGroup(id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val  response = codagramApi.exitGroup(id)
+
+        }
+    }
+
 }

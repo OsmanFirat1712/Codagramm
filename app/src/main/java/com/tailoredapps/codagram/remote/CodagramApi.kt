@@ -44,6 +44,10 @@ interface CodagramApi {
     @DELETE("group/{id}/remove/{uId}")
     suspend fun deleteMember(@Path("id") id: String, @Path("uId")uId:String):Response<Unit>
 
+    @DELETE("group/{id}/exit")
+    suspend fun exitGroup(@Path("id") id: String):Response<Unit>
+
+
     @PUT("group/{id}")
     suspend fun updateGroup(@Path("id") id:String, @Body updateGroup:UpdateGroup):Group
 
