@@ -1,6 +1,5 @@
 package com.tailoredapps.codagram.ui.groupscreen
 
-import com.tailoredapps.codagram.ui.HomeFeedAdapter
 import com.tailoredapps.codagram.ui.loginscreen.LoginFragment
 import com.tailoredapps.codagram.ui.loginscreen.LoginViewModel
 import com.tailoredapps.codagram.ui.newStoryScreen.NewStoryFragment

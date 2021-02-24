@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentFirstBinding
+import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedViewModel
 import com.tailoredapps.codagram.ui.newStoryScreen.NewStoryViewModel
 import org.koin.android.ext.android.inject
