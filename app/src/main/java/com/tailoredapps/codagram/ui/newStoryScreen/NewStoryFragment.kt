@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.Group
 import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -140,8 +141,9 @@ class NewStoryFragment : Fragment() {
         binding.btnPost.setOnClickListener {
             val description = binding.etDescription.text.toString()
             viewModel.post(description,getSpinnerItem)
-            it.findNavController()
-                .navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
+
+            it.findNavController().navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
+
         }
     }
 

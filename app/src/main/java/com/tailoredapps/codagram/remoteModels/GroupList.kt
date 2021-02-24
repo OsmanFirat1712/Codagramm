@@ -6,3 +6,4 @@ import com.tailoredapps.codagram.models.User
 data class GroupList(
     val groups:List<Group>,
 )
+
