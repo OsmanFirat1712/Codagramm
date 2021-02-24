@@ -11,6 +11,7 @@ import com.tailoredapps.codagram.databinding.FragmentFirstBinding
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedViewModel
 import com.tailoredapps.codagram.ui.newStoryScreen.NewStoryViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import kotlin.math.log
 
@@ -22,7 +23,6 @@ class HomeFeedScreen : Fragment() {
     private lateinit var binding: FragmentFirstBinding
     var groupId: String? = null
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
@@ -30,8 +30,6 @@ class HomeFeedScreen : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,6 +40,7 @@ class HomeFeedScreen : Fragment() {
         }
 
         test()
+        test2()
         groupId = arguments?.getString("spinner")
         viewModel.getStoryPost(groupId.toString())
     }
@@ -58,13 +57,22 @@ class HomeFeedScreen : Fragment() {
         //val hello = viewModel.getStoryPost()
         viewModel.getMyPost().observe(viewLifecycleOwner,androidx.lifecycle.Observer {
             adapter.submitList(it)
-            it.forEach {
+            adapter.setUpListener(object : HomeFeedAdapter.ItemCLickedListener{
+                override fun onItemClicked(like: Boolean, id: String) {
 
-            }
+                    viewModel.likeComment(id,like)
+                    adapter.notifyDataSetChanged()
+                    adapter.submitList(it)
+                }
+            })
+
 
         })
     }
 
+    fun test2(){
+
+    }
 
 
 }

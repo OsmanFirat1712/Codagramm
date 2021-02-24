@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.Post
 import com.tailoredapps.codagram.remote.CodagramApi
+import com.tailoredapps.codagram.remoteModels.CommentLike
 import com.tailoredapps.codagram.remoteModels.PostList
 import com.tailoredapps.codagram.ui.groupscreen.SelectedUser
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +39,19 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
             myPosts.value = yarakPost
         }
 
+    }
+
+    @ExperimentalCoroutinesApi
+    fun likeComment(id:String,like:Boolean){
+        try {
+            viewModelScope.launch(Dispatchers.IO){
+                val response = codagramApi.likeToComment(id, CommentLike(like))
+            }
+
+
+        }catch (ie:Exception){
+            Timber.e(ie)
+        }
     }
 
 }

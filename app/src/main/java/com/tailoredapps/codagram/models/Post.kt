@@ -4,14 +4,14 @@ import java.io.Serializable
 import java.util.*
 
 data class Post(
-    val id:String?,
+    val id:String,
     val user:User?,
     val group:Group?,
     val description:String?,
     val member:List<User>?,
     val image: Image?,
     val likes:Int?,
-    val userLiked:Boolean?,
+    var userLiked:Boolean = false,
     val comments:List<Comment>?,
     val tags:List<User>
 ):Serializable
