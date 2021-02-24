@@ -2,6 +2,7 @@ package com.tailoredapps.codagram.remote
 
 import com.tailoredapps.codagram.models.*
 import com.tailoredapps.codagram.remoteModels.GroupList
+import com.tailoredapps.codagram.remoteModels.PostList
 import retrofit2.http.*
 import java.util.*
 
@@ -32,6 +33,9 @@ interface CodagramApi {
 
     @POST("post")
     suspend fun newStoryPost(@Body postBody: PostBody):Post
+
+    @GET("post")
+    suspend fun getStoryPost(@Query("group")id:String?): PostList
 
 
 

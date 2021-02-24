@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tailoredapps.codagram.databinding.HomeFeedScreenBinding
+import com.tailoredapps.codagram.models.Post
 import com.tailoredapps.codagram.models.User
 
-class HomeFeedAdapter : ListAdapter<User, CountryItem>(object: DiffUtil.ItemCallback<User>(){
+class HomeFeedAdapter : ListAdapter<Post, CountryItem>(object: DiffUtil.ItemCallback<Post>(){
 
-    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean = oldItem.email == newItem.email
+    override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem.description == newItem.description
 
-    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean =
+    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
         oldItem == newItem
 
 }){
@@ -31,7 +32,7 @@ class HomeFeedAdapter : ListAdapter<User, CountryItem>(object: DiffUtil.ItemCall
 
 class CountryItem(private val binding: HomeFeedScreenBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(postData: User) {
-
+    fun bind(postData: Post) {
+       binding.captionText.text = postData.description.toString()
     }
 }

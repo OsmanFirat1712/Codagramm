@@ -60,7 +60,7 @@
 
     <fragment
         android:id="@+id/firstView"
-        android:name="com.tailoredapps.codagram.ui.FirstScreen"
+        android:name="com.tailoredapps.codagram.ui.HomeFeedScreen"
         android:label="First View"
         tool:layout="@layout/fragment_first">
         <action
