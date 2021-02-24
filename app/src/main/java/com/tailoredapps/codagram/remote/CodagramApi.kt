@@ -30,10 +30,10 @@ interface CodagramApi {
     @GET("group/{id}")
     suspend fun getGroupbyId(@Path("id" )id:String):Group
 
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
-=======
+    @POST("post")
+    suspend fun newStoryPost(@Body postBody: PostBody):Post
 
->>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+
 
 
 }
