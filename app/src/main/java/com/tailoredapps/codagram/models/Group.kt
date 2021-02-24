@@ -19,8 +19,6 @@ data class Group(
 ):Serializable
 
 
-
-
 data class GroupCreate(
    val name: String,
    val members: List<String>,

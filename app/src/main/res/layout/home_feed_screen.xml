@@ -51,7 +51,7 @@
 
     <ImageView
         android:id="@+id/post_image"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_image_24"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
@@ -59,12 +59,23 @@
         app:layout_constraintTop_toBottomOf="@id/user_photo_image"
         tools:ignore="MissingConstraints" />
 
+    <TextView
+        android:id="@+id/caption_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Description"
+        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@id/post_image"
+        />
+
     <ImageView
         android:id="@+id/like_image"
         android:layout_height="0dp"
         android:layout_width="wrap_content"
         android:src="@drawable/ic_baseline_favorite_border_24"
-        app:layout_constraintTop_toBottomOf="@id/post_image"
+        app:layout_constraintTop_toBottomOf="@id/caption_text"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft" />
 
     <ImageView
@@ -72,12 +83,12 @@
         android:layout_height="0dp"
         android:layout_width="wrap_content"
         android:src="@drawable/ic_baseline_comment_24"
-        app:layout_constraintTop_toBottomOf="@id/post_image"
+        app:layout_constraintTop_toBottomOf="@id/caption_text"
         app:layout_constraintStart_toEndOf="@id/like_image"/>
 
     <ImageView
         android:id="@+id/share_image"
-        app:layout_constraintTop_toBottomOf="@id/post_image"
+        app:layout_constraintTop_toBottomOf="@id/caption_text"
         app:layout_constraintStart_toEndOf="@id/comment_image"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
@@ -87,21 +98,13 @@
         android:id="@+id/likes_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/post_image"
+        app:layout_constraintTop_toBottomOf="@id/caption_text"
         app:layout_constraintStart_toEndOf="@id/share_image"
         android:layout_marginLeft="20dp"
         tools:text="828,123 likes"
         android:textStyle="bold"
         android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/caption_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/likes_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -68,32 +68,35 @@ class LoginViewModel(private val context: Context, private val codagramApi: Coda
 
     fun infoMessage(nameStatusIcon: ImageView,lastNameStatusIcon: ImageView,nickNameStatusIcon: ImageView,eMailStatusIcon: ImageView,passwordStatusIcon:ImageView){
         nameStatusIcon.setOnClickListener {
-            Toast.makeText(context, R.string.register_firstName_rules, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.register_firstName_info, Toast.LENGTH_LONG).show()
         }
         lastNameStatusIcon.setOnClickListener {
-            Toast.makeText(context,R.string.register_lastName_rules, Toast.LENGTH_LONG).show()
+            Toast.makeText(context,R.string.register_lastName_info, Toast.LENGTH_LONG).show()
         }
         nickNameStatusIcon.setOnClickListener {
-            Toast.makeText(context,R.string.register_nickName_rules, Toast.LENGTH_LONG).show()
+            Toast.makeText(context,R.string.register_nickName_info, Toast.LENGTH_LONG).show()
         }
         eMailStatusIcon.setOnClickListener {
-            Toast.makeText(context,R.string.register_email_rules, Toast.LENGTH_LONG).show()
+            Toast.makeText(context,R.string.register_email_info, Toast.LENGTH_LONG).show()
         }
         passwordStatusIcon.setOnClickListener {
-            Toast.makeText(context,R.string.register_password_rules, Toast.LENGTH_LONG).show()
+            Toast.makeText(context,R.string.register_password_info, Toast.LENGTH_LONG).show()
         }
     }
 
 
-
-    //postUser(user = SendUser(nickName,firstName,lastName,null))
-
     fun  statusRulesFirstName(firstName: EditText,lastNameStatusIcon: ImageView):Boolean{
 
-        var gol:String = firstName.text.toString()
+        var fn:String = firstName.text.toString()
 
-        if(gol.isEmpty() && gol.length < 5){
+        if(fn.isEmpty()){
             firstName.setError("Group name cannot be Empty!")
+            lastNameStatusIcon.setImageResource(R.drawable.icons8_cancel_24px_2)
+            return false
+        }
+
+        else if(fn.length < 5){
+            firstName.setError("last name must be more than 6 character!")
             lastNameStatusIcon.setImageResource(R.drawable.icons8_cancel_24px_2)
             return false
         }

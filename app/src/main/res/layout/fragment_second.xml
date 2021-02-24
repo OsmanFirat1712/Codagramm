@@ -19,6 +19,15 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="20dp" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myGroups"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        tools:listitem="@layout/custom_spinner_adapter"
+        tools:ignore="MissingConstraints" />
+
+
     <ImageView
         android:id="@+id/tvUpload"
         android:layout_width="0dp"
@@ -41,32 +50,40 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"/>
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/sv_SearchBar"
-        android:layout_width="350dp"
+    <EditText
+        android:id="@+id/auto"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:completionThreshold="1"
+        android:hint="Invite an User ..."
+        android:padding="5dp"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@id/etDescription"
-        android:background="@drawable/newstoryscreen_searchbar_design"
-        android:elevation="5dp"
-        app:iconifiedByDefault="false"
-        app:queryHint="Suche"
-        >
-    </androidx.appcompat.widget.SearchView>
+        android:background="@drawable/search_design"
+        tools:ignore="MissingConstraints"
+        android:drawableStart="@drawable/ic_baseline_search_24" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchResult"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        app:layout_constraintTop_toBottomOf="@id/auto"
+        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+        tools:listitem="@layout/search_items"/>
 
     <Spinner
         android:id="@+id/spinner1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/sv_SearchBar"
+        app:layout_constraintTop_toBottomOf="@id/searchResult"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         android:layout_marginTop="30dp"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        android:entries="@array/groups"/>
+        android:spinnerMode="dropdown" />
 
     <Button
         android:id="@+id/btnPost"
