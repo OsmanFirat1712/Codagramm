@@ -6,6 +6,15 @@
     app:startDestination="@id/LoginScreen">
 
     <fragment
+        android:id="@+id/CommentScreenFragment"
+        android:name="com.tailoredapps.codagram.ui.homeFeedScreen.CommentScreenFragment"
+        android:label="commend view"
+        tool:layout="@layout/fragment_comment_screen">
+
+
+    </fragment>
+
+    <fragment
         android:id="@+id/GroupDetailScreen"
         android:name="com.tailoredapps.codagram.ui.groupscreen.GroupDetailsFragment"
         android:label="GroupDetail view"
@@ -66,6 +75,9 @@
         <action
             android:id="@+id/action_first_view_to_settings"
             app:destination="@+id/settings" />
+        <action
+            android:id="@+id/action_firstView_to_CommentScreenFragment"
+            app:destination="@id/CommentScreenFragment" />
     </fragment>
 
     <fragment

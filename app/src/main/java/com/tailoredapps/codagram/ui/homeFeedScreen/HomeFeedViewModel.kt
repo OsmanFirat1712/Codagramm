@@ -25,7 +25,7 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codagramApi.getStoryPost(id)
-                updateHomeFeed(response.post)
+                updateHomeFeed(response.posts)
             }
         }catch (ie:Exception){
             Timber.e(ie)

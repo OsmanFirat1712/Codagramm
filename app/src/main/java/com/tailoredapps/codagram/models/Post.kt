@@ -6,13 +6,13 @@ import java.util.*
 data class Post(
     val id:String?,
     val user:User?,
-    val group: List<Group>?,
+    val group:Group?,
     val description:String?,
     val member:List<User>?,
     val image: Image?,
     val likes:Int?,
     val userLiked:Boolean?,
-    val comments:Comment,
+    val comments:List<Comment>?,
     val tags:List<User>
 ):Serializable
 
@@ -27,4 +27,8 @@ data class Comment(
     val id:String,
     val user: User?,
     val text:String,
+):Serializable
+
+data class CommentBody(
+    val text: String
 )

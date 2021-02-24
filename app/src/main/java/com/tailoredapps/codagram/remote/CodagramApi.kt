@@ -1,6 +1,7 @@
 package com.tailoredapps.codagram.remote
 
 import com.tailoredapps.codagram.models.*
+import com.tailoredapps.codagram.remoteModels.CommentList
 import com.tailoredapps.codagram.remoteModels.GroupList
 import com.tailoredapps.codagram.remoteModels.PostList
 import retrofit2.http.*
@@ -32,10 +33,19 @@ interface CodagramApi {
     suspend fun getGroupbyId(@Path("id" )id:String):Group
 
     @POST("post")
-    suspend fun newStoryPost(@Body postBody: PostBody):Post
+    suspend fun newStoryPost(@Body postBody: PostBody):PostList
 
     @GET("post")
-    suspend fun getStoryPost(@Query("group")id:String?): PostList
+    suspend fun getStoryPost(@Query("id")id:String?): PostList
+
+    @GET("post/{id}")
+    suspend fun getPostId(@Path("id")id:String):Post
+
+    @POST("post/{id}/comment")
+    suspend fun postComment(@Path("id")id:String,@Body commentBody: CommentBody): CommentList
+
+    @GET("post/{id}/comment")
+    suspend fun getComment(@Query("id")id:String?):CommentList
 
 
 

@@ -142,10 +142,7 @@ class NewStoryFragment : Fragment() {
             val description = binding.etDescription.text.toString()
             viewModel.post(description,getSpinnerItem)
 
-            val bundle = bundleOf(
-                "spinner" to getSpinnerItem
-            )
-            view?.findNavController()?.navigate(R.id.action_secondView_to_firstView,bundle)
+            it.findNavController().navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
 
         }
     }

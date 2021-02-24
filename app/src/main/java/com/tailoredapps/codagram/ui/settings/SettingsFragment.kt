@@ -1,5 +1,6 @@
 package com.tailoredapps.codagram.ui.settings
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +39,7 @@ class SettingsFragment:Fragment() {
 
     private fun changePassword(){
         binding.tvPassword.setOnClickListener{
+            
 
         }
     }
