@@ -49,7 +49,6 @@ class RegisterFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
 
-
         statusInfo()
         createActive(view)
         uploadImage(view)
@@ -78,7 +77,7 @@ class RegisterFragment : Fragment() {
 
 
 
-    fun createUser(email: String, password: String) {
+    private fun createUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
@@ -91,7 +90,9 @@ class RegisterFragment : Fragment() {
                                 val firstName = binding.dialogFirstName.text.toString()
                                 val lastName = binding.dialogLastName.text.toString()
                                 val password = binding.dialogPassword.text.toString()
-                                viewModel.postUser(SendUser(nickname,firstName,lastName,image) )
+                                viewModel.postUser(SendUser(nickname,firstName,lastName) )
+                                view?.findNavController()?.navigate(RegisterFragmentDirections.actionLoginToHome())
+
                             } else {
                                 Log.e("task message", "Failed" + task.exception)
                             }
@@ -118,9 +119,7 @@ class RegisterFragment : Fragment() {
             if (!viewModel.statusRulesFirstName(binding.dialogFirstName,binding.ivFirstNameStatus) || !viewModel.statusRulesLastName(binding.dialogLastName,binding.ivLastNameStatus) || !viewModel.statusRulesNickName(binding.dialogNickName,binding.ivNickNameStatus) || !viewModel.statusRulesEmail(binding.dialogEmail) || !viewModel.statusRulesPassword(binding.dialogPassword,binding.ivPasswordStatus)){
                 return@setOnClickListener
             }else{
-                createUser(binding.dialogEmail.toString(),binding.dialogPassword.toString())
-                it.findNavController().navigate(RegisterFragmentDirections.actionLoginToHome())
-                findNavController().popBackStack(R.id.action_LoginToHome, true)
+                createUser(binding.dialogEmail.text.toString(),binding.dialogPassword.text.toString())
 
             }
 

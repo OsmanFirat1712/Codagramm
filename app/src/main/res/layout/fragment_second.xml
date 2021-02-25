@@ -79,7 +79,11 @@
         android:id="@+id/spinner1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+<<<<<<< app/src/main/res/layout/fragment_second.xml
+        android:layout_marginTop="4dp"
+=======
         android:layout_marginTop="8dp"
+>>>>>>> app/src/main/res/layout/fragment_second.xml
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
@@ -91,7 +95,11 @@
         android:id="@+id/btnPost"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+<<<<<<< app/src/main/res/layout/fragment_second.xml
+        android:layout_marginTop="4dp"
+=======
         android:layout_marginTop="8dp"
+>>>>>>> app/src/main/res/layout/fragment_second.xml
         android:text="Post"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintHorizontal_bias="0.0"

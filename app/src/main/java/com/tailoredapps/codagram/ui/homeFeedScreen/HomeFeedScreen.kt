@@ -12,6 +12,7 @@ import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedViewModel
 import com.tailoredapps.codagram.ui.newStoryScreen.NewStoryViewModel
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 import kotlin.math.log
 
 class HomeFeedScreen : Fragment() {
@@ -20,6 +21,7 @@ class HomeFeedScreen : Fragment() {
     private val viewModel: HomeFeedViewModel by inject()
     private val navController by lazy(::findNavController)  //Method referencing
     private lateinit var binding: FragmentFirstBinding
+    private lateinit var text:String
     var groupId: String? = null
 
 
@@ -43,14 +45,18 @@ class HomeFeedScreen : Fragment() {
 
         test()
         groupId = arguments?.getString("spinner")
-        viewModel.getStoryPost(groupId.toString())
+        Timber.d("$groupId")
+        viewModel.getStoryPost(null.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_first_view, menu)
+        inflater.inflate(R.menu.menu_filter_groups, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        item.title = text
+        item.title = text
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
@@ -59,7 +65,7 @@ class HomeFeedScreen : Fragment() {
         viewModel.getMyPost().observe(viewLifecycleOwner,androidx.lifecycle.Observer {
             adapter.submitList(it)
             it.forEach {
-
+              text =  it.group!!.name.toString()
             }
 
         })
