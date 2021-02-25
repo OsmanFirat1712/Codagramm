@@ -7,6 +7,7 @@ import com.tailoredapps.codagram.remoteModels.InvitesList
 import com.tailoredapps.codagram.remoteModels.ReplyToInvite
 import retrofit2.Response
 import com.tailoredapps.codagram.remoteModels.PostList
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface CodagramApi {
@@ -73,7 +74,8 @@ interface CodagramApi {
     @GET("post/{id}/comment")
     suspend fun getComment(@Query("id")id:String?):CommentList
 
-
+    @POST("post/{id}/image")
+    suspend fun addPhoto(@Path("id")id: String,@Part file:MultipartBody.Part)
 
 
 }

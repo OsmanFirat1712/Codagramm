@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.net.URI
 
 class NewStoryViewModel(private val codagramApi: CodagramApi):ViewModel() {
     private lateinit var id: String
@@ -146,4 +147,15 @@ class NewStoryViewModel(private val codagramApi: CodagramApi):ViewModel() {
             myGroupMembers.value = update
         }
     }
-}
+
+/*    private fun addPhoto(id: String,uri:Uri){
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = codagramApi.addPhoto(id,)
+            }
+        } catch (ie: Exception) {
+            Timber.e(ie)
+        }
+    }*/
+    }
+
