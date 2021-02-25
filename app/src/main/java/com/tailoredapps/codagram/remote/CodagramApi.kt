@@ -7,7 +7,10 @@ import com.tailoredapps.codagram.remoteModels.InvitesList
 import com.tailoredapps.codagram.remoteModels.ReplyToInvite
 import retrofit2.Response
 import com.tailoredapps.codagram.remoteModels.PostList
+<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 import okhttp3.MultipartBody
+=======
+>>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 import retrofit2.http.*
 
 interface CodagramApi {
@@ -74,9 +77,18 @@ interface CodagramApi {
     @GET("post/{id}/comment")
     suspend fun getComment(@Query("id")id:String?):CommentList
 
+<<<<<<< HEAD
     @Multipart
     @POST("post/{id}/image")
     suspend fun addPhoto(@Path("id")id: String,@Part file:MultipartBody.Part):Response<Unit>
+=======
+<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+    @POST("post/{id}/image")
+    suspend fun addPhoto(@Path("id")id: String,@Part file:MultipartBody.Part)
+=======
+
+>>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+>>>>>>> 5786b0f6906a501281efce88f3d30a9c56be0cb7
 
 
 }

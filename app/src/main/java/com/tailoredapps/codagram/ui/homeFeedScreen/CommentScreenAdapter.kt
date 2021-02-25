@@ -8,35 +8,62 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.databinding.HomeFeedScreenBinding
+import com.tailoredapps.codagram.databinding.SearchDetailPageBinding
 import com.tailoredapps.codagram.models.Comment
 import com.tailoredapps.codagram.models.Post
+import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.ui.HomeFeedScreenDirections
+import com.tailoredapps.codagram.ui.groupscreen.GroupDetailsAdapter
 
-class CommentScreenAdapter : ListAdapter<Comment, CountryItem>(object: DiffUtil.ItemCallback<Comment>(){
+class CommentScreenAdapter : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(
+    DiffCallback()
+) {
+    lateinit var mItemCLicked: GroupDetailsAdapter.ItemRemoveClickListener
 
-    override fun areItemsTheSame(oldItem: Comment, newItem: Comment): Boolean = oldItem.text == newItem.text
 
-    override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean =
-        oldItem == newItem
+    class DiffCallback : DiffUtil.ItemCallback<Comment>() {
 
-}){
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryItem {
-        return CountryItem(
-            CommentScreenItemsBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        )
+
+        override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areItemsTheSame(oldItem: Comment, newItem: Comment): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+
     }
 
     override fun onBindViewHolder(holder: CountryItem, position: Int) {
         holder.bind(getItem(position))
     }
 
-}
 
-class CountryItem(private val binding: CommentScreenItemsBinding) : RecyclerView.ViewHolder(binding.root) {
-
-    fun bind(postData: Comment) {
-
-        binding.tvUserName.text = postData.user?.firstname.toString()
-        binding.tvUserComment.text = postData.text
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): CountryItem {
+        return CountryItem(
+            CommentScreenItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
     }
+
+    fun setUpListener(itemCLicked: GroupDetailsAdapter.ItemRemoveClickListener) {
+        mItemCLicked = itemCLicked
+    }
+
+
+    class CountryItem(private val binding: CommentScreenItemsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(postData: Comment) {
+
+            binding.tvUserName.text = postData.user?.firstname.toString()
+            binding.tvUserComment.text = postData.text
+        }
+    }
+
 }
+
+
