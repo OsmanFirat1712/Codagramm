@@ -3,18 +3,8 @@ package com.tailoredapps.codagram.remote
 import com.tailoredapps.codagram.models.*
 import com.tailoredapps.codagram.remoteModels.*
 import retrofit2.Response
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
-=======
 import com.tailoredapps.codagram.remoteModels.PostList
-
 import okhttp3.MultipartBody
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
-
-=======
-=======
->>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
->>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
->>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 import retrofit2.http.*
 
 interface CodagramApi {

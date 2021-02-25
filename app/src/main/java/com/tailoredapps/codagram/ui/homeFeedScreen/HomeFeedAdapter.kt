@@ -1,5 +1,6 @@
 package com.tailoredapps.codagram.ui.homeFeedScreen
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -23,6 +24,11 @@ class HomeFeedAdapter : ListAdapter<Post, HomeFeedAdapter.CountryItem>(
     DiffCallback()
 ) {
     lateinit var mItemCLicked: ItemCLickedListener
+    var likeCounter:Int = 0
+
+    private var bundle: Bundle? = null
+
+    lateinit var post:Post
 
 
     class DiffCallback : DiffUtil.ItemCallback<Post>() {
@@ -43,11 +49,18 @@ class HomeFeedAdapter : ListAdapter<Post, HomeFeedAdapter.CountryItem>(
         holder.bind(getItem(position))
         val currentItem = getItem(position)
 
+
+
         holder.apply {
+
+            likeCount.text = currentItem.likes.toString()+" "+"like"
+            writtenBy.text = "Written by" + " " +currentItem.comments?.firstOrNull()?.user?.firstname.toString()
+            firstComment.text = currentItem.comments?.firstOrNull()?.text
+            commentCount.text = currentItem.comments?.size.toString()+" "+"more answers..."
+
             like.setOnClickListener {
                 like.setImageResource(R.drawable.ic_baseline_favoritelike_24)
                 currentItem.userLiked = currentItem.userLiked.not()
-
 
                 when{
                     currentItem.userLiked -> {
@@ -89,6 +102,10 @@ class HomeFeedAdapter : ListAdapter<Post, HomeFeedAdapter.CountryItem>(
         RecyclerView.ViewHolder(binding.root) {
 
         val like: ImageView = itemView.findViewById(R.id.like_image)
+        val likeCount:TextView = itemView.findViewById(R.id.likes_text)
+        val commentCount:TextView = itemView.findViewById(R.id.tvCommentCount)
+        val firstComment:TextView = itemView.findViewById(R.id.tvFirstComment)
+        val writtenBy:TextView = itemView.findViewById(R.id.tvWrittenBy)
 
         fun bind(postData: Post) {
 
@@ -98,6 +115,11 @@ class HomeFeedAdapter : ListAdapter<Post, HomeFeedAdapter.CountryItem>(
             binding.captionText.text = postData.description.toString()
             binding.commentImage.setOnClickListener {
 
+                it.findNavController()
+                    .navigate(R.id.action_firstView_to_CommentScreenFragment, bundle)
+            }
+
+            binding.tvCommentCount.setOnClickListener {
                 it.findNavController()
                     .navigate(R.id.action_firstView_to_CommentScreenFragment, bundle)
             }
