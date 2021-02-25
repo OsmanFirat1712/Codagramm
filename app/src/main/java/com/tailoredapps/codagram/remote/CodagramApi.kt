@@ -36,7 +36,7 @@ interface CodagramApi {
     @PUT("group/invites/{id}")
     suspend fun replyToanyInvite(@Path("id" ) id:String, @Body accept: ReplyToInvite?):Response<Unit>
 
-    @PUT("post/{id}/like")
+    @POST("post/{id}/like")
     suspend fun likeToComment(@Path("id")id:String,@Body like: CommentLike? ):Response<Unit>
 
     @DELETE("group/{id}")

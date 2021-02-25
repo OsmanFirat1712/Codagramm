@@ -48,6 +48,7 @@ class HomeFeedAdapter : ListAdapter<Post, HomeFeedAdapter.CountryItem>(
                 like.setImageResource(R.drawable.ic_baseline_favoritelike_24)
                 currentItem.userLiked = currentItem.userLiked.not()
 
+
                 when{
                     currentItem.userLiked -> {
                         mItemCLicked.let {
