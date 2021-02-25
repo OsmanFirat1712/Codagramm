@@ -34,6 +34,7 @@ import com.tailoredapps.codagram.ui.groupscreen.GroupFragmentDirections
 import com.tailoredapps.codagram.ui.groupscreen.GroupViewModel
 import com.tailoredapps.codagram.ui.groupscreen.SearchAdapter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import java.lang.Exception
 import java.util.*
@@ -94,7 +95,7 @@ class NewStoryFragment : Fragment() {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 Snackbar.make(requireView(), "You Selected ${adapterView?.getItemAtPosition(position).toString()}", Snackbar.LENGTH_LONG).show()
                 getSpinnerItem = adapterView?.getItemAtPosition(position).toString()
-                viewModel.getGroupById(getSpinnerItem)
+                viewModel.searchUser(getSpinnerItem)
                 Log.e("spinner", getSpinnerItem)
             }
         }
@@ -154,13 +155,16 @@ class NewStoryFragment : Fragment() {
         viewModel.searchUser(input)
     }
 
+    @ExperimentalCoroutinesApi
     private fun postButtonAction(){
         binding.btnPost.setOnClickListener {
+            val bundle = bundleOf(
+                "name" to getSpinnerItem,
+            )
             val description = binding.etDescription.text.toString()
             viewModel.post(description,getSpinnerItem)
 
             it.findNavController().navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
-
         }
     }
 
