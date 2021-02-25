@@ -1,15 +1,15 @@
 package com.tailoredapps.codagram.remote
 
 import com.tailoredapps.codagram.models.*
-import com.tailoredapps.codagram.remoteModels.CommentList
-import com.tailoredapps.codagram.remoteModels.GroupList
-import com.tailoredapps.codagram.remoteModels.InvitesList
-import com.tailoredapps.codagram.remoteModels.ReplyToInvite
+import com.tailoredapps.codagram.remoteModels.*
 import retrofit2.Response
+<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+=======
 import com.tailoredapps.codagram.remoteModels.PostList
 <<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 import okhttp3.MultipartBody
 =======
+>>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 >>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 import retrofit2.http.*
 
@@ -48,6 +48,9 @@ interface CodagramApi {
 
     @PUT("group/invites/{id}")
     suspend fun replyToanyInvite(@Path("id" ) id:String, @Body accept: ReplyToInvite?):Response<Unit>
+
+    @POST("post/{id}/like")
+    suspend fun likeToComment(@Path("id")id:String,@Body like: CommentLike? ):Response<Unit>
 
     @DELETE("group/{id}")
     suspend fun deleteGroup(@Path("id") id: String):Response<Unit>
