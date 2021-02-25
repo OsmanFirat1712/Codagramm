@@ -93,6 +93,8 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    implementation 'com.github.dhaval2404:imagepicker:1.8'
+
 
 
 }

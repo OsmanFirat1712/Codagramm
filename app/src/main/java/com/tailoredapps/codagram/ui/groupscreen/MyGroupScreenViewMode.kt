@@ -84,13 +84,7 @@ class MyGroupScreenViewMode(private val context: Context, private val codagramAp
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codagramApi.replyToanyInvite(id,ReplyToInvite(accept))
-
-
-/*
-                val selectedUsers = myInvites.value?.filter{}
-*/
                 val selectedUsers = searchForUser.value?.replyToInvite
-
 
             }
         } catch (ie: Exception) {
