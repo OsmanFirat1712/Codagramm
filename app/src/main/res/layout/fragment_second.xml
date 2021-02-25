@@ -30,15 +30,14 @@
 
     <ImageView
         android:id="@+id/tvUpload"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:onClick="uploadAction"
+        android:layout_width="268dp"
+        android:layout_height="35dp"
         android:layout_marginTop="20dp"
+        android:onClick="uploadAction"
         android:src="@drawable/ic_baseline_cloud_upload_24"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-        app:layout_constraintTop_toTopOf="parent">
-    </ImageView>
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
 
     <EditText
         android:id="@+id/etDescription"

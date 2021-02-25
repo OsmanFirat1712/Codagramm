@@ -60,7 +60,7 @@ interface CodagramApi {
     suspend fun updateGroup(@Path("id") id:String, @Body updateGroup:UpdateGroup):Group
 
     @POST("post")
-    suspend fun newStoryPost(@Body postBody: PostBody):PostList
+    suspend fun newStoryPost(@Body postBody: PostBody):Post
 
     @GET("post")
     suspend fun getStoryPost(@Query("gr")id:String?): PostList
@@ -74,8 +74,9 @@ interface CodagramApi {
     @GET("post/{id}/comment")
     suspend fun getComment(@Query("id")id:String?):CommentList
 
+    @Multipart
     @POST("post/{id}/image")
-    suspend fun addPhoto(@Path("id")id: String,@Part file:MultipartBody.Part)
+    suspend fun addPhoto(@Path("id")id: String,@Part file:MultipartBody.Part):Response<Unit>
 
 
 }

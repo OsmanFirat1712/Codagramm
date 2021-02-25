@@ -5,7 +5,6 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.ImageDecoder
-import android.icu.number.NumberFormatter.with
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,27 +15,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
-import android.widget.Toast.makeText
 import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.Group
 import androidx.core.app.ActivityCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
-import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentSecondBinding
-import com.tailoredapps.codagram.remoteModels.GroupList
 import com.tailoredapps.codagram.ui.groupscreen.GroupDetailsAdapter
-import com.tailoredapps.codagram.ui.groupscreen.GroupFragmentDirections
-import com.tailoredapps.codagram.ui.groupscreen.GroupViewModel
 import com.tailoredapps.codagram.ui.groupscreen.SearchAdapter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
+import java.io.File
 import java.lang.Exception
+import java.net.URI
 import java.util.*
 
 
@@ -46,9 +37,12 @@ class NewStoryFragment : Fragment() {
 
     private val searchAdapter: SearchAdapter by inject ()
     private lateinit var binding: FragmentSecondBinding
-    lateinit var imageData: Uri
+    lateinit var imageData:Uri
+            lateinit var file: Uri
+
     val REQUEST_IMAGE_CAPTURE = 2
     private lateinit var getSpinnerItem:String
+    private lateinit var downloadUrl: String
     private lateinit var adapter: SpinnerAdapter
 
 
@@ -109,14 +103,14 @@ class NewStoryFragment : Fragment() {
 
     private fun listImages(){
         var i = Intent()
-        i.setType("image/*")
-        i.setAction(Intent.ACTION_GET_CONTENT)
+        i.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(i, "Choose Picture"), REQUEST_IMAGE_CAPTURE)
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+
+
 
             imageData = data.data!!
 
@@ -131,12 +125,22 @@ class NewStoryFragment : Fragment() {
                     var bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, imageData)
                     val test =binding.tvUpload.setImageBitmap(bitmap).toString()
                 }
-            }catch (e:Exception){
+            }catch (e: Exception){
                 e.printStackTrace()
             }
         }
-
     }
+/*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    when(resultCode){
+        Activity.RESULT_OK-> {
+            val fileUri = data?.data
+            Image(fileUri.toString())
+
+        }
+    }
+}*/
+
 
     private fun uploadClickAction(){
         binding.tvUpload.setOnClickListener {
@@ -158,15 +162,17 @@ class NewStoryFragment : Fragment() {
     @ExperimentalCoroutinesApi
     private fun postButtonAction(){
         binding.btnPost.setOnClickListener {
-            val bundle = bundleOf(
-                "name" to getSpinnerItem,
-            )
             val description = binding.etDescription.text.toString()
-            viewModel.post(description,getSpinnerItem)
 
+            viewModel.post(description,getSpinnerItem,imageData)
+
+            }
+
+
+/*
             it.findNavController().navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
+*/
         }
-    }
 
     @ExperimentalCoroutinesApi
     private fun spinnerSelectedItem(){
@@ -223,6 +229,6 @@ class NewStoryFragment : Fragment() {
             groupDetailsAdapter.submitList(it)
         })
     }
+
+
 }
-
-
