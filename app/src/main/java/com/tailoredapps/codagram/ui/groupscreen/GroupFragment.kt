@@ -87,8 +87,8 @@ class GroupFragment : Fragment(), Get {
         binding.btnCreateGroup.setOnClickListener { view ->
 
             val nameGroup = binding.etCreateGroup.text.toString()
-            adapter1.currentList
-            (viewModel.createGroup(nameGroup))
+            viewModel.createGroup(nameGroup)
+           // (viewModel.createGroup(nameGroup))
 
 
             view.findNavController()

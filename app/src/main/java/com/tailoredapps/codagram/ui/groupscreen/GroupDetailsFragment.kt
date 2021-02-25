@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupDetailsBinding
@@ -71,6 +72,7 @@ class GroupDetailsFragment : Fragment() {
          groupId = arguments?.getString("id")
         creatorId = arguments?.getString("creatorId")
         //if post crashes, comment theses
+
         viewModel.getGroupById(groupId.toString())
         bindToLiveData()
         bindgetmyGroupToLiveData()

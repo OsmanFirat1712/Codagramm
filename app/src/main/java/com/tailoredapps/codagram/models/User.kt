@@ -12,7 +12,11 @@ data class User(
 data class SendUser(
     val nickname: String,
     val firstname: String,
+<<<<<<< app/src/main/java/com/tailoredapps/codagram/models/User.kt
     val lastname: String
+=======
+    val lastname: String,
+>>>>>>> app/src/main/java/com/tailoredapps/codagram/models/User.kt
 )
 
 

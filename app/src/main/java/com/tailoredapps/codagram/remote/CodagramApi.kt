@@ -3,6 +3,14 @@ package com.tailoredapps.codagram.remote
 import com.tailoredapps.codagram.models.*
 import com.tailoredapps.codagram.remoteModels.*
 import retrofit2.Response
+<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+=======
+import com.tailoredapps.codagram.remoteModels.PostList
+<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+import okhttp3.MultipartBody
+=======
+>>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+>>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 import retrofit2.http.*
 
 interface CodagramApi {
@@ -15,6 +23,11 @@ interface CodagramApi {
     @GET("user/search")
     suspend fun getSearchedUser(@Query ("query") input:String?): SearchResult
 
+    @PUT("user")
+    suspend fun updateProfile(@Body user:SendUser):User
+
+    @DELETE("user")
+    suspend fun deleteUser():Response<Unit>
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                   GROUP ///
 
@@ -56,7 +69,7 @@ interface CodagramApi {
     suspend fun newStoryPost(@Body postBody: PostBody):PostList
 
     @GET("post")
-    suspend fun getStoryPost(@Query("id")id:String?): PostList
+    suspend fun getStoryPost(@Query("gr")id:String?): PostList
 
     @GET("post/{id}")
     suspend fun getPostId(@Path("id")id:String):Post
@@ -67,7 +80,12 @@ interface CodagramApi {
     @GET("post/{id}/comment")
     suspend fun getComment(@Query("id")id:String?):CommentList
 
+<<<<<<< app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
+    @POST("post/{id}/image")
+    suspend fun addPhoto(@Path("id")id: String,@Part file:MultipartBody.Part)
+=======
 
+>>>>>>> app/src/main/java/com/tailoredapps/codagram/remote/CodagramApi.kt
 
 
 }
