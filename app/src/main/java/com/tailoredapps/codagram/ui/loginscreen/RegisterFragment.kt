@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.RegisterFragmentBinding
 import com.tailoredapps.codagram.models.SendUser
+import com.tailoredapps.codagram.models.User
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -42,6 +43,10 @@ class RegisterFragment : Fragment() {
     var selectedImage: Bitmap? = null
     var selectImage: ImageView? = null
     var image2:String? = null
+
+    var nickname:String = ""
+    var firstName:String = ""
+    var lastName:String = ""
 
     lateinit var requestBody:RequestBody
 
@@ -106,11 +111,6 @@ class RegisterFragment : Fragment() {
                             if (task.isSuccessful) {
                                 Log.e("task message", "Successfully")
                                 viewModel.getToken()
-                                val nickname = binding.dialogNickName.text.toString()
-                                val firstName = binding.dialogFirstName.text.toString()
-                                val lastName = binding.dialogLastName.text.toString()
-                                val password = binding.dialogPassword.text.toString()
-                                viewModel.postUser(SendUser(nickname,firstName,lastName,image2) )
                             } else {
                                 Log.e("task message", "Failed" + task.exception)
                             }
@@ -137,6 +137,7 @@ class RegisterFragment : Fragment() {
             if (!viewModel.statusRulesFirstName(binding.dialogFirstName,binding.ivFirstNameStatus) || !viewModel.statusRulesLastName(binding.dialogLastName,binding.ivLastNameStatus) || !viewModel.statusRulesNickName(binding.dialogNickName,binding.ivNickNameStatus) || !viewModel.statusRulesEmail(binding.dialogEmail) || !viewModel.statusRulesPassword(binding.dialogPassword,binding.ivPasswordStatus)){
                 return@setOnClickListener
             }else{
+                viewModel.postUser(SendUser(binding.dialogNickName.text.toString(),binding.dialogFirstName.text.toString(),binding.dialogLastName.text.toString(),null))
                 createUser(binding.dialogEmail.toString(),binding.dialogPassword.toString())
                 it.findNavController().navigate(RegisterFragmentDirections.actionLoginToHome())
                 findNavController().popBackStack(R.id.action_LoginToHome, true)
