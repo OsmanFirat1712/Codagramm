@@ -2,24 +2,24 @@ package com.tailoredapps.codagram.ui.loginscreen
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
-import androidx.loader.content.CursorLoader
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -27,11 +27,9 @@ import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.RegisterFragmentBinding
 import com.tailoredapps.codagram.models.SendUser
 import com.tailoredapps.codagram.models.User
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
+import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
-import java.io.File
+import java.io.IOException
 
 class RegisterFragment : Fragment() {
 
@@ -42,16 +40,7 @@ class RegisterFragment : Fragment() {
     lateinit var imageData: Uri
     var selectedImage: Bitmap? = null
     var selectImage: ImageView? = null
-    var image2:String? = null
-
-    var nickname:String = ""
-    var firstName:String = ""
-    var lastName:String = ""
-
-    lateinit var requestBody:RequestBody
-
-    lateinit var file:File
-
+    var image:String? = null
 
     val check:Boolean? = null
 
@@ -59,9 +48,11 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
+
         statusInfo()
         createActive(view)
         uploadImage(view)
+
 
 
     }
@@ -75,34 +66,18 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && data != null) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && data != null){
             imageData = data.data!!
-
-            //var mediaStore = MediaStore.Images.Media.getContentUri("Choose Picture",21)
-            var bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, imageData)
-            val image = binding.ivImageView.setImageBitmap(bitmap).toString()
-
-            val downloadUrl = imageData.toString()
-            Log.e("uri",downloadUrl)
-            Log.e("bitmap", image)
-            Log.e("imagedata",imageData.toString())
-            //Log.e("mediastore",mediaStore.toString())
-
-            getRealPathFromURI(imageData)
-
-
-
-
+            var bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver,imageData)
+            image = binding.ivImageView.setImageBitmap(bitmap).toString()
         }
     }
 
 
 
 
-    fun createUser(email: String, password: String) {
+    private fun createUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
@@ -111,6 +86,13 @@ class RegisterFragment : Fragment() {
                             if (task.isSuccessful) {
                                 Log.e("task message", "Successfully")
                                 viewModel.getToken()
+                                val nickname = binding.dialogNickName.text.toString()
+                                val firstName = binding.dialogFirstName.text.toString()
+                                val lastName = binding.dialogLastName.text.toString()
+                                val password = binding.dialogPassword.text.toString()
+                                viewModel.postUser(SendUser(nickname,firstName,lastName) )
+                                view?.findNavController()?.navigate(RegisterFragmentDirections.actionLoginToHome())
+
                             } else {
                                 Log.e("task message", "Failed" + task.exception)
                             }
@@ -137,10 +119,7 @@ class RegisterFragment : Fragment() {
             if (!viewModel.statusRulesFirstName(binding.dialogFirstName,binding.ivFirstNameStatus) || !viewModel.statusRulesLastName(binding.dialogLastName,binding.ivLastNameStatus) || !viewModel.statusRulesNickName(binding.dialogNickName,binding.ivNickNameStatus) || !viewModel.statusRulesEmail(binding.dialogEmail) || !viewModel.statusRulesPassword(binding.dialogPassword,binding.ivPasswordStatus)){
                 return@setOnClickListener
             }else{
-                viewModel.postUser(SendUser(binding.dialogNickName.text.toString(),binding.dialogFirstName.text.toString(),binding.dialogLastName.text.toString(),null))
-                createUser(binding.dialogEmail.toString(),binding.dialogPassword.toString())
-                it.findNavController().navigate(RegisterFragmentDirections.actionLoginToHome())
-                findNavController().popBackStack(R.id.action_LoginToHome, true)
+                createUser(binding.dialogEmail.text.toString(),binding.dialogPassword.text.toString())
 
             }
 
@@ -163,18 +142,6 @@ class RegisterFragment : Fragment() {
         }
 
 
-    }
-
-    private fun getRealPathFromURI(contentUri: Uri): String? {
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val loader = CursorLoader(requireContext(), contentUri, proj, null, null, null)
-        val cursor: Cursor? = loader.loadInBackground()
-        val column_index = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        cursor?.moveToFirst()
-        val result = column_index?.let { cursor?.getString(it) }
-        Log.e("result",result.toString())
-        cursor?.close()
-        return result
     }
 
 
