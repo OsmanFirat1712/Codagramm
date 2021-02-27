@@ -70,7 +70,6 @@
                         android:id="@+id/etEmail"
                         android:hint="Email"
                         android:layout_margin="15dp"
-
                         android:drawableLeft="@drawable/ic_baseline_person_24"
                         android:drawablePadding="30sp"
                         android:layout_width="match_parent"

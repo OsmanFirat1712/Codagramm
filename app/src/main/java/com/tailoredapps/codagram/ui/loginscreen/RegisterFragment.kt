@@ -8,6 +8,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.Color.red
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -21,11 +23,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.scwang.wave.MultiWaveHeader
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.RegisterFragmentBinding
 import com.tailoredapps.codagram.models.SendUser
@@ -46,13 +51,18 @@ class RegisterFragment : Fragment() {
     var selectImage: ImageView? = null
     var image:String? = null
     private lateinit var file: File
+    private lateinit var waveHeader: MultiWaveHeader
 
     val check:Boolean? = null
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
+
+
+
 
         statusInfo()
         createActive(view)
@@ -66,6 +76,7 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = RegisterFragmentBinding.inflate(layoutInflater, container, false)
+
 
         return binding.root
     }
