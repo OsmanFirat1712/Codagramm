@@ -26,8 +26,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class CommentScreenAdapter(val codagramApi: CodagramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(DiffCallback()) {
-    lateinit var mItemCLicked: GroupDetailsAdapter.ItemRemoveClickListener
+
     var countryName: String? = null
+    lateinit var mItemCLicked: ItemRemove2ClickListener
 
 
 
@@ -46,13 +47,8 @@ class CommentScreenAdapter(val codagramApi: CodagramApi) : ListAdapter<Comment, 
         val currentItem = getItem(position)
 
         holder.remove.setOnClickListener {
-            GlobalScope.launch(Dispatchers.IO){
-
-                val bundle = Bundle()
-                val test = bundle.getBinder("name")
-                Log.e("tester",test.toString())
-                codagramApi.deleteComment(test.toString(),currentItem.id)
-
+            mItemCLicked.let {
+                mItemCLicked.onItemClicked(getItem(position))
             }
         }
     }
@@ -61,10 +57,12 @@ class CommentScreenAdapter(val codagramApi: CodagramApi) : ListAdapter<Comment, 
 
         return CountryItem(CommentScreenItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-
         )
     }
 
+    fun setUpListener(itemCLicked: ItemRemove2ClickListener) {
+        mItemCLicked = itemCLicked
+    }
 
     class CountryItem(private val binding: CommentScreenItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -77,6 +75,10 @@ class CommentScreenAdapter(val codagramApi: CodagramApi) : ListAdapter<Comment, 
             binding.tvUserComment.text = postData.text
 
         }
+    }
+
+    interface ItemRemove2ClickListener{
+        fun onItemClicked(comment: Comment)
     }
 
 }
