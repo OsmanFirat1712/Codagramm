@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.tailoredapps.codagram.models.SendUser
 import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodagramApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
@@ -20,6 +22,7 @@ class SettingsViewModel(private val context: Context, private val codagramApi: C
         val updateEmail = user?.updatePassword(newPassword)
     }
 
+
     fun getUser(){
         try {
             viewModelScope.launch(Dispatchers.IO){
@@ -30,6 +33,17 @@ class SettingsViewModel(private val context: Context, private val codagramApi: C
 
             }
         }catch (ie:Exception){
+            Timber.e(ie)
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    fun updateNickName(nickname: String,firstName:String,lastName:String) {
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = codagramApi.updateProfile(SendUser(nickname,firstName,lastName))
+            }
+        } catch (ie: Exception) {
             Timber.e(ie)
         }
     }

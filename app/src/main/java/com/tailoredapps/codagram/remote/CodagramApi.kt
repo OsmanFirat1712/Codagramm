@@ -78,6 +78,12 @@ interface CodagramApi {
     @POST("post/{id}/image")
     suspend fun addPhoto(@Path("id")id: String,@Part file:MultipartBody.Part):Response<Unit>
 
+    @DELETE("post/{id}")
+    suspend fun deletePost(@Path("id") id:String):Response<Unit>
+
+    @DELETE("post/{id}/comment/{commentId}")
+    suspend fun deleteComment(@Path("id")id:String,@Path("commentId")commentId:String):Response<Unit>
+
 
 
 }

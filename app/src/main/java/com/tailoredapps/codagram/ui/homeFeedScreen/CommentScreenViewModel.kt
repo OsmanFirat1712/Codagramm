@@ -52,11 +52,19 @@ class CommentScreenViewModel(private val codagramApi: CodagramApi) : ViewModel()
 
     }
 
-    @ExperimentalCoroutinesApi
-    fun postComment(id:String,text:CommentBody){
-        viewModelScope.launch ( Dispatchers.IO ){
-            var response = codagramApi.postComment(id,text)
+    fun deleteComment(id: String, commentId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = codagramApi.deleteComment(id, commentId)
+
         }
     }
+
+        @ExperimentalCoroutinesApi
+        fun postComment(id: String, text: CommentBody) {
+            viewModelScope.launch(Dispatchers.IO) {
+                var response = codagramApi.postComment(id, text)
+            }
+        }
+
 
 }

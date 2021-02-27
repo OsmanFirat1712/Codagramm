@@ -1,5 +1,6 @@
 package com.tailoredapps.codagram.ui.groupscreen
 
+import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -40,28 +41,29 @@ class SearchViewHolder(private val binding:SearchItemsBinding) : RecyclerView.Vi
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun bind(postData: SelectedUser) {
-        binding.root.setOnClickListener {
+        binding.cvInvite.setOnClickListener {
             postData.selected = postData.selected.not()
 
-            binding.selectedUser.visibility = if (postData.selected){
-                View.VISIBLE
-            }else {
-                View.GONE
+            when{
+                postData.selected ->{
+                    binding.selectedUser2.text ="invited"
+                    binding.cvInvite.setCardBackgroundColor(Color.RED)
+                }
+                else -> {
+                    binding.selectedUser2.text ="invite"
+                    binding.cvInvite.setCardBackgroundColor(Color.GRAY)
+                }
             }
+
         }
 
-        binding.selectedUser.visibility = if (postData.selected){
-            View.VISIBLE
-        }else {
-            View.GONE
-        }
 
 /*
         binding.resultText.text = postData.users.toString()
 
 */
 
-            binding.resultText.text = postData.user.firstname
+            binding.resultText2.text = postData.user.firstname
 
 
         }

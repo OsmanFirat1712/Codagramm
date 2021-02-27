@@ -23,7 +23,9 @@
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="#F5B7F5"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         app:layout_constraintTop_toTopOf="parent"
@@ -46,29 +48,22 @@
             android:id="@+id/tvUserComment"
             android:text="asdasdasdasda asdasdas asdasdas eqweqweqw qweqweqwe asdasdas asdasdasdadsadaasdasdqweqweqweqweasd as dasda asd asdasdqw  qweqweq "
             app:layout_constraintTop_toBottomOf="@id/tvUserName"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/tvLike"
-                android:text="Like"
+                android:id="@+id/tvRemove"
+                android:text="delete"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/tvUserComment"
                 android:padding="5dp"
                 android:layout_marginLeft="20dp"
+                android:drawableLeft="@drawable/ic_baseline_delete_24"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
 
-            <TextView
-                android:text="Comment"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/tvUserComment"
-                android:padding="5dp"
-                app:layout_constraintStart_toEndOf="@id/tvLike"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
