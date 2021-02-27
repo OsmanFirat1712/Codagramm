@@ -50,7 +50,7 @@ class NewStoryViewModel(private val codagramApi: CodagramApi):ViewModel() {
     @ExperimentalCoroutinesApi
      fun getGroups(){
         viewModelScope.launch(Dispatchers.IO) {
-            var response = codagramApi.getAllGroups()
+            val response = codagramApi.getAllGroups()
             updateUi(response.groups)
 
         }

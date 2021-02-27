@@ -22,6 +22,13 @@ interface CodagramApi {
 
     @DELETE("user")
     suspend fun deleteUser():Response<Unit>
+
+    @DELETE("user/image")
+    suspend fun deleteUserImage():Response<Unit>
+
+    @Multipart
+    @PUT("user/image")
+  suspend  fun updateUserImage(@Part file:MultipartBody.Part):Response<Unit>
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                   GROUP ///
 
@@ -54,6 +61,13 @@ interface CodagramApi {
 
     @DELETE("group/{id}/exit")
     suspend fun exitGroup(@Path("id") id: String):Response<Unit>
+
+    @DELETE("group/{id}/image")
+    suspend fun deleteGroupImage(@Path("id") id: String):Response<Unit>
+
+    @Multipart
+    @PUT("group/{id}/image")
+    suspend fun addImageToGroup(@Path("id") id: String,@Part file:MultipartBody.Part):Response<Unit>
 
 
     @PUT("group/{id}")

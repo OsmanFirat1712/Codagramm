@@ -1,6 +1,7 @@
 package com.tailoredapps.codagram.ui.loginscreen
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
@@ -15,7 +16,12 @@ import com.tailoredapps.codagram.remote.CodagramApi
 import com.tailoredapps.codagram.remote.SessionManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import timber.log.Timber
+import java.io.File
 
 
 class LoginViewModel(private val context: Context, private val codagramApi: CodagramApi) :
@@ -33,6 +39,7 @@ class LoginViewModel(private val context: Context, private val codagramApi: Coda
                     val idToken: String = task.result!!.token.toString()
                     Log.e("idtoken", idToken)
                     sessionManager.saveAuthToken(idToken)
+                  val ok=  sessionManager.fetchAuthToken()
                     Log.e("savetoken", "dssd")
 
                 } else {
@@ -43,6 +50,7 @@ class LoginViewModel(private val context: Context, private val codagramApi: Coda
 
 
     fun postUser(user: SendUser) {
+
         try {
             viewModelScope.launch(Dispatchers.IO) {
 
@@ -188,6 +196,22 @@ class LoginViewModel(private val context: Context, private val codagramApi: Coda
             return true
         }
     }
+
+    fun addPhoto(uri: Uri){
+        try {
+            val file = File(uri.path!!)
+            val requestBody: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val part: MultipartBody.Part = MultipartBody.Part.createFormData("image", file.name, requestBody)
+            viewModelScope.launch(Dispatchers.IO) {
+
+                codagramApi.updateUserImage(part)
+
+            }
+        } catch (ie: Exception) {
+            Timber.e(ie)
+        }
+    }
+
 
 
 }
