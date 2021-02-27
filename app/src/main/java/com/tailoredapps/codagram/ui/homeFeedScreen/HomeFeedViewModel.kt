@@ -22,7 +22,15 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
     @ExperimentalCoroutinesApi
     fun getMyPost(): LiveData<List<Post>> = myPosts
 
-    fun getStoryPost(id:String){
+    @ExperimentalCoroutinesApi
+    private val myGroups = MutableLiveData<List<Group>>()
+    @ExperimentalCoroutinesApi
+    fun getMyGroups(): LiveData<List<Group>> = myGroups
+
+
+
+
+    fun getStoryPost(id:String?){
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codagramApi.getStoryPost(id)
@@ -32,6 +40,21 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
             Timber.e(ie)
         }
     }
+
+    fun getAllGroups(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = codagramApi.getAllGroups()
+            updateUi(response.groups)
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun updateUi(update: List<Group>) {
+        viewModelScope.launch(Dispatchers.Main) {
+            myGroups.value = update
+        }
+    }
+
 
     @ExperimentalCoroutinesApi
     fun updateHomeFeed(yarakPost:List<Post>) {

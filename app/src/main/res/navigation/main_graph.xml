@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/GroupDetailScreen"
         android:name="com.tailoredapps.codagram.ui.groupscreen.GroupDetailsFragment"
-        android:label="GroupDetail view"
+        android:label="Detailansicht"
         tool:layout="@layout/fragment_group_details" >
 
 
@@ -27,7 +27,7 @@
     <fragment
         android:id="@+id/GroupScreen"
         android:name="com.tailoredapps.codagram.ui.groupscreen.GroupFragment"
-        android:label="group view"
+        android:label="Gruppenansicht"
         tool:layout="@layout/fragment_group">
 
         <action
@@ -127,6 +127,10 @@
             app:destination="@+id/GroupScreen" />
 
         <action
+            android:id="@+id/action_first_view_to_settings"
+            app:destination="@+id/settings" />
+
+        <action
             android:id="@+id/action_group_view_to_groupdetails"
             app:destination="@+id/GroupDetailScreen">
 
@@ -139,4 +143,10 @@
         android:name="com.tailoredapps.codagram.ui.settings.SettingsFragment"
         android:label="Settings"
         tool:layout="@layout/fragment_settings" />
+
+    <action
+        android:id="@+id/action_settings_view_to_login"
+        app:destination="@+id/LoginScreen">
+    </action>
+
 </navigation>

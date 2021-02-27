@@ -2,6 +2,8 @@ package com.tailoredapps.codagram.ui.settings
 
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
@@ -22,11 +24,41 @@ import java.lang.Exception
 class SettingsViewModel(private val context: Context, private val codagramApi: CodagramApi):ViewModel() {
 
 
+    @ExperimentalCoroutinesApi
+    private val myUser = MutableLiveData<User>()
+
+    @ExperimentalCoroutinesApi
+    fun getMyGroupMembers(): LiveData<User> = myUser
+
+
+
+
+
+
+    @ExperimentalCoroutinesApi
+    private fun updateMembersList(update: User) {
+        viewModelScope.launch(Dispatchers.Main) {
+            myUser.value = update
+        }
+    }
+
+    fun getUsers(){
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+             val response  =   codagramApi.getUser()
+                updateMembersList(response)
+            }
+        }catch (ie:Exception){
+            Timber.e(ie)
+        }
+    }
+
     fun getFireBaseInfo(newPassword:String){
         val user = FirebaseAuth.getInstance().currentUser
         val getEmail = user?.email.toString()
         val updateEmail = user?.updatePassword(newPassword)
     }
+
 
 
     fun getUser(){
@@ -76,5 +108,17 @@ class SettingsViewModel(private val context: Context, private val codagramApi: C
 
         }
     }
+
+    @ExperimentalCoroutinesApi
+    fun deleteUser() {
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+              codagramApi.deleteUser()
+            }
+        } catch (ie: Exception) {
+            Timber.e(ie)
+        }
+    }
+
 
 }
