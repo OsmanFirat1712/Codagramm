@@ -1,12 +1,27 @@
 package com.tailoredapps.codagram.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.tailoredapps.codagram.R
+import com.tailoredapps.codagram.databinding.AlertDialogFilterBinding
 import com.tailoredapps.codagram.databinding.FragmentFirstBinding
+import com.tailoredapps.codagram.databinding.RegisterDialogBinding
+import com.tailoredapps.codagram.models.Comment
+import com.tailoredapps.codagram.models.Group
+import com.tailoredapps.codagram.models.UpdateGroup
+import com.tailoredapps.codagram.ui.groupscreen.GroupAdapter
+import com.tailoredapps.codagram.ui.groupscreen.GroupViewModel
+import com.tailoredapps.codagram.ui.homeFeedScreen.CommentScreenAdapter
+import com.tailoredapps.codagram.ui.homeFeedScreen.FilterGroupAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,12 +30,19 @@ import timber.log.Timber
 
 class HomeFeedScreen : Fragment() {
 
+    private val groupViewModel:GroupViewModel by inject()
     private val adapter: HomeFeedAdapter by inject()
     private val viewModel: HomeFeedViewModel by inject()
     private val navController by lazy(::findNavController)  //Method referencing
     private lateinit var binding: FragmentFirstBinding
+    private val myGroupsAdapter: FilterGroupAdapter by inject()
+
     private lateinit var text:String
+/*
     var groupId: String? = null
+*/
+    private lateinit var alertDialogBinding: AlertDialogFilterBinding
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentFirstBinding.inflate(inflater, container, false)
@@ -38,21 +60,44 @@ class HomeFeedScreen : Fragment() {
             adapter = this@HomeFeedScreen.adapter
         }
 
+
         test()
         test2()
-        groupId = arguments?.getString("spinner")
-        Timber.d("$groupId")
         viewModel.getStoryPost(null.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_first_view, menu)
         inflater.inflate(R.menu.menu_filter_groups, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.filter -> {
+                filter()
+                true
+            }
 
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
+        }
+
+    }
+
+    fun filter(){
+
+        alertDialogBinding = AlertDialogFilterBinding.inflate(layoutInflater)
+        val alertDialog = MaterialAlertDialogBuilder(requireContext())
+        alertDialog.setView(alertDialogBinding.root)
+        alertDialog.create()
+        val alert = alertDialog.show()
+        alertDialogBinding.filterView.apply {
+            adapter = this@HomeFeedScreen.myGroupsAdapter
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+        }
+
+        bindgetmyGroupToLiveData()
+        viewModel.getAllGroups()
+
     }
 
     @ExperimentalCoroutinesApi
@@ -76,6 +121,21 @@ class HomeFeedScreen : Fragment() {
     fun test2(){
 
     }
+    private fun bindgetmyGroupToLiveData() {
+        viewModel.getMyGroups().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            myGroupsAdapter.submitList(it)
 
+            myGroupsAdapter.setUpListener(object : FilterGroupAdapter.ItemFilterListener{
+                override fun onItemClicked(group: Group) {
+                viewModel.getStoryPost(group.id.toString())
+                    Snackbar.make(requireView(),"Die Gruppe ${group.name} wird angezeigt", Snackbar.LENGTH_LONG).show()
+
+                }
+            })
+        })
+
+
+
+    }
 
 }

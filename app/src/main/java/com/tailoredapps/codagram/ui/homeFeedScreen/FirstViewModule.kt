@@ -8,13 +8,9 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val firstViewModule = module {
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/ui/homeFeedScreen/FirstViewModule.kt
-    factory { HomeFeedAdapter(context = androidContext()) }
-    factory { CommentScreenAdapter() }
-=======
-    factory { HomeFeedAdapter(codagramApi = get ()) }
-    factory { CommentScreenAdapter(codagramApi = get()) }
->>>>>>> app/src/main/java/com/tailoredapps/codagram/ui/homeFeedScreen/FirstViewModule.kt
+    factory { FilterGroupAdapter() }
+    factory { HomeFeedAdapter(codagramApi = get()) }
+    factory { CommentScreenAdapter(codagramApi = get ()) }
     fragment { CommentScreenFragment() }
     fragment { HomeFeedScreen() }
     viewModel { HomeFeedViewModel(codagramApi = get()) }

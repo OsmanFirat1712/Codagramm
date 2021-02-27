@@ -63,12 +63,12 @@ class GroupViewModel(private val context: Context, private val codagramApi: Coda
                 val selectedUsers = searchForUser.value?.filter { it.selected }?.map { it.user.id }
 
                 val response = codagramApi.createGroup(GroupCreate(group, selectedUsers as List<String>)).also {
-                    codagramApi.addImageToGroup(it.id,part)
+                    codagramApi.getGroupbyId(it.id)
 
+                    codagramApi.addImageToGroup(it.id,part)
                 }
 
                 codagramApi.sendGroupInvites(GroupInviteBody(response.id, selectedUsers as List<String>,))
-                codagramApi.getGroupbyId(response.id)
 
 
             }

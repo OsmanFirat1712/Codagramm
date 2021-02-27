@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.GroupscreenMygroupsBinding
 import com.tailoredapps.codagram.databinding.SearchDetailPageBinding
@@ -59,8 +63,12 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
             val userName = it.firstname
 
         }*/
+            if (FirebaseAuth.getInstance().currentUser!!.uid == postData.id) {
 
-            binding.resultText.text = postData.firstname.toString()
+            } else {
+                binding.resultText.text = postData.firstname.toString()
+            }
+
 
         }
 
@@ -70,12 +78,14 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
     override fun onBindViewHolder(holder: GroupDetailsSearchViewHolder, position: Int) {
         holder.bind(getItem(position))
         val selectedItem = getItem(position)
-        holder.itemView.setOnClickListener {
+        holder.itemView.setOnLongClickListener {
             holder.apply {
                 mItemCLicked.let {
                     mItemCLicked.onItemClicked(getItem(position))
                 }
+
             }
+            true
 
 
         }
