@@ -8,6 +8,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val firstViewModule = module {
+
     factory { FilterGroupAdapter() }
     factory { HomeFeedAdapter(codagramApi = get()) }
     factory { CommentScreenAdapter(codagramApi = get ()) }
