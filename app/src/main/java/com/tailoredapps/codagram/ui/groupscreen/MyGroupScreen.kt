@@ -1,12 +1,13 @@
 package com.tailoredapps.codagram.ui.groupscreen
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentThirdBinding
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.GroupInvite
@@ -20,15 +21,25 @@ class MyGroupScreen() : Fragment()  {
     @ExperimentalCoroutinesApi
     private val viewModel: MyGroupScreenViewMode by inject()
     private val myGroupsAdapter: GroupAdapter by inject()
+    private val navController by lazy(::findNavController)  //Method referencing
+
     private val myGroupInviteAdapter: GroupInviteAdapter by inject()
 
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         viewModel.getMyGroups()
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_first_view, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

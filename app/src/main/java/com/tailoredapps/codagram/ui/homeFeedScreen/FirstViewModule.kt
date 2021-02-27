@@ -9,8 +9,9 @@ import org.koin.dsl.module
 
 internal val firstViewModule = module {
 
-    factory { HomeFeedAdapter(codagramApi = get ()) }
-    factory { CommentScreenAdapter(codagramApi = get()) }
+    factory { FilterGroupAdapter() }
+    factory { HomeFeedAdapter(codagramApi = get()) }
+    factory { CommentScreenAdapter(codagramApi = get ()) }
     fragment { CommentScreenFragment() }
     fragment { HomeFeedScreen() }
     viewModel { HomeFeedViewModel(codagramApi = get()) }
