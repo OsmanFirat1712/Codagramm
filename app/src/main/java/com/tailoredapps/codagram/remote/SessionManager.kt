@@ -17,13 +17,17 @@ class SessionManager (context: Context) {
     fun saveAuthToken(token: String) {
         val editor = prefs.edit()
         editor.putString(USER_TOKEN, token)
+        val id = token
         editor.apply()
     }
 
     /**
      * Function to fetch auth token
      */
+
+
     fun fetchAuthToken(): String? {
         return prefs.getString(USER_TOKEN, null)
     }
+
 }

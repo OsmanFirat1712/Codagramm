@@ -62,6 +62,7 @@ class MyGroupScreen() : Fragment()  {
         respond()
         bindgetMyInvites()
         bindgetmyGroupToLiveData()
+        viewModel.getAllGroups()
         viewModel.getInvites()
     }
 
@@ -98,6 +99,8 @@ class MyGroupScreen() : Fragment()  {
 
 
     }
+
+
 
 
 

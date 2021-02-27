@@ -2,6 +2,8 @@ package com.tailoredapps.codagram
 
 import android.content.Context
 import android.provider.Settings
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
@@ -33,6 +35,7 @@ data class GlobalAppData(
 
 private const val  X_FIREBASE_TOKEN: String = "X-FIREBASE-TOKEN"
 class FirebaseUserIdTokenInterceptor() :Interceptor{
+private val     baseUrl = "https://codagram.tailored-apps.com/api/"
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request: Request = chain.request()
@@ -50,6 +53,12 @@ class FirebaseUserIdTokenInterceptor() :Interceptor{
                     val modifiedRequest: Request = request.newBuilder()
                         .addHeader(X_FIREBASE_TOKEN, idToken)
                         .build()
+
+                    val modifiedRequests: Request.Builder = request.newBuilder()
+                    val glideUrl = GlideUrl(baseUrl,
+                        LazyHeaders.Builder()
+                            .addHeader("X-FIREBASE-TOKEN",idToken)
+                            .build())
                     return chain.proceed(modifiedRequest)
                 }
             }
@@ -58,7 +67,10 @@ class FirebaseUserIdTokenInterceptor() :Interceptor{
         }
     }
 
+
 }
+
+
 
 @ExperimentalCoroutinesApi
 internal val appModules = immutableListOf(

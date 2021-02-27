@@ -22,6 +22,8 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.RegisterFragmentBinding
@@ -29,6 +31,7 @@ import com.tailoredapps.codagram.models.SendUser
 import com.tailoredapps.codagram.models.User
 import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
+import java.io.File
 import java.io.IOException
 
 class RegisterFragment : Fragment() {
@@ -41,6 +44,7 @@ class RegisterFragment : Fragment() {
     var selectedImage: Bitmap? = null
     var selectImage: ImageView? = null
     var image:String? = null
+    private lateinit var file: File
 
     val check:Boolean? = null
 
@@ -51,8 +55,7 @@ class RegisterFragment : Fragment() {
 
         statusInfo()
         createActive(view)
-        uploadImage(view)
-
+        uploadClickAction()
 
 
     }
@@ -67,10 +70,21 @@ class RegisterFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK && data != null){
-            imageData = data.data!!
-            var bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver,imageData)
-            image = binding.ivImageView.setImageBitmap(bitmap).toString()
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            //Image Uri will not be null for RESULT_OK
+            val fileUri = data?.data
+            binding.ivImageView.setImageURI(fileUri)
+
+            //You can get File object from intent
+            file = ImagePicker.getFile(data)!!
+
+            //You can also get File Path from intent
+            val filePath:String = ImagePicker.getFilePath(data)!!
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Snackbar.make(requireView(), ImagePicker.getError(data), Snackbar.LENGTH_SHORT).show()
+        } else {
+            Snackbar.make(requireView(), "Task Cancelled", Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -90,8 +104,9 @@ class RegisterFragment : Fragment() {
                                 val firstName = binding.dialogFirstName.text.toString()
                                 val lastName = binding.dialogLastName.text.toString()
                                 val password = binding.dialogPassword.text.toString()
-                                viewModel.postUser(SendUser(nickname,firstName,lastName) )
+                                viewModel.postUser(SendUser(nickname,firstName,lastName))
                                 view?.findNavController()?.navigate(RegisterFragmentDirections.actionLoginToHome())
+                                viewModel.addPhoto(Uri.fromFile(file))
 
                             } else {
                                 Log.e("task message", "Failed" + task.exception)
@@ -102,10 +117,26 @@ class RegisterFragment : Fragment() {
     }
 
     private fun listImages(){
-        var i = Intent()
-        i.setType("image/*")
-        i.setAction(Intent.ACTION_GET_CONTENT)
-        startActivityForResult(Intent.createChooser(i, "Choose Picture"), REQUEST_IMAGE_CAPTURE)
+        val i = Intent()
+        i.type = "image/*"
+        i.action = Intent.ACTION_GET_CONTENT
+    }
+
+
+    private fun uploadClickAction(){
+        binding.ivImageView.setOnClickListener {
+            Toast.makeText(requireContext(),"Clicked",Toast.LENGTH_LONG).show()
+            ImagePicker.with(this)
+                .crop()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start()
+            /*if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(requireActivity(),
+                    Array(1){Manifest.permission.READ_EXTERNAL_STORAGE},121)
+            }*/
+            listImages()
+        }
     }
 
     private fun statusInfo(){
@@ -126,23 +157,6 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun uploadImage(view: View) {
-        binding.ivImageView.setOnClickListener {
-            Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_LONG).show()
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(requireActivity(),
-                    Array(1) { Manifest.permission.READ_EXTERNAL_STORAGE }, 121
-                )
-            }
-            listImages()
-        }
-
-
-    }
 
 
 }

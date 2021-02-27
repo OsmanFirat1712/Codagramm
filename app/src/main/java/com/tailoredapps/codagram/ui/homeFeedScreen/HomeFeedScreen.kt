@@ -1,7 +1,6 @@
 package com.tailoredapps.codagram.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -10,11 +9,9 @@ import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentFirstBinding
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedViewModel
-import com.tailoredapps.codagram.ui.newStoryScreen.NewStoryViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import timber.log.Timber
-import kotlin.math.log
 
 class HomeFeedScreen : Fragment() {
 
@@ -59,6 +56,7 @@ class HomeFeedScreen : Fragment() {
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
+    @ExperimentalCoroutinesApi
     fun test(){
         //val hello = viewModel.getStoryPost()
         viewModel.getMyPost().observe(viewLifecycleOwner,androidx.lifecycle.Observer {

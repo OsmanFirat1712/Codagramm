@@ -1,6 +1,7 @@
 package com.tailoredapps.codagram.ui.groupscreen
 
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
@@ -8,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tailoredapps.codagram.models.Group
+import com.tailoredapps.codagram.models.GroupInviteBody
 import com.tailoredapps.codagram.models.UpdateGroup
 import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodagramApi
@@ -15,8 +17,13 @@ import com.tailoredapps.codagram.remoteModels.GroupList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.internal.immutableListOf
 import timber.log.Timber
+import java.io.File
 import java.lang.Exception
 import java.util.*
 import java.util.Collections.emptyList
@@ -42,6 +49,13 @@ class GroupDetailsViewModel(private val context: Context, private val codagramAp
 
 
     init {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = codagramApi.getAllGroups()
+            updateUi(response.groups)
+        }
+    }
+
+     fun getAllGroups(){
         viewModelScope.launch(Dispatchers.IO) {
             val response = codagramApi.getAllGroups()
             updateUi(response.groups)
@@ -93,6 +107,7 @@ class GroupDetailsViewModel(private val context: Context, private val codagramAp
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codagramApi.getSearchedUser(input)
                 updateSearchList(response.users.map { (SelectedUser(it)) })
+
             }
         } catch (ie: Exception) {
             Timber.e(ie)
@@ -139,4 +154,27 @@ class GroupDetailsViewModel(private val context: Context, private val codagramAp
         }
     }
 
+    fun sendGroupInvites(id: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            val selectedUsers = searchForUser.value?.filter { it.selected }?.map { it.user.id }
+            codagramApi.sendGroupInvites(GroupInviteBody(id,selectedUsers as List<String>))
+        }
+    }
+
+    fun deleteGroupImage(id: String){
+        viewModelScope.launch(Dispatchers.IO) {
+        codagramApi.deleteGroupImage(id)
+
+        }
+    }
+
+    fun updateGroupImage(id: String,uri: Uri){
+        val file = File(uri.path!!)
+        val requestBody: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+        val part: MultipartBody.Part = MultipartBody.Part.createFormData("image", file.name, requestBody)
+        viewModelScope.launch(Dispatchers.IO) {
+            codagramApi.addImageToGroup(id,part)
+
+        }
+    }
 }

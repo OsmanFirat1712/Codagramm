@@ -44,6 +44,13 @@ class MyGroupScreenViewMode(private val context: Context, private val codagramAp
         }
     }
 
+    fun getAllGroups(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = codagramApi.getAllGroups()
+            updateUi(response.groups)
+        }
+    }
+
     @ExperimentalCoroutinesApi
     private fun updateUi(update: List<Group>) {
         viewModelScope.launch(Dispatchers.Main) {
