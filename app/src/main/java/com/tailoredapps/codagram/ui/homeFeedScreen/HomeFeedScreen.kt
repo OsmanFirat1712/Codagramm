@@ -51,8 +51,7 @@ class HomeFeedScreen : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        item.title = text
-        item.title = text
+
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 

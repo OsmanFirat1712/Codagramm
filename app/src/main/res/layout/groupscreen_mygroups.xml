@@ -32,27 +32,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/groupImage"
+                android:src="@drawable/ic_baseline_image_48"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tvGroupName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                app:layout_constraintStart_toEndOf="@id/groupImage"
+                android:textSize="20dp"
                 android:text="TextView"
                 tools:ignore="MissingConstraints" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvCreatorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                app:layout_constraintStart_toEndOf="@id/groupImage"
                 android:text="TextView"
-                app:layout_constraintTop_toBottomOf="@id/textView"
+                app:layout_constraintTop_toBottomOf="@id/tvGroupName"
                 tools:ignore="MissingConstraints" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/tvGroupInviter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                app:layout_constraintStart_toEndOf="@id/groupImage"
                 android:text="TextView"
-                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:layout_constraintTop_toBottomOf="@+id/tvCreatorName"
                 tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

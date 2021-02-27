@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupBinding
 import com.tailoredapps.codagram.databinding.FragmentSettingsBinding
+import com.tailoredapps.codagram.databinding.RegisterDialogBinding
+import com.tailoredapps.codagram.models.UpdateGroup
 import com.tailoredapps.codagram.ui.groupscreen.GroupViewModel
 import org.koin.android.ext.android.inject
 import java.io.File
@@ -24,6 +27,8 @@ class SettingsFragment:Fragment() {
     private lateinit var binding:FragmentSettingsBinding
     private lateinit var file: File
     private val viewModel: SettingsViewModel by inject()
+
+    private lateinit var alertDialogBinding: RegisterDialogBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,11 +42,8 @@ class SettingsFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        changePassword()
-        changeFirstName()
-        changeLastName()
-        changeNickName()
-        changeEmail()
+
+        changeFirstLastNick()
 
     }
 
@@ -135,24 +137,12 @@ class SettingsFragment:Fragment() {
         }
     }
 
-    private fun changeFirstName(){
+    private fun changeFirstLastNick() {
         binding.tvUserName.setOnClickListener {
 
         }
     }
-
-    private fun changeLastName(){
-        binding.tvLastName.setOnClickListener {
-
-        }
-    }
-
-    private fun changeNickName(){
-        binding.tvNickName.setOnClickListener {
-
-        }
-    }
-
+    
     private fun changeEmail(){
         binding.tvEmail.setOnClickListener {
 

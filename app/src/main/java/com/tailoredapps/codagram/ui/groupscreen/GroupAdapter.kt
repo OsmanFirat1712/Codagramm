@@ -67,8 +67,9 @@ class GroupScreenViewHolder(private val binding: GroupscreenMygroupsBinding) :
             val userName = it.id
         }
 
-        binding.textView.text = postData.name.toString()
-        binding.textView2.text = postData.creator?.lastname.toString()
+        binding.tvGroupName.text = postData.name.toString()
+        binding.tvCreatorName.text = postData.creator?.lastname.toString()
+        binding.tvGroupInviter.text = postData.inviter?.lastname
 
 
     }

@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentCommentScreenBinding
 import com.tailoredapps.codagram.databinding.FragmentFirstBinding
+import com.tailoredapps.codagram.models.Comment
 import com.tailoredapps.codagram.models.CommentBody
+import com.tailoredapps.codagram.models.Post
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 
@@ -18,7 +20,7 @@ class CommentScreenFragment : Fragment() {
 
     private val viewModel:CommentScreenViewModel by inject()
     private val  commentScreenAdapter: CommentScreenAdapter by inject()
-
+    private var postId: String? = null
 
     var countryName: String? = null
 
@@ -38,9 +40,7 @@ class CommentScreenFragment : Fragment() {
         binding = FragmentCommentScreenBinding.inflate(inflater, container, false)
         return binding.root
 
-
-
-
+        postId = arguments?.getString("name")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,21 +64,26 @@ class CommentScreenFragment : Fragment() {
         viewModel.getanasiniSikim(countryName.toString())
     }
 
-
     @ExperimentalCoroutinesApi
     fun bindToLiveData() {
         viewModel.getMyComments().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             commentScreenAdapter.submitList(it)
+
+            commentScreenAdapter.setUpListener(object :CommentScreenAdapter.ItemRemove2ClickListener{
+                override fun onItemClicked(comment: Comment) {
+                    viewModel.deleteComment(countryName.toString(),comment.id)
+                    viewModel.getCommentPost(countryName.toString())
+                }
+            })
         })
     }
-
-
 
     fun buttonClickListener(){
 
         binding.btnAdd.setOnClickListener {
             val test = binding.etWriteComment.text.toString()
             viewModel.postComment(countryName.toString(), CommentBody(test))
+            viewModel.getCommentPost(countryName.toString())
         }
     }
 }

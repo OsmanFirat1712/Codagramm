@@ -6,6 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -15,24 +18,21 @@ import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.databinding.HomeFeedScreenBinding
 import com.tailoredapps.codagram.databinding.SearchDetailPageBinding
 import com.tailoredapps.codagram.models.Comment
+import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.Post
 import com.tailoredapps.codagram.models.User
+import com.tailoredapps.codagram.remote.CodagramApi
 import com.tailoredapps.codagram.ui.HomeFeedScreenDirections
 import com.tailoredapps.codagram.ui.groupscreen.GroupDetailsAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class HomeFeedAdapter : ListAdapter<Post, HomeFeedAdapter.CountryItem>(
-    DiffCallback()
-) {
+class HomeFeedAdapter(val codagramApi: CodagramApi) : ListAdapter<Post, HomeFeedAdapter.CountryItem>(DiffCallback()) {
     lateinit var mItemCLicked: ItemCLickedListener
-    var likeCounter:Int = 0
-
-    private var bundle: Bundle? = null
-
-    lateinit var post:Post
-
 
     class DiffCallback : DiffUtil.ItemCallback<Post>() {
-
 
         override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
             return oldItem.id == newItem.id
@@ -41,22 +41,18 @@ class HomeFeedAdapter : ListAdapter<Post, HomeFeedAdapter.CountryItem>(
         override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
             return oldItem.id == newItem.id
         }
-
-
     }
-
     override fun onBindViewHolder(holder: CountryItem, position: Int) {
         holder.bind(getItem(position))
         val currentItem = getItem(position)
 
-
-
         holder.apply {
 
-            likeCount.text = currentItem.likes.toString()+" "+"like"
-            writtenBy.text = "Written by" + " " +currentItem.comments?.firstOrNull()?.user?.firstname.toString()
+            userName.text = currentItem.user?.firstname
+            likeCount.text = currentItem.likes.toString()
+            writtenBy.text = currentItem.comments?.firstOrNull()?.user?.firstname.toString()
             firstComment.text = currentItem.comments?.firstOrNull()?.text
-            commentCount.text = currentItem.comments?.size.toString()+" "+"more answers..."
+            commentCount2.text = currentItem.comments?.size.toString()+" "+"Comment"
 
             like.setOnClickListener {
                 like.setImageResource(R.drawable.ic_baseline_favoritelike_24)
@@ -82,6 +78,14 @@ class HomeFeedAdapter : ListAdapter<Post, HomeFeedAdapter.CountryItem>(
                 mItemCLicked.onItemClicked(currentItem.userLiked,currentItem.id)
             }
         }
+
+        holder.delete.setOnClickListener {
+
+            GlobalScope.launch (Dispatchers.IO ){
+                codagramApi.deletePost(currentItem.id)
+            }
+            //codagramApi.deletePost(currentItem.id)
+        }
     }
 
 
@@ -102,16 +106,20 @@ class HomeFeedAdapter : ListAdapter<Post, HomeFeedAdapter.CountryItem>(
         RecyclerView.ViewHolder(binding.root) {
 
         val like: ImageView = itemView.findViewById(R.id.like_image)
+        val userName:TextView = itemView.findViewById(R.id.username_text)
         val likeCount:TextView = itemView.findViewById(R.id.likes_text)
-        val commentCount:TextView = itemView.findViewById(R.id.tvCommentCount)
         val firstComment:TextView = itemView.findViewById(R.id.tvFirstComment)
         val writtenBy:TextView = itemView.findViewById(R.id.tvWrittenBy)
+        val commentCount2:TextView = itemView.findViewById(R.id.comment_text)
+        val delete:ImageView = itemView.findViewById(R.id.ivDelete)
 
         fun bind(postData: Post) {
 
             val bundle = bundleOf(
                 "name" to postData.id,
             )
+
+
             binding.captionText.text = postData.description.toString()
             binding.commentImage.setOnClickListener {
 
@@ -119,13 +127,27 @@ class HomeFeedAdapter : ListAdapter<Post, HomeFeedAdapter.CountryItem>(
                     .navigate(R.id.action_firstView_to_CommentScreenFragment, bundle)
             }
 
-            binding.tvCommentCount.setOnClickListener {
+
+            binding.commentText.setOnClickListener {
                 it.findNavController()
                     .navigate(R.id.action_firstView_to_CommentScreenFragment, bundle)
             }
+
+            binding.lastCvv.setOnClickListener {
+                it.findNavController()
+                    .navigate(R.id.action_firstView_to_CommentScreenFragment, bundle)
+            }
+
+
         }
 
-
+    fun test(update:List<Post>){
+        GlobalScope.launch (Dispatchers.IO){
+            val myPosts = MutableLiveData<List<Post>>()
+            fun refreshPosts(): LiveData<List<Post>> = myPosts
+            myPosts.value = update
+        }
+    }
 
     }
     interface ItemCLickedListener {

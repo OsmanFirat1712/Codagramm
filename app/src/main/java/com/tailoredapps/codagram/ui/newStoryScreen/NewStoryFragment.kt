@@ -90,10 +90,6 @@ class NewStoryFragment : Fragment() {
         }
 */
 
-        binding.auto.setOnClickListener {
-            searchKey()
-        }
-
         binding.spinner1.onItemSelectedListener =object :AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 Toast.makeText(requireContext(), "You Selected .toString()}", Toast.LENGTH_LONG).show()
@@ -198,11 +194,7 @@ class NewStoryFragment : Fragment() {
         }
     }
 
-    @ExperimentalCoroutinesApi
-    private fun searchKey() {
-        val input = binding.auto.text.toString()
-        viewModel.searchUser(input)
-    }
+
 
     @ExperimentalCoroutinesApi
     private fun postButtonAction(){
