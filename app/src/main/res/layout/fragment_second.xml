@@ -49,27 +49,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"/>
 
-    <EditText
-        android:id="@+id/auto"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/search_design"
-        android:completionThreshold="1"
-        android:drawableStart="@drawable/ic_baseline_search_24"
-        android:hint="Invite an User ..."
-        android:padding="5dp"
-        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@id/etDescription"
-        tools:ignore="MissingConstraints" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchResult"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        app:layout_constraintTop_toBottomOf="@id/auto"
+        app:layout_constraintTop_toBottomOf="@id/etDescription"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         tools:listitem="@layout/search_items"/>

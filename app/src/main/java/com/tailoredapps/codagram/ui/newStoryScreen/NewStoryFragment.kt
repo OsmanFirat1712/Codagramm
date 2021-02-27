@@ -38,7 +38,7 @@ class NewStoryFragment : Fragment() {
     private val searchAdapter: SearchAdapter by inject ()
     private lateinit var binding: FragmentSecondBinding
     lateinit var imageData:Uri
-            lateinit var file: Uri
+    lateinit var file: Uri
 
     val REQUEST_IMAGE_CAPTURE = 2
     private lateinit var getSpinnerItem:String
@@ -77,10 +77,6 @@ class NewStoryFragment : Fragment() {
         }
 */
 
-        binding.auto.setOnClickListener {
-            searchKey()
-        }
-
         binding.spinner1.onItemSelectedListener =object :AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 Toast.makeText(requireContext(), "You Selected .toString()}", Toast.LENGTH_LONG).show()
@@ -103,10 +99,12 @@ class NewStoryFragment : Fragment() {
 
     private fun listImages(){
         var i = Intent()
+        i.type = "image/*"
         i.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(i, "Choose Picture"), REQUEST_IMAGE_CAPTURE)
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
 
@@ -117,8 +115,7 @@ class NewStoryFragment : Fragment() {
             try {
 
                 if (imageData != null) {
-                    val source =
-                        ImageDecoder.createSource(requireActivity().contentResolver, imageData!!)
+                    val source = ImageDecoder.createSource(requireActivity().contentResolver, imageData!!)
                     val bitmap = ImageDecoder.decodeBitmap(source)
                     binding.tvUpload.setImageBitmap(bitmap)
                 } else {
@@ -153,11 +150,7 @@ class NewStoryFragment : Fragment() {
         }
     }
 
-    @ExperimentalCoroutinesApi
-    private fun searchKey() {
-        val input = binding.auto.text.toString()
-        viewModel.searchUser(input)
-    }
+
 
     @ExperimentalCoroutinesApi
     private fun postButtonAction(){

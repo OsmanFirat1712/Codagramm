@@ -26,6 +26,8 @@ class CommentScreenFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+
         countryName = arguments?.getString("name")
 
     }
@@ -37,10 +39,6 @@ class CommentScreenFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentCommentScreenBinding.inflate(inflater, container, false)
         return binding.root
-
-
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

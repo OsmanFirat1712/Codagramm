@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -71,6 +72,9 @@ class RegisterFragment : Fragment() {
             imageData = data.data!!
             var bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver,imageData)
             image = binding.ivImageView.setImageBitmap(bitmap).toString()
+
+
+
         }
     }
 
