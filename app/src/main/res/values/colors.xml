@@ -14,8 +14,10 @@
     <color name="login_form_details_medium">#66ffffff</color>
 
     <color name="colorAccent">#D81B60</color>
-    <color name="colorBlue">#28A2CF</color>
-    <color name="colorGreen">#55E96A</color>
+    <color name="colorBlue">#FF9D93</color>
+    <color name="colorPink">#FF86FC</color>
+
+    <color name="colorGreen">#FF87FC</color>
 
 
 

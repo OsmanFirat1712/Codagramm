@@ -1,6 +1,7 @@
 package com.tailoredapps.codagram.ui.loginscreen
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +10,8 @@ import com.tailoredapps.codagram.R
 
 
 class SplashScreen : AppCompatActivity() {
+
+
 
     lateinit var handler: Handler
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,5 +25,7 @@ class SplashScreen : AppCompatActivity() {
             startActivity(intent)
             finish()
         },3000)
+
+
     }
 }

@@ -4,35 +4,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.loginscreen.LoginFragment"
-    >
+    tools:context=".ui.loginscreen.LoginFragment">
 
-    <ImageView
-        android:id="@+id/background"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewTop"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:contentDescription="header"
-        android:src="@drawable/header_login"
-        android:scaleType="fitXY"
-        tools:ignore="MissingConstraints" />
+        app:cardElevation="10dp"
+        app:cardBackgroundColor="#FF9D93"
+        android:layout_height="150dp">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icons8_star_48px"
+            android:elevation="5dp"
+            android:layout_gravity="center">
 
-    <ImageView
-        android:id="@+id/background2"
+        </ImageView>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@id/background2"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:src="@drawable/footer_login"
-        android:scaleType="fitXY"
-        android:layout_alignParentBottom="true"/>
+        android:layout_height="150dp"
+        app:cardElevation="10dp"
+        app:cardBackgroundColor="#FF86FC"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icons8_star_48px"
+            android:layout_gravity="center">
+        </ImageView>
+
+    </androidx.cardview.widget.CardView>
+
 
     <TextView
         android:id="@+id/tvLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_alignBottom="@+id/background"
-        android:text="login"
+        android:layout_below="@id/cardViewTop"
+        android:layout_marginTop="30dp"
         android:elevation="3dp"
+        android:text="login"
         android:textSize="40sp"
         android:textStyle="bold"/>
 
@@ -40,30 +58,34 @@
         android:id="@+id/sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/background"
-        android:layout_above="@+id/background2"
-        android:layout_marginBottom="-100dp">
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/cardViewTop"
+        android:layout_above="@+id/background2">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
-            android:layout_marginLeft="-70dp">
+            android:layout_gravity="center">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="15dp"
-                app:cardCornerRadius="70dp"
+                app:cardCornerRadius="30dp"
                 app:cardElevation="3dp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:foregroundGravity="center"
+
                     android:padding="10dp">
 
                     <EditText
@@ -101,13 +123,17 @@
 
             </androidx.cardview.widget.CardView>
             <RelativeLayout
+                android:id="@+id/rlBottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_alignTop="@id/cv"
+                android:layout_marginRight="-30dp"
                 android:layout_alignBottom="@+id/cv"
                 android:layout_alignRight="@id/cv"
-                android:layout_marginRight="-30dp"
                 android:elevation="10dp">
+
                 <ImageButton
                     android:id="@+id/btnLogin"
                     android:src="@drawable/ic_baseline_arrow_forward_24"
@@ -118,21 +144,49 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/btnNewAccount"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/rlBottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cv"
-                android:layout_marginLeft="80dp"
-                android:layout_marginTop="40dp"
-                android:text="Register"
-                android:textColor="@color/colorBlue"
-                android:elevation="3dp"
-                android:textSize="25dp"
-                android:textStyle="bold"/>
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/btnNewAccountInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dont have an Account Yet?"
+                    android:elevation="3dp"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    tools:ignore="MissingConstraints" />
+
+
+
+                <TextView
+                    android:id="@+id/btnNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Register"
+                    android:layout_marginLeft="5dp"
+                    android:elevation="3dp"
+                    app:layout_constraintStart_toEndOf="@id/btnNewAccountInfo"
+                    android:textColor="#FF86FC"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    tools:ignore="MissingConstraints" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
         </RelativeLayout>
 
+
     </ScrollView>
+
+
 
 </RelativeLayout>
