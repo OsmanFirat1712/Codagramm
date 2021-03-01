@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
                 Toast.makeText(requireContext(), "input required", Toast.LENGTH_LONG).show()
             }        }
 
-        binding.btnNewAccount.setOnClickListener {
+        binding.btnNew.setOnClickListener {
             it.findNavController().navigate(LoginFragmentDirections.actionLoginToRegister())
         }
 
@@ -89,7 +89,7 @@ class LoginFragment : Fragment() {
 
     }
 
-
+/*
     override fun onStart() {
         super.onStart()
         val user = auth.currentUser
@@ -104,6 +104,10 @@ class LoginFragment : Fragment() {
             Snackbar.make(requireView(),"ssdsad", Snackbar.LENGTH_SHORT).show()
         }
     }
+
+ */
+
+
 
 
 

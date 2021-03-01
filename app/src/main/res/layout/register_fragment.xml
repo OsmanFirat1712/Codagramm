@@ -341,7 +341,7 @@
     <Button
         android:id="@+id/btnDialogCreate"
         app:layout_constraintTop_toBottomOf="@id/card5"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="15dp"
         android:text="Create Now"
         android:textSize="20dp"
         android:textColor="@color/white"
@@ -356,8 +356,9 @@
         android:id="@+id/btnDialogCancel"
         android:layout_marginTop="10dp"
         android:text="Cancel"
-        android:textSize="20dp"
-        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:background="@android:color/transparent"
+        android:textColor="#727272"
         app:layout_constraintTop_toBottomOf="@id/btnDialogCreate"
         android:layout_gravity="center"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
@@ -365,6 +366,8 @@
         android:textAlignment="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+
 
 
         <com.scwang.wave.MultiWaveHeader
