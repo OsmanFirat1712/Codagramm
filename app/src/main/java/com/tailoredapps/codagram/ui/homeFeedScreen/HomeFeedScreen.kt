@@ -1,32 +1,24 @@
 package com.tailoredapps.codagram.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.AlertDialogFilterBinding
 import com.tailoredapps.codagram.databinding.FragmentFirstBinding
-import com.tailoredapps.codagram.databinding.RegisterDialogBinding
-import com.tailoredapps.codagram.models.Comment
 import com.tailoredapps.codagram.models.Group
-import com.tailoredapps.codagram.models.UpdateGroup
-import com.tailoredapps.codagram.ui.groupscreen.GroupAdapter
+import com.tailoredapps.codagram.models.Post
 import com.tailoredapps.codagram.ui.groupscreen.GroupViewModel
-import com.tailoredapps.codagram.ui.homeFeedScreen.CommentScreenAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.FilterGroupAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 
 class HomeFeedScreen : Fragment() {
 
@@ -51,6 +43,8 @@ class HomeFeedScreen : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        viewModel.getStoryPost(null.toString())
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,7 +56,6 @@ class HomeFeedScreen : Fragment() {
 
 
         test()
-        test2()
         viewModel.getStoryPost(null.toString())
     }
 
@@ -101,33 +94,49 @@ class HomeFeedScreen : Fragment() {
     }
 
     @ExperimentalCoroutinesApi
-    fun test(){
+    fun test() {
         //val hello = viewModel.getStoryPost()
-        viewModel.getMyPost().observe(viewLifecycleOwner,androidx.lifecycle.Observer {
+        viewModel.getMyPost().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
-            adapter.setUpListener(object : HomeFeedAdapter.ItemCLickedListener{
-                override fun onItemClicked(like: Boolean, id: String) {
+            adapter.setUpListener(object : HomeFeedAdapter.ItemCLickedListener {
+                override fun onItemClicked(like: Boolean, post: Post) {
 
-                    viewModel.likeComment(id,like)
+                    viewModel.likeComment(post.id, like)
+                    viewModel.getStoryPostbyQuery(post.group?.id)
                     adapter.notifyDataSetChanged()
                     adapter.submitList(it)
                 }
+            })
+            adapter.removeUpListener(object : HomeFeedAdapter.ItemGroupRemoveListener {
+                override fun onGroupRemoved(post: Post) {
+                    if (FirebaseAuth.getInstance().currentUser!!.uid == post.user?.id) {
+                        viewModel.removePost(post.id)
+                        viewModel.getStoryPost(null.toString())
+                        viewModel.getStoryPostbyQuery(post.group?.id)
+                    } else {
+                        Snackbar.make(
+                            requireView(),
+                            "Du kannst nur deine eigenen Post Löschen",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
             })
 
 
         })
     }
 
-    fun test2(){
 
-    }
-    private fun bindgetmyGroupToLiveData() {
+
+    fun bindgetmyGroupToLiveData() {
         viewModel.getMyGroups().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             myGroupsAdapter.submitList(it)
 
             myGroupsAdapter.setUpListener(object : FilterGroupAdapter.ItemFilterListener{
                 override fun onItemClicked(group: Group) {
-                viewModel.getStoryPost(group.id.toString())
+                viewModel.getStoryPostbyQuery(group.id.toString())
                     Snackbar.make(requireView(),"Die Gruppe ${group.name} wird angezeigt", Snackbar.LENGTH_LONG).show()
 
                 }

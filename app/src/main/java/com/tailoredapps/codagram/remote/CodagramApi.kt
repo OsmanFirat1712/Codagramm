@@ -77,7 +77,11 @@ interface CodagramApi {
     suspend fun newStoryPost(@Body postBody: PostBody):Post
 
     @GET("post")
-    suspend fun getStoryPost(@Query("group")id:String?): PostList
+    suspend fun getStoryPostbyQuery(@Query("group")id:String?): PostList
+
+
+    @GET("post")
+    suspend fun getStoryPost(@Query("grou")id:String?): PostList
 
     @GET("post/{id}")
     suspend fun getPostId(@Path("id")id:String):Post

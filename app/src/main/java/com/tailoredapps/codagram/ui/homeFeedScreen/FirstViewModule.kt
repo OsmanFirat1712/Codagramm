@@ -10,7 +10,7 @@ import org.koin.dsl.module
 internal val firstViewModule = module {
 
     factory { FilterGroupAdapter() }
-    factory { HomeFeedAdapter(codagramApi = get()) }
+    factory { HomeFeedAdapter(codagramApi = get(),context = androidContext()) }
     factory { CommentScreenAdapter(codagramApi = get ()) }
     fragment { CommentScreenFragment() }
     fragment { HomeFeedScreen() }

@@ -98,7 +98,7 @@ class MyGroupScreen() : Fragment()  {
 
                     viewModel.answerInvites(id,accept)
                     viewModel.getInvites()
-                    viewModel.getMyGroups()
+                    viewModel.getAllGroups()
                     myGroupInviteAdapter.currentList
                     myGroupInviteAdapter.notifyDataSetChanged()
                     myGroupInviteAdapter.submitList(it)

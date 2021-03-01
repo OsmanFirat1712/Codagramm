@@ -122,7 +122,7 @@ class GroupFragment : Fragment(), Get {
             Toast.makeText(requireContext(),"Clicked", Toast.LENGTH_LONG).show()
             ImagePicker.with(this)
                 .crop()
-                .compress(1024)
+                .compress(524)
                 .maxResultSize(1080, 1080)
                 .start()
             /*if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){

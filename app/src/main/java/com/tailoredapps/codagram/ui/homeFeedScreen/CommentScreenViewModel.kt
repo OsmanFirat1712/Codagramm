@@ -22,7 +22,7 @@ class CommentScreenViewModel(private val codagramApi: CodagramApi) : ViewModel()
     fun getMyComments():LiveData<List<Comment>> = myComments
 
 
-    fun getanasiniSikim(id:String){
+    fun getPostById(id:String){
         try {
             viewModelScope.launch(Dispatchers.IO){
                 val response = codagramApi.getPostId(id)

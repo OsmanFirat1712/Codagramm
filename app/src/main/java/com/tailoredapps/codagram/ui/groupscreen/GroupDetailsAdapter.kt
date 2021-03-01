@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
@@ -58,6 +59,7 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
 
         @RequiresApi(Build.VERSION_CODES.N)
         fun bind(postData: User) {
+
 
             /*    postData.members.forEach {
             val userName = it.firstname

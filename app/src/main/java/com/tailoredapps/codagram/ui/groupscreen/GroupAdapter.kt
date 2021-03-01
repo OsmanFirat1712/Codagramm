@@ -9,10 +9,12 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.GroupscreenMygroupsBinding
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.ui.homeFeedScreen.firstViewModule
+import kotlinx.android.synthetic.main.home_feed_screen.view.*
 import timber.log.Timber
 
 class GroupAdapter :
@@ -53,7 +55,8 @@ class GroupScreenViewHolder(private val binding: GroupscreenMygroupsBinding) :
 
             "name" to postData.name,
             "id" to postData.id,
-            "creatorId" to postData.creator?.id
+            "creatorId" to postData.creator?.id,
+            "imageUrl" to postData.image?.url
         )
         val name = postData.name
         Timber.e("gesndet")
@@ -66,6 +69,10 @@ class GroupScreenViewHolder(private val binding: GroupscreenMygroupsBinding) :
         postData.members.forEach {
             val userName = it.id
         }
+
+        Glide.with(binding.root)
+            .load(postData.image?.url)
+            .into(binding.groupImage)
 
         binding.tvGroupName.text = postData.name.toString()
         binding.tvCreatorName.text = postData.creator?.lastname.toString()
