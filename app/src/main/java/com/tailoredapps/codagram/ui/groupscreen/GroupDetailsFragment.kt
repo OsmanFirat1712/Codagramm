@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -43,7 +44,8 @@ class GroupDetailsFragment : Fragment() {
     private lateinit var alertDialogBinding: RegisterDialogBinding
     private lateinit var file: File
     private lateinit var dialog: AlertDialog
-    private lateinit var groupName:String
+    private lateinit var groupName: String
+    private lateinit var image:String
 
 
     @ExperimentalCoroutinesApi
@@ -108,11 +110,14 @@ class GroupDetailsFragment : Fragment() {
         groupName = arguments?.getString("name").toString()
         groupId = arguments?.getString("id").toString()
         creatorId = arguments?.getString("creatorId")
+        image  = arguments?.getString("imageUrl").toString()
         //if post crashes, comment theses
+
 
         viewModel.getGroupById(groupId.toString())
         binding.tvGroupTitle.text = groupName.toString()
 
+        loadGroupImage()
     }
 
 
@@ -129,7 +134,11 @@ class GroupDetailsFragment : Fragment() {
                         uploadClickAction()
 
                     } else {
-                        Snackbar.make(requireView(), "Du kannst nur als Ersteller der Gruppe das Foto bearbeiten" ,Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            requireView(),
+                            "Du kannst nur als Ersteller der Gruppe das Foto bearbeiten",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
 
                 })
@@ -187,10 +196,18 @@ class GroupDetailsFragment : Fragment() {
                         .setNegativeButton("DELETE", DialogInterface.OnClickListener { dialog, id ->
                             if (FirebaseAuth.getInstance().currentUser?.uid == creatorId) {
                                 viewModel.deleteMember(groupId.toString(), user.id.toString())
-                                Snackbar.make(requireView(), " User ${user.firstname} wurde aus der Gruppe entfernt", Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(
+                                    requireView(),
+                                    " User ${user.firstname} wurde aus der Gruppe entfernt",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
 
                             } else {
-                               Snackbar.make(requireView(), "Du kannst nur als Ersteller der Gruppe Mitglieder entfernen" ,Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(
+                                    requireView(),
+                                    "Du kannst nur als Ersteller der Gruppe Mitglieder entfernen",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
                             }
 
 
@@ -226,13 +243,19 @@ class GroupDetailsFragment : Fragment() {
             val alert = alertDialog.show()
 
             alertDialogBinding.button.setOnClickListener {
-                val firstNameFire = alertDialogBinding.editTextTextPersonName.text.toString()
-                viewModel.updateGroup(groupId.toString(), UpdateGroup(firstNameFire))
+                if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId) {
+                    val firstNameFire = alertDialogBinding.editTextTextPersonName.text.toString()
+                    viewModel.updateGroup(groupId.toString(), UpdateGroup(firstNameFire))
 
-                groupAdapter.currentList
-                groupAdapter.notifyDataSetChanged()
-
-
+                    groupAdapter.currentList
+                    groupAdapter.notifyDataSetChanged()
+                } else {
+                    Snackbar.make(
+                        requireView(),
+                        "Du kannst nur als Ersteller den Gruppennamen ändern",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
                 when {
 
                     alertDialogBinding.editTextTextPersonName.text.toString()
@@ -278,21 +301,21 @@ class GroupDetailsFragment : Fragment() {
             // negative button text and action
             .setNegativeButton("DELETE", DialogInterface.OnClickListener { dialog, id ->
                 if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId) {
-
                     viewModel.deleteGroup(groupId.toString())
-                    viewModel.getAllGroups()
                     view?.findNavController()?.popBackStack()
 
                 } else {
                     viewModel.exitGroup(groupId.toString())
-                    Snackbar.make(requireView(), "Möchstes du wirklich die Gruppe $groupName verlassen?" ,Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        requireView(),
+                        "Möchstes du wirklich die Gruppe $groupName verlassen?",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                     dialogBuilder.setMessage("Möchst du die folgende Gruppe  ${groupName} wirklich löschen?")
                     view?.findNavController()?.popBackStack()
                 }
 
 
-
-                viewModel.getGroupById(groupId.toString())
                 dialog.cancel()
 
             })
@@ -320,23 +343,20 @@ class GroupDetailsFragment : Fragment() {
     }
 
     @ExperimentalCoroutinesApi
-    fun deleteGroupImage(){
+    fun deleteGroupImage() {
         viewModel.deleteGroupImage(groupId.toString())
     }
 
 
-
-
-    private fun listImages(){
+    private fun listImages() {
         var i = Intent()
         i.type = "image/*"
         i.action = Intent.ACTION_GET_CONTENT
     }
 
-    private fun updateGroupImage(){
+    private fun updateGroupImage() {
         viewModel.updateGroupImage(groupId.toString(), Uri.fromFile(file))
     }
-
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -350,7 +370,7 @@ class GroupDetailsFragment : Fragment() {
             file = ImagePicker.getFile(data)!!
 
             //You can also get File Path from intent
-            val filePath:String = ImagePicker.getFilePath(data)!!
+            val filePath: String = ImagePicker.getFilePath(data)!!
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Snackbar.make(requireView(), ImagePicker.getError(data), Snackbar.LENGTH_SHORT).show()
         } else {
@@ -359,19 +379,24 @@ class GroupDetailsFragment : Fragment() {
     }
 
 
+    private fun uploadClickAction() {
+        Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_LONG).show()
+        ImagePicker.with(this)
+            .crop()
+            .compress(1024)
+            .maxResultSize(1080, 1080)
+            .start()
+        /*if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(requireActivity(),
+                Array(1){Manifest.permission.READ_EXTERNAL_STORAGE},121)
+        }*/
+        listImages()
+    }
 
-    private fun uploadClickAction(){
-            Toast.makeText(requireContext(),"Clicked",Toast.LENGTH_LONG).show()
-            ImagePicker.with(this)
-                .crop()
-                .compress(1024)
-                .maxResultSize(1080, 1080)
-                .start()
-            /*if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(requireActivity(),
-                    Array(1){Manifest.permission.READ_EXTERNAL_STORAGE},121)
-            }*/
-            listImages()
+    fun loadGroupImage(){
+        Glide.with(requireContext())
+            .load(image)
+            .into(binding.imageView2)
     }
 
 /*    @ExperimentalCoroutinesApi

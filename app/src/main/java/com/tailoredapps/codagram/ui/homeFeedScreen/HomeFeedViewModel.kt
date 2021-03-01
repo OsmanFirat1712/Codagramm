@@ -8,8 +8,6 @@ import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.Post
 import com.tailoredapps.codagram.remote.CodagramApi
 import com.tailoredapps.codagram.remoteModels.CommentLike
-import com.tailoredapps.codagram.remoteModels.PostList
-import com.tailoredapps.codagram.ui.groupscreen.SelectedUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -29,11 +27,22 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
 
 
 
-
     fun getStoryPost(id:String?){
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codagramApi.getStoryPost(id)
+                updateHomeFeed(response.posts)
+            }
+        }catch (ie:Exception){
+            Timber.e(ie)
+        }
+    }
+
+
+    fun getStoryPostbyQuery(id:String?){
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = codagramApi.getStoryPostbyQuery(id)
                 updateHomeFeed(response.posts)
             }
         }catch (ie:Exception){
@@ -57,9 +66,9 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
 
 
     @ExperimentalCoroutinesApi
-    fun updateHomeFeed(yarakPost:List<Post>) {
+    fun updateHomeFeed(update:List<Post>) {
         viewModelScope.launch(Dispatchers.Main) {
-            myPosts.value = yarakPost
+            myPosts.value = update
         }
 
     }
@@ -74,6 +83,13 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
 
         }catch (ie:Exception){
             Timber.e(ie)
+        }
+    }
+
+    fun removePost(id:String){
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = codagramApi.deletePost(id)
+
         }
     }
 

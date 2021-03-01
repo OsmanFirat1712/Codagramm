@@ -20,7 +20,6 @@ data class SendUser(
 
 data class Image(
     val url: String?,
-    val id:String
 )
 
 

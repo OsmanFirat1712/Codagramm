@@ -13,9 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.remoteModels.GroupList
+import java.util.*
 
 
-class SpinnerAdapter(context: Context,val data:ArrayList<String>,): BaseAdapter(){
+class SpinnerAdapter(context: Context,val data:ArrayList<String>,val data2: ArrayList<String>): BaseAdapter(){
     private val infalate:LayoutInflater
 
     init {
@@ -36,8 +37,11 @@ class SpinnerAdapter(context: Context,val data:ArrayList<String>,): BaseAdapter(
 
         }
         view?.tag = viewHolder
-        viewHolder.tvGroupName.text = data[postition]
-        viewHolder.idTextView.text = data[postition]
+        viewHolder.tvGroupName.text = data2[postition]
+
+        viewHolder.idTextView.text = data2[postition]
+
+
         return view
     }
 

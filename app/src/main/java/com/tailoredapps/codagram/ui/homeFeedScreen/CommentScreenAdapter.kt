@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 
 class CommentScreenAdapter(val codagramApi: CodagramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(DiffCallback()) {
 
-    var countryName: String? = null
     lateinit var mItemCLicked: ItemRemove2ClickListener
 
 

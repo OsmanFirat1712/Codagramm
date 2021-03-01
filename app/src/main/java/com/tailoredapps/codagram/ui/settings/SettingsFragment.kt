@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -165,6 +166,7 @@ class SettingsFragment:Fragment() {
         }
     }
     
+
 
 
     @ExperimentalCoroutinesApi

@@ -1,5 +1,6 @@
 package com.tailoredapps.codagram.ui.homeFeedScreen
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,6 +14,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.databinding.HomeFeedScreenBinding
@@ -22,19 +26,27 @@ import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.Post
 import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodagramApi
+import com.tailoredapps.codagram.remote.SessionManager
 import com.tailoredapps.codagram.ui.HomeFeedScreenDirections
 import com.tailoredapps.codagram.ui.groupscreen.GroupDetailsAdapter
+import kotlinx.android.synthetic.main.fragment_group.view.*
+import kotlinx.android.synthetic.main.fragment_group_details.view.*
+import kotlinx.android.synthetic.main.home_feed_screen.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class HomeFeedAdapter(val codagramApi: CodagramApi) : ListAdapter<Post, HomeFeedAdapter.CountryItem>(DiffCallback()) {
+class HomeFeedAdapter(val codagramApi: CodagramApi,val context: Context) : ListAdapter<Post, HomeFeedAdapter.CountryItem>(DiffCallback()) {
     lateinit var mItemCLicked: ItemCLickedListener
+    lateinit var mItemRemoveClicked: ItemGroupRemoveListener
+    private val sessionManager = SessionManager(context)
+    private lateinit var token:String
 
     class DiffCallback : DiffUtil.ItemCallback<Post>() {
 
-        override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
+        override fun areContentsTheSame(oldItem: Post, newItem: Post
+        ): Boolean {
             return oldItem.id == newItem.id
         }
 
@@ -47,6 +59,22 @@ class HomeFeedAdapter(val codagramApi: CodagramApi) : ListAdapter<Post, HomeFeed
         val currentItem = getItem(position)
 
         holder.apply {
+/*
+
+            token = sessionManager.fetchAuthToken().toString()
+            val url=(getItem(position)).image?.url
+
+            val glideUrl = GlideUrl(
+                url,
+                LazyHeaders.Builder()
+                    .addHeader("X-FIREBASE-TOKEN",token)
+                    .build()
+            )
+*/
+
+            Glide.with(itemView)
+                .load(currentItem.image?.url)
+                .into(itemView.post_image)
 
             userName.text = currentItem.user?.firstname
             likeCount.text = currentItem.likes.toString()
@@ -61,13 +89,13 @@ class HomeFeedAdapter(val codagramApi: CodagramApi) : ListAdapter<Post, HomeFeed
                 when{
                     currentItem.userLiked -> {
                         mItemCLicked.let {
-                            mItemCLicked.onItemClicked(true,currentItem.id)
+                            mItemCLicked.onItemClicked(true,getItem(position))
                             like.setImageResource(R.drawable.ic_baseline_favoritelike_24)
 
                         }
                     }
                     else->{
-                        mItemCLicked.onItemClicked(false,currentItem.id)
+                        mItemCLicked.onItemClicked(false,getItem(position))
                         like.setImageResource(R.drawable.ic_baseline_favorite_border_24)
                     }
                 }
@@ -75,16 +103,14 @@ class HomeFeedAdapter(val codagramApi: CodagramApi) : ListAdapter<Post, HomeFeed
         }
         holder.itemView.setOnClickListener {
             mItemCLicked.let {
-                mItemCLicked.onItemClicked(currentItem.userLiked,currentItem.id)
+                mItemCLicked.onItemClicked(currentItem.userLiked,getItem(position))
             }
         }
 
         holder.delete.setOnClickListener {
-
-            GlobalScope.launch (Dispatchers.IO ){
-                codagramApi.deletePost(currentItem.id)
+            mItemRemoveClicked.let{
+                mItemRemoveClicked.onGroupRemoved(getItem(position))
             }
-            //codagramApi.deletePost(currentItem.id)
         }
     }
 
@@ -102,6 +128,11 @@ class HomeFeedAdapter(val codagramApi: CodagramApi) : ListAdapter<Post, HomeFeed
         mItemCLicked = itemCLicked
     }
 
+    fun removeUpListener(itemRemoved:ItemGroupRemoveListener) {
+        mItemRemoveClicked = itemRemoved
+    }
+
+
     class CountryItem(private val binding: HomeFeedScreenBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -118,6 +149,8 @@ class HomeFeedAdapter(val codagramApi: CodagramApi) : ListAdapter<Post, HomeFeed
             val bundle = bundleOf(
                 "name" to postData.id,
             )
+
+
 
 
             binding.captionText.text = postData.description.toString()
@@ -151,6 +184,9 @@ class HomeFeedAdapter(val codagramApi: CodagramApi) : ListAdapter<Post, HomeFeed
 
     }
     interface ItemCLickedListener {
-        fun onItemClicked(accept: Boolean, id: String)
+        fun onItemClicked(like: Boolean, post: Post)
+    }
+    interface ItemGroupRemoveListener {
+        fun onGroupRemoved(post:Post)
     }
 }

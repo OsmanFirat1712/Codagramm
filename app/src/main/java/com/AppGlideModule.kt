@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.android.play.core.appupdate.AppUpdateOptions.newBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GetTokenResult
+import com.tailoredapps.codagram.FirebaseUserIdTokenInterceptor
 import com.tailoredapps.codagram.remote.SessionManager
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -24,9 +25,70 @@ import java.io.IOException
 import java.io.InputStream
 import java.nio.file.attribute.AclEntry.newBuilder
 
+private const val X_FIREBASE_TOKEN: String = "X-FIREBASE-TOKEN"
 
 @GlideModule
- class AppGlideModul : AppGlideModule() {
+class AppGlideModule(val context: Context) : AppGlideModule() {
+    private val sessionManager = SessionManager(context)
+    private lateinit var token: String
+    private lateinit var url: String
+
+    override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+
+        val client = OkHttpClient.Builder().addInterceptor(FirebaseUserIdTokenInterceptor()).build()
+        glide.registry.replace(GlideUrl::class.java,InputStream::class.java,OkHttpUrlLoader.Factory(client))
+
+        /*    super.registerComponents(context, glide, registry)
+
+        token = sessionManager.fetchAuthToken().toString()
+        url = "https://codagram.tailored-apps.com/api/"
+
+        val glideUrl = GlideUrl(
+            url,
+            LazyHeaders.Builder()
+                .addHeader("X-FIREBASE-TOKEN", token)
+                .build()
+        )
+
+
+    }
+
+    private val baseUrl = "https://codagram.tailored-apps.com/api/"
+
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request: Request = chain.request()
+        try {
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user == null) {
+                throw  Exception("User is not logged in.");
+            } else {
+                val task: Task<GetTokenResult> = user.getIdToken(true)
+                val tokenResult: GetTokenResult = Tasks.await(task)
+                val idToken: String? = tokenResult.token
+                if (idToken == null) {
+                    throw  Exception("idToken is null");
+                } else {
+                    val modifiedRequest: Request = request.newBuilder()
+                        .addHeader(X_FIREBASE_TOKEN, idToken)
+                        .build()
+
+                    val modifiedRequests: Request.Builder = request.newBuilder()
+                    val glideUrl = GlideUrl(
+                        baseUrl,
+                        LazyHeaders.Builder()
+                            .addHeader("X-FIREBASE-TOKEN", idToken)
+                            .build()
+                    )
+                    return chain.proceed(modifiedRequest)
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            throw IOException(e.message)
+        }
+    }*/
+
+    }
+}
 /* val url = "https://codagram.tailored-apps.com/api/"
  val glideUrl = GlideUrl(url,
   LazyHeaders.Builder()
@@ -98,7 +160,5 @@ import java.nio.file.attribute.AclEntry.newBuilder
   }
 
  }*/
-}
-
 
 

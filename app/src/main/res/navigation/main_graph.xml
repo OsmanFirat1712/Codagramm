@@ -21,6 +21,9 @@
         android:label="Detailansicht"
         tool:layout="@layout/fragment_group_details" >
 
+        <action
+            android:id="@+id/action_DetailScreen.TO.GROUP"
+            app:destination="@+id/thirdView" />
 
     </fragment>
 

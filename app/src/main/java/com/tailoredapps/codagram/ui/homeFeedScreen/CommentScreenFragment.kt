@@ -6,12 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentCommentScreenBinding
-import com.tailoredapps.codagram.databinding.FragmentFirstBinding
 import com.tailoredapps.codagram.models.Comment
 import com.tailoredapps.codagram.models.CommentBody
-import com.tailoredapps.codagram.models.Post
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 
@@ -61,7 +58,7 @@ class CommentScreenFragment : Fragment() {
     }
 
     fun getTest(){
-        viewModel.getanasiniSikim(countryName.toString())
+        viewModel.getPostById(countryName.toString())
     }
 
     @ExperimentalCoroutinesApi
