@@ -31,18 +31,13 @@ import java.util.*
 class NewStoryFragment : Fragment() {
     private val viewModel: NewStoryViewModel by inject()
     private val groupDetailsAdapter: GroupDetailsAdapter by inject()
-
     private val searchAdapter: SearchAdapter by inject()
     private lateinit var binding: FragmentSecondBinding
-    lateinit var imageData: Uri
     lateinit var file: File
 
     val REQUEST_IMAGE_CAPTURE = 2
     private lateinit var getSpinnerItem: String
-    private lateinit var downloadUrl: String
     private lateinit var adapter: SpinnerAdapter
-    private lateinit var image: Uri
-    private lateinit var juri: URI
 
 
     override fun onCreateView(
@@ -194,8 +189,6 @@ class NewStoryFragment : Fragment() {
             viewModel.post(description, getSpinnerItem, Uri.fromFile(file))
             view?.findNavController()
                 ?.navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
-
-            viewModel.getGroups()
         }
 
 

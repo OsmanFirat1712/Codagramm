@@ -1,4 +1,4 @@
-package com.tailoredapps.codagram.ui.groupscreen
+ package com.tailoredapps.codagram.ui.groupscreen
 
 import com.tailoredapps.codagram.ui.loginscreen.LoginFragment
 import com.tailoredapps.codagram.ui.loginscreen.LoginViewModel

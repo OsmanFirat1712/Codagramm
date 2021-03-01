@@ -1,7 +1,6 @@
 package com.tailoredapps.codagram.ui.homeFeedScreen
 
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,35 +8,24 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.tailoredapps.codagram.R
-import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.databinding.HomeFeedScreenBinding
-import com.tailoredapps.codagram.databinding.SearchDetailPageBinding
-import com.tailoredapps.codagram.models.Comment
-import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.Post
-import com.tailoredapps.codagram.models.User
-import com.tailoredapps.codagram.remote.CodagramApi
+import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.remote.SessionManager
-import com.tailoredapps.codagram.ui.HomeFeedScreenDirections
-import com.tailoredapps.codagram.ui.groupscreen.GroupDetailsAdapter
 import kotlinx.android.synthetic.main.fragment_group.view.*
 import kotlinx.android.synthetic.main.fragment_group_details.view.*
 import kotlinx.android.synthetic.main.home_feed_screen.view.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class HomeFeedAdapter(val codagramApi: CodagramApi,val context: Context) : ListAdapter<Post, HomeFeedAdapter.CountryItem>(DiffCallback()) {
+class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : ListAdapter<Post, HomeFeedAdapter.CountryItem>(DiffCallback()) {
     lateinit var mItemCLicked: ItemCLickedListener
     lateinit var mItemRemoveClicked: ItemGroupRemoveListener
     private val sessionManager = SessionManager(context)

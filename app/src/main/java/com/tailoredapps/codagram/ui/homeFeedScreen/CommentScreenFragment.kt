@@ -70,6 +70,7 @@ class CommentScreenFragment : Fragment() {
                 override fun onItemClicked(comment: Comment) {
                     viewModel.deleteComment(countryName.toString(),comment.id)
                     viewModel.getCommentPost(countryName.toString())
+/*                    viewModel.getPostById(null.toString())*/
                 }
             })
         })

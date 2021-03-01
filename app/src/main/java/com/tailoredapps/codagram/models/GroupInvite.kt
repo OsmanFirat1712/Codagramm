@@ -18,11 +18,6 @@ data class GroupInvite(
 
 )
 
-data class Groui(
-    val selected: Boolean = false,
-    val group: GroupInvite
-)
-
 data class GroupInviteBody(
     val groupId:String?,
     val invitees:List<String>?

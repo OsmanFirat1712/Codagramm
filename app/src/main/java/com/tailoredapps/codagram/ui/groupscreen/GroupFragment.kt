@@ -99,8 +99,9 @@ class GroupFragment : Fragment(), Get {
            // (viewModel.createGroup(nameGroup))
 
 
+
             view.findNavController()
-                .navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreens())
+                .navigate(GroupFragmentDirections.actionGroupScreenToMyGroupScreen())
 /*
             view?.findNavController()?.navigate(R.id.action_GroupScreen_to_GroupDetailScreens,bundle)
 */

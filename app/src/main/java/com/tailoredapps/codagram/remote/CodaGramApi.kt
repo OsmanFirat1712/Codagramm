@@ -7,7 +7,8 @@ import com.tailoredapps.codagram.remoteModels.PostList
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
-interface CodagramApi {
+interface CodaGramApi {
+
     @POST("user")
     suspend fun addUser(@Body user: SendUser): User
 
@@ -73,6 +74,9 @@ interface CodagramApi {
     @PUT("group/{id}")
     suspend fun updateGroup(@Path("id") id:String, @Body updateGroup:UpdateGroup):Group
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                   POST ///
     @POST("post")
     suspend fun newStoryPost(@Body postBody: PostBody):Post
 
