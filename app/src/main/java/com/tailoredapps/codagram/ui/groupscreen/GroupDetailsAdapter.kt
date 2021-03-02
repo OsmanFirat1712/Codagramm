@@ -21,6 +21,7 @@ import com.tailoredapps.codagram.databinding.GroupscreenMygroupsBinding
 import com.tailoredapps.codagram.databinding.SearchDetailPageBinding
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.User
+import kotlinx.android.synthetic.main.search_detail_page.view.*
 
 class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSearchViewHolder>(
     DiffCallback()
@@ -60,16 +61,11 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
         @RequiresApi(Build.VERSION_CODES.N)
         fun bind(postData: User) {
 
+            binding.resultText.text = postData.nickname
+            binding.tvUserNameMemberCards.text = postData.firstname
+            binding.tvLastNameMemberCards.text = postData.lastname
+            binding.tvEmailMemberCards.text = postData.email
 
-            /*    postData.members.forEach {
-            val userName = it.firstname
-
-        }*/
-            if (FirebaseAuth.getInstance().currentUser!!.uid == postData.id) {
-
-            } else {
-                binding.resultText.text = postData.firstname.toString()
-            }
 
 
         }
@@ -85,6 +81,11 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
                 mItemCLicked.let {
                     mItemCLicked.onItemClicked(getItem(position))
                 }
+
+                Glide.with(itemView)
+                    .load(selectedItem.image?.url)
+                    .placeholder(R.drawable.person)
+                    .into(itemView.ivUserProfileImage)
 
             }
             true

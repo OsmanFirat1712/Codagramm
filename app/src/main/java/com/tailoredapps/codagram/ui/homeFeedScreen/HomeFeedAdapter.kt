@@ -3,10 +3,13 @@ package com.tailoredapps.codagram.ui.homeFeedScreen
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -17,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.databinding.HomeFeedScreenBinding
@@ -59,27 +63,43 @@ class HomeFeedAdapter(val codagramApi: CodagramApi,val context: Context) : ListA
         val currentItem = getItem(position)
 
         holder.apply {
-/*
-
-            token = sessionManager.fetchAuthToken().toString()
-            val url=(getItem(position)).image?.url
-
-            val glideUrl = GlideUrl(
-                url,
-                LazyHeaders.Builder()
-                    .addHeader("X-FIREBASE-TOKEN",token)
-                    .build()
-            )
-*/
-
             Glide.with(itemView)
                 .load(currentItem.image?.url)
                 .into(itemView.post_image)
 
+            Glide.with(itemView)
+                .load(currentItem.user?.image?.url)
+                .into(itemView.ivUserImage)
+
+            Glide.with(itemView)
+                .load(currentItem.user?.image?.url)
+                .into(itemView.ivUser2Image)
+
+            Glide.with(itemView)
+                .load(currentItem.user?.image?.url)
+                .into(itemView.user_photo_image)
+
             userName.text = currentItem.user?.firstname
             likeCount.text = currentItem.likes.toString()
-            writtenBy.text = currentItem.comments?.firstOrNull()?.user?.firstname.toString()
-            firstComment.text = currentItem.comments?.firstOrNull()?.text
+            tagSize.text = currentItem.tags.size.toString()
+            tvGroupName.text = currentItem.group?.name.toString()
+            tvNickName.text = "(" + currentItem.user?.nickname.toString() + ")"
+
+
+            when{
+                currentItem.comments!!.isNotEmpty() -> {
+                    cardCommend.visibility = View.VISIBLE
+                    writtenBy.text = currentItem.comments?.firstOrNull()?.user?.firstname.toString()
+                    firstComment.text = currentItem.comments?.firstOrNull()?.text
+                }
+                else -> {
+                    cardCommend.visibility = View.INVISIBLE
+                }
+
+            }
+
+            writtenBy2.text = currentItem.user?.firstname
+            secondComment.text = currentItem.comments.getOrNull(1)?.text.toString()
             commentCount2.text = currentItem.comments?.size.toString()+" "+"Comment"
 
             like.setOnClickListener {
@@ -91,11 +111,14 @@ class HomeFeedAdapter(val codagramApi: CodagramApi,val context: Context) : ListA
                         mItemCLicked.let {
                             mItemCLicked.onItemClicked(true,getItem(position))
                             like.setImageResource(R.drawable.ic_baseline_favoritelike_24)
-
+                            if (FirebaseAuth.getInstance().currentUser!!.uid == currentItem.member.toString()){
+                                like.setImageResource(R.drawable.ic_baseline_favoritelike_24)
+                            }
                         }
                     }
                     else->{
                         mItemCLicked.onItemClicked(false,getItem(position))
+
                         like.setImageResource(R.drawable.ic_baseline_favorite_border_24)
                     }
                 }
@@ -106,6 +129,15 @@ class HomeFeedAdapter(val codagramApi: CodagramApi,val context: Context) : ListA
                 mItemCLicked.onItemClicked(currentItem.userLiked,getItem(position))
             }
         }
+
+        when {
+            FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id-> holder.delete.visibility = View.VISIBLE
+            else->holder.delete.visibility = View.INVISIBLE
+
+        }
+
+
+
 
         holder.delete.setOnClickListener {
             mItemRemoveClicked.let{
@@ -140,9 +172,16 @@ class HomeFeedAdapter(val codagramApi: CodagramApi,val context: Context) : ListA
         val userName:TextView = itemView.findViewById(R.id.username_text)
         val likeCount:TextView = itemView.findViewById(R.id.likes_text)
         val firstComment:TextView = itemView.findViewById(R.id.tvFirstComment)
+        val secondComment:TextView = itemView.findViewById(R.id.tvFirstComment2)
+        val writtenBy2:TextView = itemView.findViewById(R.id.tvWrittenBy2)
         val writtenBy:TextView = itemView.findViewById(R.id.tvWrittenBy)
         val commentCount2:TextView = itemView.findViewById(R.id.comment_text)
         val delete:ImageView = itemView.findViewById(R.id.ivDelete)
+        val cardCommend:CardView = itemView.findViewById(R.id.cv1)
+        val cardCommend2:CardView = itemView.findViewById(R.id.cvLastCommend2)
+        val tagSize:TextView = itemView.findViewById(R.id.tvTagSize)
+        val tvGroupName:TextView = itemView.findViewById(R.id.tvGroupName)
+        val tvNickName:TextView = itemView.findViewById(R.id.tvNickName)
 
         fun bind(postData: Post) {
 
@@ -174,13 +213,6 @@ class HomeFeedAdapter(val codagramApi: CodagramApi,val context: Context) : ListA
 
         }
 
-    fun test(update:List<Post>){
-        GlobalScope.launch (Dispatchers.IO){
-            val myPosts = MutableLiveData<List<Post>>()
-            fun refreshPosts(): LiveData<List<Post>> = myPosts
-            myPosts.value = update
-        }
-    }
 
     }
     interface ItemCLickedListener {
