@@ -50,6 +50,7 @@ class SettingsFragment:Fragment() {
         return binding.root
     }
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -65,6 +66,7 @@ class SettingsFragment:Fragment() {
         binding.btnUpload.setOnClickListener {
             viewModel.addPhoto(Uri.fromFile(file))
             Snackbar.make(requireView()," Bild wurde Hochgeladen",Snackbar.LENGTH_SHORT).show()
+            viewModel.getUsers()
 
         }
     }
@@ -75,20 +77,18 @@ class SettingsFragment:Fragment() {
             val dialogBuilder = AlertDialog.Builder(requireContext())
 
             Snackbar.make(requireView(), "saasd", Snackbar.LENGTH_SHORT).show()
-            // build alert dialog
-
-            // set message of alert dialog
             dialogBuilder.setMessage("Willst du das Bild ändern oder Löschen?")
-                // if the dialog is cancelable
-                .setCancelable(false)
-                // positive button text and action
+                .setCancelable(true)
                 .setPositiveButton("EDIT", DialogInterface.OnClickListener { dialog, id ->
                     uploadClickAction()
+                    viewModel.getUsers()
 
                 })
-                // negative button text and action
                 .setNegativeButton("DELETE", DialogInterface.OnClickListener { dialog, id ->
                     deleteUserImage()
+                    viewModel.getUsers()
+                    Snackbar.make(requireView()," Das Bild wurde gelöscht",Snackbar.LENGTH_SHORT).show()
+
                     dialog.cancel()
 
                 })
@@ -175,9 +175,14 @@ class SettingsFragment:Fragment() {
             binding.tvLastName.text =Editable.Factory.getInstance().newEditable(it.firstname)
             binding.tvUserName.text = Editable.Factory.getInstance().newEditable(it.lastname)
             binding.tvNickName.text = Editable.Factory.getInstance().newEditable(it.nickname)
+            Glide.with(requireContext())
+                .load(it.image?.url)
+                .placeholder(R.drawable.ic_baseline_image_48)
+                .into(binding.ivProfileImage)
         })
         binding.btnSaveChanges.setOnClickListener {
             viewModel.updateNickName(binding.tvNickName.text.toString(),binding.tvUserName.text.toString(),binding.tvLastName.text.toString())
+            viewModel.getUsers()
             Snackbar.make(requireView(),"Profileinstellungen wurden geändert",Snackbar.LENGTH_SHORT).show()
         }
 
@@ -189,7 +194,7 @@ class SettingsFragment:Fragment() {
             val dialogBuilder = AlertDialog.Builder(requireContext())
 
             dialogBuilder.setMessage("Möchst du wirklich dein Account löschen?")
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton("CANCEL", DialogInterface.OnClickListener { dialog, id ->
                 })
                 // negative button text and action
@@ -199,11 +204,14 @@ class SettingsFragment:Fragment() {
                     view?.findNavController()?.navigate(SettingsFragmentDirections.actionSettingsViewToLogin())
 */
                     dialog.cancel()
+                    dialog.dismiss()
 
                 })
 
+
             val alert = dialogBuilder.create()
             alert.setTitle("AlertDialogExample")
+            alert.cancel()
             alert.show()
         }
 

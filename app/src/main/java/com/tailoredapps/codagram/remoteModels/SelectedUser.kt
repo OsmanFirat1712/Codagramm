@@ -1,4 +1,4 @@
-package com.tailoredapps.codagram.ui.groupscreen
+package com.tailoredapps.codagram.remoteModels
 
 import com.tailoredapps.codagram.models.User
 

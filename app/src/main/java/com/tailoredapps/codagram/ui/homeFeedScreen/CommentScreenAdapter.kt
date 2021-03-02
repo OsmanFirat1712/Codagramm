@@ -1,15 +1,10 @@
 package com.tailoredapps.codagram.ui.homeFeedScreen
 
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.GlideApp
@@ -18,9 +13,8 @@ import com.google.android.play.core.assetpacks.dd
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
-import com.tailoredapps.codagram.databinding.HomeFeedScreenBinding
-import com.tailoredapps.codagram.databinding.SearchDetailPageBinding
 import com.tailoredapps.codagram.models.Comment
+<<<<<<< HEAD
 import com.tailoredapps.codagram.models.Post
 import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodagramApi
@@ -33,6 +27,11 @@ import kotlinx.coroutines.launch
 import kotlin.time.days
 
 class CommentScreenAdapter(val codagramApi: CodagramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(DiffCallback()) {
+=======
+import com.tailoredapps.codagram.remote.CodaGramApi
+
+class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(DiffCallback()) {
+>>>>>>> 3a9a25a57fdc830a0468662167f1d14cc01fb800
 
     lateinit var mItemCLicked: ItemRemove2ClickListener
 

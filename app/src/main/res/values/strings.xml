@@ -13,6 +13,13 @@
     <string name="register_nickName_info">Group name have to more than 5 character</string>
     <string name="register_email_info">Group name have to more than 4 character</string>
     <string name="register_password_info">Group name have to more than 6 character</string>
+    <string name="vorname">Vorname</string>
+    <string name="NachName">Nachname</string>
+    <string name="nickname">Nickname</string>
+    <string name="email_adresse">Email-Adresse</string>
+    <string name="passwort">Passwort</string>
+    <string name="account_erstellen">Account Erstellen</string>
+    <string name="abbrechen">Abbrechen</string>
 
 
 </resources>

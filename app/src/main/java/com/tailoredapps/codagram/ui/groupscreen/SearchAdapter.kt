@@ -3,17 +3,14 @@ package com.tailoredapps.codagram.ui.groupscreen
 import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.SearchItemsBinding
-import com.tailoredapps.codagram.models.SearchResult
-import com.tailoredapps.codagram.models.User
+import com.tailoredapps.codagram.remoteModels.SelectedUser
 
 
 class SearchAdapter : ListAdapter<SelectedUser, SearchViewHolder>(object: DiffUtil.ItemCallback<SelectedUser>(){

@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.tailoredapps.codagram.databinding.LoginFragmentBinding
 import org.koin.android.ext.android.inject
+import java.net.InetAddress
 
 class LoginFragment : Fragment() {
 
@@ -44,7 +45,9 @@ class LoginFragment : Fragment() {
             it.findNavController().navigate(LoginFragmentDirections.actionLoginToRegister())
         }
 
+
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -116,8 +119,22 @@ class LoginFragment : Fragment() {
 
 
 
+<<<<<<< HEAD
 
 
+=======
+    /*fun isInternetAvailable(): Boolean {
+        return try {
+            val ipAddr: InetAddress = InetAddress.getByName( "www.googleapis.com")
+            Snackbar.make(requireView(),"concect",Snackbar.LENGTH_SHORT).show()
+            //You can replace it with your name
+            !ipAddr.equals("")
+        } catch (e: Exception) {
+            Snackbar.make(requireView(),"dsasds",Snackbar.LENGTH_SHORT).show()
+            false
+        }
+    }*/
+>>>>>>> 3a9a25a57fdc830a0468662167f1d14cc01fb800
     
 
 

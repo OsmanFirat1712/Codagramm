@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.GroupInvite
-import com.tailoredapps.codagram.remote.CodagramApi
+import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.remoteModels.ReplyToInvite
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
-class MyGroupScreenViewMode(private val context: Context, private val codagramApi: CodagramApi) :
+class MyGroupScreenViewMode(private val context: Context, private val codaGramApi: CodaGramApi) :
     ViewModel() {
 
     @ExperimentalCoroutinesApi
@@ -38,7 +38,7 @@ class MyGroupScreenViewMode(private val context: Context, private val codagramAp
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = codagramApi.getAllGroups()
+            val response = codaGramApi.getAllGroups()
             updateUi(response.groups)
 
         }
@@ -46,7 +46,7 @@ class MyGroupScreenViewMode(private val context: Context, private val codagramAp
 
     fun getAllGroups(){
         viewModelScope.launch(Dispatchers.IO) {
-            val response = codagramApi.getAllGroups()
+            val response = codaGramApi.getAllGroups()
             updateUi(response.groups)
         }
     }
@@ -61,7 +61,7 @@ class MyGroupScreenViewMode(private val context: Context, private val codagramAp
     fun getInvites(){
         try {
             viewModelScope.launch(Dispatchers.IO) {
-               val response = codagramApi.getGroupInvitees()
+               val response = codaGramApi.getGroupInvitees()
                 updateList(response.invites)
 
 
@@ -90,7 +90,7 @@ class MyGroupScreenViewMode(private val context: Context, private val codagramAp
     fun answerInvites(id: String, accept: Boolean){
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                val response = codagramApi.replyToanyInvite(id,ReplyToInvite(accept))
+                val response = codaGramApi.replyToanyInvite(id,ReplyToInvite(accept))
                 val selectedUsers = searchForUser.value?.replyToInvite
 
             }

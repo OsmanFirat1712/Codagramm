@@ -36,8 +36,8 @@ class GroupFragment : Fragment(), Get {
     private var user: List<User> = emptyList()
     private var bundle: Bundle? = null
     var navController: NavController? = null
-    private lateinit var file:File
-
+    private var  file:File? = null
+    private lateinit var input:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,9 +75,21 @@ class GroupFragment : Fragment(), Get {
     @ExperimentalCoroutinesApi
     private fun searchKey() {
 
+<<<<<<< HEAD:app/src/main/java/com/tailoredapps/codagram/ui/groupscreen/GroupFragment.kt
         val input = binding.auto.text.toString()
         viewModel.searchUser(input)
         Timber.d(input)
+=======
+         input = binding.auto.text.toString()
+        if (input.isEmpty()){
+            Snackbar.make(requireView(),"Bitte einen User eingeben",Snackbar.LENGTH_SHORT).show()
+        } else {
+            viewModel.searchUser(input)
+            Timber.d(input)
+
+        }
+
+>>>>>>> 3a9a25a57fdc830a0468662167f1d14cc01fb800:app/src/main/java/com/tailoredapps/codagram/ui/groupscreen/GroupCreateFragment.kt
 
     }
 
@@ -96,12 +108,20 @@ class GroupFragment : Fragment(), Get {
         binding.btnCreateGroup.setOnClickListener { view ->
 
             val nameGroup = binding.etCreateGroup.text.toString()
-            viewModel.createGroup(nameGroup, Uri.fromFile(file))
-           // (viewModel.createGroup(nameGroup))
+
+            // (viewModel.createGroup(nameGroup))
+            if (nameGroup.isEmpty()&& input.isEmpty()){
+                Snackbar.make(requireView(),"Es muss eine Description gesetzt werden",Snackbar.LENGTH_SHORT).show()
+            } else if (file != null){
+                view.findNavController()
+                    .navigate(GroupFragmentDirections.actionGroupScreenToMyGroupScreen())
+                viewModel.createGroup(nameGroup, Uri.fromFile(file))
+            } else{
+                Snackbar.make(requireView(),"Bitte noch ein Gruppenfoto auswählen",Snackbar.LENGTH_SHORT).show()
+            }
 
 
-            view.findNavController()
-                .navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreens())
+
 /*
             view?.findNavController()?.navigate(R.id.action_GroupScreen_to_GroupDetailScreens,bundle)
 */
@@ -133,10 +153,7 @@ class GroupFragment : Fragment(), Get {
                 .compress(524)
                 .maxResultSize(1080, 1080)
                 .start()
-            /*if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(requireActivity(),
-                    Array(1){Manifest.permission.READ_EXTERNAL_STORAGE},121)
-            }*/
+
             listImages()
         }
     }
@@ -155,8 +172,6 @@ class GroupFragment : Fragment(), Get {
 
             //You can get File object from intent
             file = ImagePicker.getFile(data)!!
-
-            //You can also get File Path from intent
             val filePath:String = ImagePicker.getFilePath(data)!!
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Snackbar.make(requireView(), ImagePicker.getError(data), Snackbar.LENGTH_SHORT).show()

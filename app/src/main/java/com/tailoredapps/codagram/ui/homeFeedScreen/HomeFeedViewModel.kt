@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.Post
-import com.tailoredapps.codagram.remote.CodagramApi
+import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.remoteModels.CommentLike
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
+class HomeFeedViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
 
     @ExperimentalCoroutinesApi
     private val myPosts = MutableLiveData<List<Post>>()
@@ -30,7 +30,7 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
     fun getStoryPost(id:String?){
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                val response = codagramApi.getStoryPost(id)
+                val response = codaGramApi.getStoryPost(id)
                 updateHomeFeed(response.posts)
             }
         }catch (ie:Exception){
@@ -42,7 +42,7 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
     fun getStoryPostbyQuery(id:String?){
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                val response = codagramApi.getStoryPostbyQuery(id)
+                val response = codaGramApi.getStoryPostbyQuery(id)
                 updateHomeFeed(response.posts)
             }
         }catch (ie:Exception){
@@ -52,7 +52,7 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
 
     fun getAllGroups(){
         viewModelScope.launch(Dispatchers.IO) {
-            val response = codagramApi.getAllGroups()
+            val response = codaGramApi.getAllGroups()
             updateUi(response.groups)
         }
     }
@@ -77,7 +77,7 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
     fun likeComment(id:String,like:Boolean){
         try {
             viewModelScope.launch(Dispatchers.IO){
-                val response = codagramApi.likeToComment(id, CommentLike(like))
+                val response = codaGramApi.likeToComment(id, CommentLike(like))
             }
 
 
@@ -88,7 +88,7 @@ class HomeFeedViewModel(private val codagramApi: CodagramApi) : ViewModel() {
 
     fun removePost(id:String){
         viewModelScope.launch(Dispatchers.IO) {
-            val response = codagramApi.deletePost(id)
+            val response = codaGramApi.deletePost(id)
 
         }
     }
