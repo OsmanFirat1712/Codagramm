@@ -7,13 +7,31 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.GlideApp
+import com.bumptech.glide.Glide
+import com.google.android.play.core.assetpacks.dd
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.models.Comment
+<<<<<<< HEAD
+import com.tailoredapps.codagram.models.Post
+import com.tailoredapps.codagram.models.User
+import com.tailoredapps.codagram.remote.CodagramApi
+import com.tailoredapps.codagram.ui.HomeFeedScreenDirections
+import com.tailoredapps.codagram.ui.groupscreen.GroupDetailsAdapter
+import kotlinx.android.synthetic.main.comment_screen_items.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlin.time.days
+
+class CommentScreenAdapter(val codagramApi: CodagramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(DiffCallback()) {
+=======
 import com.tailoredapps.codagram.remote.CodaGramApi
 
 class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(DiffCallback()) {
+>>>>>>> 3a9a25a57fdc830a0468662167f1d14cc01fb800
 
     lateinit var mItemCLicked: ItemRemove2ClickListener
 
@@ -32,6 +50,14 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
     override fun onBindViewHolder(holder: CountryItem, position: Int) {
         holder.bind(getItem(position))
         val currentItem = getItem(position)
+
+        holder.apply {
+            Glide.with(itemView)
+                .load(currentItem.user?.image?.url)
+                .placeholder(R.drawable.person)
+                .into(itemView.ivUserImage)
+
+        }
 
 
         when{
@@ -72,6 +98,7 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
 
             binding.tvUserName.text = postData.user?.firstname.toString()
             binding.tvUserComment.text = postData.text
+            binding.tvCommendTime.text = postData.createdAt
 
         }
     }

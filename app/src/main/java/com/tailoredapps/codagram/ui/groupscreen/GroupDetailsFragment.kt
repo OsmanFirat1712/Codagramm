@@ -44,7 +44,8 @@ class GroupDetailsFragment : Fragment() {
     private lateinit var file: File
     private lateinit var dialog: AlertDialog
     private lateinit var groupName: String
-    private lateinit var image: String
+    private lateinit var image:String
+    private lateinit var creatorName:String
 
 
     @ExperimentalCoroutinesApi
@@ -107,7 +108,8 @@ class GroupDetailsFragment : Fragment() {
         groupName = arguments?.getString("name").toString()
         groupId = arguments?.getString("id").toString()
         creatorId = arguments?.getString("creatorId")
-        image = arguments?.getString("imageUrl").toString()
+        image  = arguments?.getString("imageUrl").toString()
+        creatorName = arguments?.getString("creatorName").toString()
         //if post crashes, comment theses
 
 

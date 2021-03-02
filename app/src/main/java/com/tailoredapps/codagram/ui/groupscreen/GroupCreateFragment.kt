@@ -63,6 +63,7 @@ class GroupFragment : Fragment(), Get {
         bindToLiveData()
         createButtonAction()
         uploadClickAction()
+        cancelButtonAction()
 
 
         binding.auto.setOnClickListener {
@@ -74,6 +75,11 @@ class GroupFragment : Fragment(), Get {
     @ExperimentalCoroutinesApi
     private fun searchKey() {
 
+<<<<<<< HEAD:app/src/main/java/com/tailoredapps/codagram/ui/groupscreen/GroupFragment.kt
+        val input = binding.auto.text.toString()
+        viewModel.searchUser(input)
+        Timber.d(input)
+=======
          input = binding.auto.text.toString()
         if (input.isEmpty()){
             Snackbar.make(requireView(),"Bitte einen User eingeben",Snackbar.LENGTH_SHORT).show()
@@ -83,13 +89,15 @@ class GroupFragment : Fragment(), Get {
 
         }
 
+>>>>>>> 3a9a25a57fdc830a0468662167f1d14cc01fb800:app/src/main/java/com/tailoredapps/codagram/ui/groupscreen/GroupCreateFragment.kt
 
     }
 
     override fun onItemClicked(group: Group) {
         bundle = bundleOf(
             "names" to group.name,
-            "ids" to group.id
+            "ids" to group.id,
+            "creatorName" to group.creator?.firstname
         )
 
     }
@@ -118,6 +126,13 @@ class GroupFragment : Fragment(), Get {
             view?.findNavController()?.navigate(R.id.action_GroupScreen_to_GroupDetailScreens,bundle)
 */
 
+        }
+    }
+
+    fun cancelButtonAction(){
+        binding.btnCancel.setOnClickListener {view ->
+            view.findNavController()
+                .navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreens())
         }
     }
 
