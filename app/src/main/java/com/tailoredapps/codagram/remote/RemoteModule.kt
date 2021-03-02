@@ -5,9 +5,7 @@ import com.tailoredapps.codagram.GlobalAppData
 import com.google.gson.Gson
 
 import com.tailoredapps.codagram.FirebaseUserIdTokenInterceptor
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -20,7 +18,7 @@ internal val remoteModule = module { single { provideGson()}
 private fun provideGson():Gson = Gson()
 
 
-private fun provideApi(globalAppData: GlobalAppData,gson:Gson,context: Context): CodagramApi = Retrofit.Builder()
+private fun provideApi(globalAppData: GlobalAppData,gson:Gson,context: Context): CodaGramApi = Retrofit.Builder()
     .apply {
         baseUrl(globalAppData.baseUrl)
         addConverterFactory(GsonConverterFactory.create(gson))
@@ -32,4 +30,4 @@ private fun provideApi(globalAppData: GlobalAppData,gson:Gson,context: Context):
         )
     }
     .build()
-    .create(CodagramApi::class.java)
+    .create(CodaGramApi::class.java)

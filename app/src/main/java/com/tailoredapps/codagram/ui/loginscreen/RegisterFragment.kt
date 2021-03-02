@@ -45,30 +45,25 @@ class RegisterFragment : Fragment() {
     private val viewModel: LoginViewModel by inject()
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: RegisterFragmentBinding
-    val REQUEST_IMAGE_CAPTURE = 2
-    lateinit var imageData: Uri
-    var selectedImage: Bitmap? = null
-    var selectImage: ImageView? = null
-    var image:String? = null
+    var image: String? = null
     private lateinit var file: File
     private lateinit var waveHeader: MultiWaveHeader
 
-    val check:Boolean? = null
+    val check: Boolean? = null
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
-
-
-
-
         statusInfo()
         createActive(view)
         uploadClickAction()
 
 
+        binding.btnDialogCancel.setOnClickListener {
+            view.findNavController().popBackStack()
+        }
     }
 
     override fun onCreateView(
@@ -76,9 +71,10 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = RegisterFragmentBinding.inflate(layoutInflater, container, false)
-
-
         return binding.root
+
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -92,15 +88,13 @@ class RegisterFragment : Fragment() {
             file = ImagePicker.getFile(data)!!
 
             //You can also get File Path from intent
-            val filePath:String = ImagePicker.getFilePath(data)!!
+            val filePath: String = ImagePicker.getFilePath(data)!!
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Snackbar.make(requireView(), ImagePicker.getError(data), Snackbar.LENGTH_SHORT).show()
         } else {
             Snackbar.make(requireView(), "Task Cancelled", Snackbar.LENGTH_SHORT).show()
         }
     }
-
-
 
 
     private fun createUser(email: String, password: String) {
@@ -116,9 +110,11 @@ class RegisterFragment : Fragment() {
                                 val firstName = binding.dialogFirstName.text.toString()
                                 val lastName = binding.dialogLastName.text.toString()
                                 val password = binding.dialogPassword.text.toString()
-                                viewModel.postUser(SendUser(nickname,firstName,lastName))
-                                view?.findNavController()?.navigate(RegisterFragmentDirections.actionLoginToHome())
-                                viewModel.addPhoto(Uri.fromFile(file))
+                                viewModel.postUser(SendUser(nickname, firstName, lastName))
+                                view?.findNavController()
+                                    ?.navigate(RegisterFragmentDirections.actionLoginToHome())
+
+                                if (this::file.isInitialized) { viewModel.addPhoto(Uri.fromFile(file)) }
 
                             } else {
                                 Log.e("task message", "Failed" + task.exception)
@@ -128,16 +124,16 @@ class RegisterFragment : Fragment() {
             }
     }
 
-    private fun listImages(){
+    private fun listImages() {
         val i = Intent()
         i.type = "image/*"
         i.action = Intent.ACTION_GET_CONTENT
     }
 
 
-    private fun uploadClickAction(){
+    private fun uploadClickAction() {
         binding.ivImageView.setOnClickListener {
-            Toast.makeText(requireContext(),"Clicked",Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_LONG).show()
             ImagePicker.with(this)
                 .crop()
                 .compress(1024)
@@ -151,24 +147,45 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun statusInfo(){
-        viewModel.infoMessage(binding.ivFirstNameStatus,binding.ivLastNameStatus,binding.ivNickNameStatus,binding.ivEmailStatus,binding.ivPasswordStatus)
+    private fun statusInfo() {
+        viewModel.infoMessage(
+            binding.ivFirstNameStatus,
+            binding.ivLastNameStatus,
+            binding.ivNickNameStatus,
+            binding.ivEmailStatus,
+            binding.ivPasswordStatus
+        )
 
     }
 
-    private fun createActive(view: View){
+    private fun createActive(view: View) {
         binding.btnDialogCreate.setOnClickListener {
 
-            if (!viewModel.statusRulesFirstName(binding.dialogFirstName,binding.ivFirstNameStatus) || !viewModel.statusRulesLastName(binding.dialogLastName,binding.ivLastNameStatus) || !viewModel.statusRulesNickName(binding.dialogNickName,binding.ivNickNameStatus) || !viewModel.statusRulesEmail(binding.dialogEmail) || !viewModel.statusRulesPassword(binding.dialogPassword,binding.ivPasswordStatus)){
+            if (!viewModel.statusRulesFirstName(
+                    binding.dialogFirstName,
+                    binding.ivFirstNameStatus
+                ) || !viewModel.statusRulesLastName(
+                    binding.dialogLastName,
+                    binding.ivLastNameStatus
+                ) || !viewModel.statusRulesNickName(
+                    binding.dialogNickName,
+                    binding.ivNickNameStatus
+                ) || !viewModel.statusRulesEmail(binding.dialogEmail) || !viewModel.statusRulesPassword(
+                    binding.dialogPassword,
+                    binding.ivPasswordStatus
+                )
+            ) {
                 return@setOnClickListener
-            }else{
-                createUser(binding.dialogEmail.text.toString(),binding.dialogPassword.text.toString())
+            } else {
+                createUser(
+                    binding.dialogEmail.text.toString(),
+                    binding.dialogPassword.text.toString()
+                )
 
             }
 
         }
     }
-
 
 
 }
