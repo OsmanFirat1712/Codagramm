@@ -11,8 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.models.SendUser
-import com.tailoredapps.codagram.models.User
-import com.tailoredapps.codagram.remote.CodagramApi
+import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.remote.SessionManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +23,7 @@ import timber.log.Timber
 import java.io.File
 
 
-class LoginViewModel(private val context: Context, private val codagramApi: CodagramApi) :
+class LoginViewModel(private val context: Context, private val codaGramApi: CodaGramApi) :
     ViewModel() {
 
     private lateinit var auth: FirebaseAuth
@@ -54,7 +53,7 @@ class LoginViewModel(private val context: Context, private val codagramApi: Coda
         try {
             viewModelScope.launch(Dispatchers.IO) {
 
-                codagramApi.addUser(user)
+                codaGramApi.addUser(user)
             }
         } catch (ie: Exception) {
             Timber.e(ie)
@@ -65,7 +64,7 @@ class LoginViewModel(private val context: Context, private val codagramApi: Coda
     fun getUser(){
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                codagramApi.getUser()
+                codaGramApi.getUser()
             }
         }catch (ie:Exception){
             Timber.e(ie)
@@ -204,7 +203,7 @@ class LoginViewModel(private val context: Context, private val codagramApi: Coda
             val part: MultipartBody.Part = MultipartBody.Part.createFormData("image", file.name, requestBody)
             viewModelScope.launch(Dispatchers.IO) {
 
-                codagramApi.updateUserImage(part)
+                codaGramApi.updateUserImage(part)
 
             }
         } catch (ie: Exception) {

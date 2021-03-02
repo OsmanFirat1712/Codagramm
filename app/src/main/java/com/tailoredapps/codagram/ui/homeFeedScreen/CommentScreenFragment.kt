@@ -83,8 +83,7 @@ class CommentScreenFragment : Fragment() {
 
                     viewModel.deleteComment(countryName.toString(),comment.id)
                     viewModel.getCommentPost(countryName.toString())
-
-
+/*                    viewModel.getPostById(null.toString())*/
                 }
             })
         })

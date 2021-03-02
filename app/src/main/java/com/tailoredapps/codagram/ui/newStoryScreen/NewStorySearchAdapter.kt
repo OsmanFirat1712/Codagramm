@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tailoredapps.codagram.databinding.NewStorySearchItemBinding
-import com.tailoredapps.codagram.ui.groupscreen.SelectedUser
+import com.tailoredapps.codagram.remoteModels.SelectedUser
 import org.jetbrains.annotations.NotNull
 
 /*

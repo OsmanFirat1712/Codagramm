@@ -7,5 +7,5 @@ import org.koin.dsl.module
 
 internal val SettingsModule = module {
     fragment { SettingsFragment() }
-    viewModel { SettingsViewModel(codagramApi = get(),context = androidContext())  }
+    viewModel { SettingsViewModel(codaGramApi = get(),context = androidContext())  }
 }
