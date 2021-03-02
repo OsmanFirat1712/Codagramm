@@ -22,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupDetailsBinding
 import com.tailoredapps.codagram.databinding.RegisterDialogBinding
-import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.UpdateGroup
 import com.tailoredapps.codagram.models.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -45,7 +44,7 @@ class GroupDetailsFragment : Fragment() {
     private lateinit var file: File
     private lateinit var dialog: AlertDialog
     private lateinit var groupName: String
-    private lateinit var image:String
+    private lateinit var image: String
 
 
     @ExperimentalCoroutinesApi
@@ -71,7 +70,6 @@ class GroupDetailsFragment : Fragment() {
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.getAllGroups()
 
 /*
@@ -104,49 +102,57 @@ class GroupDetailsFragment : Fragment() {
             viewModel.sendGroupInvites(groupId.toString())
 
         }
-        createAlertDialog()
 
         alert()
         groupName = arguments?.getString("name").toString()
         groupId = arguments?.getString("id").toString()
         creatorId = arguments?.getString("creatorId")
-        image  = arguments?.getString("imageUrl").toString()
+        image = arguments?.getString("imageUrl").toString()
         //if post crashes, comment theses
 
 
         viewModel.getGroupById(groupId.toString())
-        binding.tvGroupTitle.text = groupName.toString()
+       // binding.tvGroupTitle.text = groupName.toString()
 
-        loadGroupImage()
+        viewModel.getAllGroupsonlyObject(groupId)
+        bindImage()
+
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @ExperimentalCoroutinesApi
     fun alert() {
         binding.imageView2.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext())
 
-            Snackbar.make(requireView(), "saasd", Snackbar.LENGTH_SHORT).show()
-            dialogBuilder.setMessage("Willst du das Bild ändern oder Löschen?")
-                .setPositiveButton("EDIT", DialogInterface.OnClickListener { dialog, id ->
-                    if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId) {
-                        uploadClickAction()
+            dialogBuilder.setMessage(getString(R.string.alertDeleteOrEdit))
+                .setPositiveButton(
+                    getString(R.string.alertEdit),
+                    DialogInterface.OnClickListener { dialog, id ->
+                        if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId) {
+                            uploadClickAction()
 
-                    } else {
-                        Snackbar.make(
-                            requireView(),
-                            "Du kannst nur als Ersteller der Gruppe das Foto bearbeiten",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
 
-                })
+                        } else {
+                            Snackbar.make(
+                                requireView(),
+                                getString(R.string.alertOnlyCreatorEdit),
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+
+                    })
                 // negative button text and action
-                .setNegativeButton("DELETE", DialogInterface.OnClickListener { dialog, id ->
-                    deleteGroupImage()
-                    dialog.cancel()
+                .setNegativeButton(
+                    getString(R.string.alertDelete),
+                    DialogInterface.OnClickListener { dialog, id ->
+                        deleteGroupImage()
+                        viewModel.getGroupById(groupId.toString())
 
-                })
+                        dialog.cancel()
+
+                    })
 
             val alert = dialogBuilder.create()
             alert.setTitle("AlertDialogExample")
@@ -169,8 +175,8 @@ class GroupDetailsFragment : Fragment() {
     private fun searchKey() {
 
         val input = binding.auto.text.toString()
-        if (input.isEmpty()){
-            Snackbar.make(requireView(),"Bitte einen User eingeben",Snackbar.LENGTH_SHORT).show()
+        if (input.isEmpty()) {
+            Snackbar.make(requireView(), "Bitte einen User eingeben", Snackbar.LENGTH_SHORT).show()
         } else {
             viewModel.searchUser(input)
             Timber.d(input)
@@ -186,40 +192,40 @@ class GroupDetailsFragment : Fragment() {
         viewModel.getMyGroupMembers().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             groupAdapter.submitList(it)
 
-
-
             groupAdapter.setUpListener(object : GroupDetailsAdapter.ItemRemoveClickListener {
                 @RequiresApi(Build.VERSION_CODES.N)
                 override fun onItemClicked(user: User) {
                     val dialogBuilder = AlertDialog.Builder(requireContext())
                     dialogBuilder.setMessage("Möchst den folgenden User ${user.firstname} aus der Gruppe entfernen")
-                        .setCancelable(false)
-                        .setPositiveButton("CANCEL", DialogInterface.OnClickListener { dialog, id ->
+                        .setCancelable(true)
+                        .setPositiveButton(getString(R.string.alertCancel), DialogInterface.OnClickListener { dialog, id ->
                         })
                         // negative button text and action
-                        .setNegativeButton("DELETE", DialogInterface.OnClickListener { dialog, id ->
-                            if (FirebaseAuth.getInstance().currentUser?.uid == creatorId) {
-                                viewModel.deleteMember(groupId.toString(), user.id.toString())
-                                Snackbar.make(
-                                    requireView(),
-                                    " User ${user.firstname} wurde aus der Gruppe entfernt",
-                                    Snackbar.LENGTH_SHORT
-                                ).show()
+                        .setNegativeButton(
+                            getString(R.string.alertDelete),
+                            DialogInterface.OnClickListener { dialog, id ->
+                                if (FirebaseAuth.getInstance().currentUser?.uid == creatorId) {
+                                    viewModel.deleteMember(groupId.toString(), user.id.toString())
+                                    Snackbar.make(
+                                        requireView(),
+                                        " User ${user.firstname} wurde aus der Gruppe entfernt",
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
 
-                            } else {
-                                Snackbar.make(
-                                    requireView(),
-                                    "Du kannst nur als Ersteller der Gruppe Mitglieder entfernen",
-                                    Snackbar.LENGTH_SHORT
-                                ).show()
-                            }
+                                } else {
+                                    Snackbar.make(
+                                        requireView(),
+                                        getString(R.string.snackOnlyCreatorCanDeleteMember),
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
+                                }
 
 
 
-                            viewModel.getGroupById(groupId.toString())
-                            dialog.cancel()
+                                viewModel.getGroupById(groupId.toString())
+                                dialog.cancel()
 
-                        })
+                            })
 
                     val alert = dialogBuilder.create()
                     alert.setTitle("AlertDialogExample")
@@ -251,12 +257,10 @@ class GroupDetailsFragment : Fragment() {
                     val firstNameFire = alertDialogBinding.editTextTextPersonName.text.toString()
                     viewModel.updateGroup(groupId.toString(), UpdateGroup(firstNameFire))
 
-                    groupAdapter.currentList
-                    groupAdapter.notifyDataSetChanged()
                 } else {
                     Snackbar.make(
                         requireView(),
-                        "Du kannst nur als Ersteller den Gruppennamen ändern",
+                        getString(R.string.snackOnlyCreatorCanEditTitle),
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
@@ -299,30 +303,34 @@ class GroupDetailsFragment : Fragment() {
         val dialogBuilder = AlertDialog.Builder(requireContext())
 
         dialogBuilder.setMessage("Möchst du die folgende Gruppe  ${groupName} wirklich löschen?")
-            .setCancelable(false)
-            .setPositiveButton("CANCEL", DialogInterface.OnClickListener { dialog, id ->
-            })
+            .setCancelable(true)
+            .setPositiveButton(
+                getString(R.string.cancel),
+                DialogInterface.OnClickListener { dialog, id ->
+                })
             // negative button text and action
-            .setNegativeButton("DELETE", DialogInterface.OnClickListener { dialog, id ->
-                if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId) {
-                    viewModel.deleteGroup(groupId.toString())
-                    view?.findNavController()?.popBackStack()
+            .setNegativeButton(
+                getString(R.string.alertDelete),
+                DialogInterface.OnClickListener { dialog, id ->
+                    if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId) {
+                        viewModel.deleteGroup(groupId.toString())
+                        view?.findNavController()?.popBackStack()
 
-                } else {
-                    viewModel.exitGroup(groupId.toString())
-                    Snackbar.make(
-                        requireView(),
-                        "Möchstes du wirklich die Gruppe $groupName verlassen?",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                    dialogBuilder.setMessage("Möchst du die folgende Gruppe  ${groupName} wirklich löschen?")
-                    view?.findNavController()?.popBackStack()
-                }
+                    } else {
+                        viewModel.exitGroup(groupId.toString())
+                        Snackbar.make(
+                            requireView(),
+                            "Möchstes du wirklich die Gruppe $groupName verlassen?",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                        dialogBuilder.setMessage("Möchst du die folgende Gruppe  ${groupName} wirklich löschen?")
+                        view?.findNavController()?.popBackStack()
+                    }
 
 
-                dialog.cancel()
+                    dialog.cancel()
 
-            })
+                })
 
         val alert = dialogBuilder.create()
         alert.setTitle("AlertDialogExample")
@@ -346,9 +354,11 @@ class GroupDetailsFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @ExperimentalCoroutinesApi
     fun deleteGroupImage() {
         viewModel.deleteGroupImage(groupId.toString())
+        viewModel.getGroupById(groupId.toString())
     }
 
 
@@ -397,12 +407,25 @@ class GroupDetailsFragment : Fragment() {
         listImages()
     }
 
-    fun loadGroupImage(){
+    fun loadGroupImage() {
         Glide.with(requireContext())
             .load(image)
             .into(binding.imageView2)
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    @ExperimentalCoroutinesApi
+    fun bindImage() {
+        viewModel.getMyImage().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            createAlertDialog()
+            binding.tvGroupTitle.text = it.name.toString()
+
+            Glide.with(requireContext())
+                .load(it.image?.url)
+                .into(binding.imageView2)
+        })
+    }
 /*    @ExperimentalCoroutinesApi
     fun updateGroup(){
         MaterialAlertDialogBuilder(requireContext())

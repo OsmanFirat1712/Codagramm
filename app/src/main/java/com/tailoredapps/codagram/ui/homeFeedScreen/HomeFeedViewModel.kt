@@ -10,6 +10,7 @@ import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.remoteModels.CommentLike
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -32,6 +33,8 @@ class HomeFeedViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.getStoryPost(id)
                 updateHomeFeed(response.posts)
+                delay(500)
+
             }
         }catch (ie:Exception){
             Timber.e(ie)
@@ -78,6 +81,14 @@ class HomeFeedViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
         try {
             viewModelScope.launch(Dispatchers.IO){
                 val response = codaGramApi.likeToComment(id, CommentLike(like))
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful){
+                        val update = codaGramApi.getStoryPost(null.toString())
+                        updateHomeFeed(update.posts)
+                    }
+                }
+
             }
 
 
@@ -89,6 +100,10 @@ class HomeFeedViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
     fun removePost(id:String){
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.deletePost(id)
+            if (response.isSuccessful){
+                val update = codaGramApi.getStoryPost(null.toString())
+                updateHomeFeed(update.posts)
+            }
 
         }
     }

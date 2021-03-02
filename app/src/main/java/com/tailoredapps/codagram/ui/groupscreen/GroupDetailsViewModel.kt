@@ -8,10 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tailoredapps.codagram.models.Group
-import com.tailoredapps.codagram.models.GroupInviteBody
-import com.tailoredapps.codagram.models.UpdateGroup
-import com.tailoredapps.codagram.models.User
+import com.tailoredapps.codagram.models.*
 import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.remoteModels.SelectedUser
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +33,14 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
            // showErrorOrSomething()
         }
     }*/
+@ExperimentalCoroutinesApi
+private val myImage = MutableLiveData<Group>()
+
+    @ExperimentalCoroutinesApi
+    fun getMyImage(): LiveData<Group> = myImage
+
+
+
 
     @ExperimentalCoroutinesApi
     private val myGroupMembers = MutableLiveData<List<User>>()
@@ -53,6 +58,20 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getAllGroups()
             updateUi(response.groups)
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun updateImage(group: Group) {
+        viewModelScope.launch(Dispatchers.Main) {
+            myImage.value = group
+        }
+    }
+
+    fun getAllGroupsonlyObject(id: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = codaGramApi.getGroupbyId(id)
+            updateImage(response)
         }
     }
 
@@ -131,9 +150,12 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun deleteMember(id: String, uId: String) {
         viewModelScope.launch(Dispatchers.IO) {
            val response = codaGramApi.deleteMember(id, uId)
+            if (response.isSuccessful)
+                getGroupById(id)
 
         }
 
@@ -143,8 +165,11 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
     fun updateGroup(id: String, name: UpdateGroup) {
         viewModelScope.launch(Dispatchers.IO) {
             val  response = codaGramApi.updateGroup(id, name)
-            updateMembersList(response.members)
+            if (response.isSuccessful){
+               val update = codaGramApi.getGroupbyId(id)
+                updateImage(update)
 
+            }
         }
     }
 
@@ -162,9 +187,16 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun deleteGroupImage(id: String){
         viewModelScope.launch(Dispatchers.IO) {
-        codaGramApi.deleteGroupImage(id)
+        val response = codaGramApi.deleteGroupImage(id)
+            if (response.isSuccessful){
+                getAllGroupsonlyObject(id)
+             /*   val com = codaGramApi.getGroupbyId(id)
+                updateImage(com)*/
+            }
+
 
         }
     }
@@ -174,7 +206,10 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
         val requestBody: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
         val part: MultipartBody.Part = MultipartBody.Part.createFormData("image", file.name, requestBody)
         viewModelScope.launch(Dispatchers.IO) {
-            codaGramApi.addImageToGroup(id,part)
+           val response = codaGramApi.addImageToGroup(id,part)
+            if (response.isSuccessful){
+                getAllGroupsonlyObject(id)
+            }
 
         }
     }

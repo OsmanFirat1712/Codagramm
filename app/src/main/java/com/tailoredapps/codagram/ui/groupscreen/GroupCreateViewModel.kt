@@ -66,6 +66,7 @@ class GroupViewModel(private val context: Context, private val codaGramApi: Coda
                     codaGramApi.getGroupbyId(it.id)
                 }
 
+
                 codaGramApi.sendGroupInvites(GroupInviteBody(response.id, selectedUsers as List<String>,))
 
 

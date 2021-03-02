@@ -71,13 +71,13 @@ interface CodaGramApi {
 
 
     @PUT("group/{id}")
-    suspend fun updateGroup(@Path("id") id:String, @Body updateGroup:UpdateGroup):Group
+    suspend fun updateGroup(@Path("id") id:String, @Body updateGroup:UpdateGroup):Response<Group>
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                   POST ///
     @POST("post")
-    suspend fun newStoryPost(@Body postBody: PostBody):Post
+    suspend fun newStoryPost(@Body postBody: PostBody):Response<Post>
 
     @GET("post")
     suspend fun getStoryPostbyQuery(@Query("group")id:String?): PostList
@@ -90,7 +90,7 @@ interface CodaGramApi {
     suspend fun getPostId(@Path("id")id:String):Post
 
     @POST("post/{id}/comment")
-    suspend fun postComment(@Path("id")id:String,@Body commentBody: CommentBody): CommentList
+    suspend fun postComment(@Path("id")id:String,@Body commentBody: CommentBody):Response<CommentList>
 
     @GET("post/{id}/comment")
     suspend fun getComment(@Query("id")id:String?):CommentList

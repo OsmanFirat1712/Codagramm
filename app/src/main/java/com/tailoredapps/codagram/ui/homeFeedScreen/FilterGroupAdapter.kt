@@ -100,7 +100,7 @@ class GroupScreenViewHolder(private val binding: FilterGroupItemBinding) :
 
         binding.tvGroupName.text = postData.name.toString()
         binding.tvCreatorName.text = postData.creator?.lastname.toString()
-        binding.tvGroupInviter.text = postData.inviter?.lastname
+        binding.tvGroupInviter.text = postData.inviter.lastname
 
 
     }

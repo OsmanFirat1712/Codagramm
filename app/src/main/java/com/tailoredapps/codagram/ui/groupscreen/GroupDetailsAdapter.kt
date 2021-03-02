@@ -66,6 +66,9 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
             binding.tvLastNameMemberCards.text = postData.lastname
             binding.tvEmailMemberCards.text = postData.email
 
+            Glide.with(itemView)
+                .load(postData.image?.url)
+                .into(binding.ivUserProfileImage)
 
 
         }
@@ -97,4 +100,5 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
     interface ItemRemoveClickListener{
         fun onItemClicked(user: User)
     }
+
 }
