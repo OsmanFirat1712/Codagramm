@@ -11,6 +11,7 @@ import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.remoteModels.ReplyToInvite
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -40,6 +41,7 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getAllGroups()
             updateUi(response.groups)
+            delay(1000)
 
         }
     }
@@ -48,6 +50,8 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getAllGroups()
             updateUi(response.groups)
+            delay(1000)
+
         }
     }
 

@@ -113,9 +113,9 @@ class GroupFragment : Fragment(), Get {
             if (nameGroup.isEmpty()&& input.isEmpty()){
                 Snackbar.make(requireView(),"Es muss eine Description gesetzt werden",Snackbar.LENGTH_SHORT).show()
             } else if (file != null){
+                viewModel.createGroup(nameGroup, Uri.fromFile(file))
                 view.findNavController()
                     .navigate(GroupFragmentDirections.actionGroupScreenToMyGroupScreen())
-                viewModel.createGroup(nameGroup, Uri.fromFile(file))
             } else{
                 Snackbar.make(requireView(),"Bitte noch ein Gruppenfoto auswählen",Snackbar.LENGTH_SHORT).show()
             }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tailoredapps.codagram.models.Comment
 import com.tailoredapps.codagram.models.CommentBody
+import com.tailoredapps.codagram.models.Post
 import com.tailoredapps.codagram.remote.CodaGramApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,6 +15,12 @@ import timber.log.Timber
 import java.lang.Exception
 
 class CommentScreenViewModel(private val codaGramApi: CodaGramApi) : ViewModel(){
+
+    @ExperimentalCoroutinesApi
+    private val myPost = MutableLiveData<Post>()
+    @ExperimentalCoroutinesApi
+    fun getMyPost():LiveData<Post> = myPost
+
 
     @ExperimentalCoroutinesApi
     private val myComments = MutableLiveData<List<Comment>>()
@@ -25,7 +32,7 @@ class CommentScreenViewModel(private val codaGramApi: CodaGramApi) : ViewModel()
         try {
             viewModelScope.launch(Dispatchers.IO){
                 val response = codaGramApi.getPostId(id)
-
+               // updatePost(response)
             }
         }catch (ie:Exception){
             Timber.e(ie)
@@ -43,6 +50,12 @@ class CommentScreenViewModel(private val codaGramApi: CodaGramApi) : ViewModel()
         }
     }
 
+    fun updatePost(post:Post){
+        viewModelScope.launch(Dispatchers.Main){
+            myPost.value = post
+        }
+    }
+
     @ExperimentalCoroutinesApi
     fun updateComment(comment:List<Comment>) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -54,6 +67,10 @@ class CommentScreenViewModel(private val codaGramApi: CodaGramApi) : ViewModel()
     fun deleteComment(id: String, commentId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.deleteComment(id, commentId)
+            if (response.isSuccessful){
+                val update = codaGramApi.getComment(id)
+                updateComment(update.comments)
+            }
 
         }
     }
@@ -61,7 +78,14 @@ class CommentScreenViewModel(private val codaGramApi: CodaGramApi) : ViewModel()
         @ExperimentalCoroutinesApi
         fun postComment(id: String, text: CommentBody) {
             viewModelScope.launch(Dispatchers.IO) {
-                var response = codaGramApi.postComment(id, text)
+                val response = codaGramApi.postComment(id, text)
+
+                if (response.isSuccessful){
+                    val updates = codaGramApi.getComment(id)
+                    updateComment(updates.comments)
+                }
+
+
             }
         }
 

@@ -21,6 +21,8 @@ import com.tailoredapps.codagram.databinding.FragmentSecondBinding
 import com.tailoredapps.codagram.ui.groupscreen.GroupDetailsAdapter
 import com.tailoredapps.codagram.ui.groupscreen.SearchAdapter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import okhttp3.internal.wait
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.io.File
@@ -151,11 +153,10 @@ class NewStoryFragment : Fragment() {
             if(description.isEmpty()){
                 Snackbar.make(requireView(),"Bitte füge eine Beschreibung hinzu",Snackbar.LENGTH_SHORT).show()
             }else if (::file.isInitialized&& ::getSpinnerItem.isInitialized){
-                viewModel.post(description, getSpinnerItem, Uri.fromFile(file))
-                view?.findNavController()
-                    ?.navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
+                val response = viewModel.post(description, getSpinnerItem, Uri.fromFile(file))
+                view?.findNavController()?.navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
             } else {
-                Snackbar.make(requireView(),"Bitte füge ein Foto zu deiner Story hinzu",Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(),"Bitte füge ein Foto zu deiner Story hinzu und wähle eine Gruppe aus",Snackbar.LENGTH_SHORT).show()
 
             }
 

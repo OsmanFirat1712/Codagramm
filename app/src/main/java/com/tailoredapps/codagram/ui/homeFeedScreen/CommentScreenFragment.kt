@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.databinding.FragmentCommentScreenBinding
 import com.tailoredapps.codagram.models.Comment
@@ -22,13 +22,13 @@ class CommentScreenFragment : Fragment() {
     private var postId: String? = null
     lateinit var commentAdapterBinding:CommentScreenItemsBinding
 
-    var countryName: String? = null
+    var postIds: String? = null
 
     private lateinit var binding:FragmentCommentScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        countryName = arguments?.getString("name")
+        postIds = arguments?.getString("name")
 
     }
 
@@ -45,6 +45,7 @@ class CommentScreenFragment : Fragment() {
 
     }
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,39 +62,48 @@ class CommentScreenFragment : Fragment() {
         getTest()
         buttonClickListener()
 
-        viewModel.getCommentPost(countryName.toString())
+        viewModel.getCommentPost(postIds.toString())
 
+        PostComment()
 
     }
 
     fun getTest(){
-        viewModel.getPostById(countryName.toString())
+        viewModel.getPostById(postIds.toString())
     }
 
     @ExperimentalCoroutinesApi
     fun bindToLiveData() {
         viewModel.getMyComments().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             commentScreenAdapter.submitList(it)
-
-            commentScreenAdapter.setUpListener(object :CommentScreenAdapter.ItemRemove2ClickListener{
-                override fun onItemClicked(comment: Comment) {
-
-
-
-                    viewModel.deleteComment(countryName.toString(),comment.id)
-                    viewModel.getCommentPost(countryName.toString())
+            commentScreenAdapter.notifyDataSetChanged()
+        })
+        commentScreenAdapter.setUpListener(object :CommentScreenAdapter.ItemRemove2ClickListener{
+            override fun onItemClicked(comment: Comment) {
+                viewModel.deleteComment(postIds.toString(),comment.id)
 /*                    viewModel.getPostById(null.toString())*/
-                }
-            })
+            }
         })
     }
 
     fun buttonClickListener(){
 
-        binding.btnAdd.setOnClickListener {
-            val test = binding.etWriteComment.text.toString()
-            viewModel.postComment(countryName.toString(), CommentBody(test))
-            viewModel.getCommentPost(countryName.toString())
-        }
+
     }
+
+    @ExperimentalCoroutinesApi
+    fun PostComment(){
+        binding.btnAdd.setOnClickListener{
+            val test = binding.etWriteComment.text.toString()
+            viewModel.postComment(postIds.toString(), CommentBody(test))
+            viewModel.getPostById(postIds.toString())
+        }
+
+    }
+
+    fun bidning(){
+        viewModel.getMyPost().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        })
+    }
+
 }
