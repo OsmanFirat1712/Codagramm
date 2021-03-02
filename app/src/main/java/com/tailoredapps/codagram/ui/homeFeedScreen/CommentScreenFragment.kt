@@ -43,7 +43,6 @@ class CommentScreenFragment : Fragment() {
 
 
 
-        postId = arguments?.getString("name")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

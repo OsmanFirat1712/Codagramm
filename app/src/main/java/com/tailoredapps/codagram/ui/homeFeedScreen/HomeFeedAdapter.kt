@@ -16,12 +16,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/ui/homeFeedScreen/HomeFeedAdapter.kt
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.google.firebase.auth.FirebaseAuth
-=======
->>>>>>> app/src/main/java/com/tailoredapps/codagram/ui/homeFeedScreen/HomeFeedAdapter.kt
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.HomeFeedScreenBinding
 import com.tailoredapps.codagram.models.Post
