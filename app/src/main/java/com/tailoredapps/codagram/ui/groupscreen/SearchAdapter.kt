@@ -42,15 +42,18 @@ class SearchViewHolder(private val binding:SearchItemsBinding) : RecyclerView.Vi
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun bind(postData: SelectedUser) {
-        binding.cvInvite.setOnClickListener {
+
+        binding.cvInvite.visibility = View.INVISIBLE
+
+        binding.root.setOnClickListener {
             postData.selected = postData.selected.not()
 
             when{
                 postData.selected ->{
-                    binding.selectedUser2.setImageResource(R.drawable.ic_baseline_check_24)
+                    binding.cvInvite.visibility = View.VISIBLE
                 }
                 else -> {
-                    binding.selectedUser2.setImageResource(R.drawable.ic_baseline_check_24green)
+                    binding.cvInvite.visibility = View.INVISIBLE
                 }
             }
 

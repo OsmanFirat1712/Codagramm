@@ -63,6 +63,7 @@ class GroupFragment : Fragment(), Get {
         bindToLiveData()
         createButtonAction()
         uploadClickAction()
+        cancelButtonAction()
 
 
         binding.auto.setOnClickListener {
@@ -75,7 +76,6 @@ class GroupFragment : Fragment(), Get {
     private fun searchKey() {
 
         val input = binding.auto.text.toString()
-
         viewModel.searchUser(input)
         Timber.d(input)
 
@@ -84,7 +84,8 @@ class GroupFragment : Fragment(), Get {
     override fun onItemClicked(group: Group) {
         bundle = bundleOf(
             "names" to group.name,
-            "ids" to group.id
+            "ids" to group.id,
+            "creatorName" to group.creator?.firstname
         )
 
     }
@@ -105,6 +106,13 @@ class GroupFragment : Fragment(), Get {
             view?.findNavController()?.navigate(R.id.action_GroupScreen_to_GroupDetailScreens,bundle)
 */
 
+        }
+    }
+
+    fun cancelButtonAction(){
+        binding.btnCancel.setOnClickListener {view ->
+            view.findNavController()
+                .navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreens())
         }
     }
 

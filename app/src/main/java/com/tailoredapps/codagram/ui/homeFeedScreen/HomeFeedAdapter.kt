@@ -1,6 +1,8 @@
 package com.tailoredapps.codagram.ui.homeFeedScreen
 
 import android.content.Context
+import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -86,20 +88,15 @@ class HomeFeedAdapter(val codagramApi: CodagramApi,val context: Context) : ListA
             tvNickName.text = "(" + currentItem.user?.nickname.toString() + ")"
 
 
-            when{
-                currentItem.comments!!.isNotEmpty() -> {
-                    cardCommend.visibility = View.VISIBLE
-                    writtenBy.text = currentItem.comments?.firstOrNull()?.user?.firstname.toString()
-                    firstComment.text = currentItem.comments?.firstOrNull()?.text
-                }
-                else -> {
-                    cardCommend.visibility = View.INVISIBLE
-                }
 
-            }
+            writtenBy.text = currentItem.comments?.firstOrNull()?.user?.firstname.toString()
+            firstComment.text = currentItem.comments?.firstOrNull()?.text
 
-            writtenBy2.text = currentItem.user?.firstname
-            secondComment.text = currentItem.comments.getOrNull(1)?.text.toString()
+            writtenBy2.text = currentItem.comments?.getOrNull(1)?.user?.firstname.toString()
+            secondComment.text = currentItem.comments?.getOrNull(1)?.text.toString()
+
+
+
             commentCount2.text = currentItem.comments?.size.toString()+" "+"Comment"
 
             like.setOnClickListener {
@@ -177,11 +174,13 @@ class HomeFeedAdapter(val codagramApi: CodagramApi,val context: Context) : ListA
         val writtenBy:TextView = itemView.findViewById(R.id.tvWrittenBy)
         val commentCount2:TextView = itemView.findViewById(R.id.comment_text)
         val delete:ImageView = itemView.findViewById(R.id.ivDelete)
-        val cardCommend:CardView = itemView.findViewById(R.id.cv1)
+        val cardCommend:CardView = itemView.findViewById(R.id.lastCvv)
         val cardCommend2:CardView = itemView.findViewById(R.id.cvLastCommend2)
         val tagSize:TextView = itemView.findViewById(R.id.tvTagSize)
         val tvGroupName:TextView = itemView.findViewById(R.id.tvGroupName)
         val tvNickName:TextView = itemView.findViewById(R.id.tvNickName)
+        val image1:ImageView = itemView.findViewById(R.id.ivUserImage)
+        val image2:ImageView = itemView.findViewById(R.id.ivUser2Image)
 
         fun bind(postData: Post) {
 

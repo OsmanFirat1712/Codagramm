@@ -14,14 +14,19 @@
         app:cardBackgroundColor="#FF9D93"
         android:layout_height="150dp">
 
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icons8_star_48px"
+            android:text="Codagram"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:drawableRight="@drawable/ic_baseline_favoriteeee_24"
+            android:textStyle="italic"
+            android:fontFamily="sans-serif-condensed"
             android:elevation="5dp"
             android:layout_gravity="center">
 
-        </ImageView>
+        </TextView>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
