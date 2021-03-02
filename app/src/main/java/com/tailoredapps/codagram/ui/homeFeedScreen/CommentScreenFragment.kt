@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.databinding.FragmentCommentScreenBinding
 import com.tailoredapps.codagram.models.Comment
 import com.tailoredapps.codagram.models.CommentBody
@@ -18,6 +20,7 @@ class CommentScreenFragment : Fragment() {
     private val viewModel:CommentScreenViewModel by inject()
     private val  commentScreenAdapter: CommentScreenAdapter by inject()
     private var postId: String? = null
+    lateinit var commentAdapterBinding:CommentScreenItemsBinding
 
     var countryName: String? = null
 
@@ -35,7 +38,10 @@ class CommentScreenFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentCommentScreenBinding.inflate(inflater, container, false)
+        commentAdapterBinding = CommentScreenItemsBinding.inflate(inflater,container,false)
         return binding.root
+
+
 
         postId = arguments?.getString("name")
     }
@@ -47,6 +53,8 @@ class CommentScreenFragment : Fragment() {
             adapter = this@CommentScreenFragment.commentScreenAdapter
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
+
+
         }
 
         bindToLiveData()
@@ -55,6 +63,8 @@ class CommentScreenFragment : Fragment() {
         buttonClickListener()
 
         viewModel.getCommentPost(countryName.toString())
+
+
     }
 
     fun getTest(){
@@ -68,6 +78,9 @@ class CommentScreenFragment : Fragment() {
 
             commentScreenAdapter.setUpListener(object :CommentScreenAdapter.ItemRemove2ClickListener{
                 override fun onItemClicked(comment: Comment) {
+
+
+
                     viewModel.deleteComment(countryName.toString(),comment.id)
                     viewModel.getCommentPost(countryName.toString())
 /*                    viewModel.getPostById(null.toString())*/

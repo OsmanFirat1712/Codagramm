@@ -1,11 +1,13 @@
 package com.tailoredapps.codagram.ui.homeFeedScreen
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.models.Comment
@@ -31,11 +33,21 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
         holder.bind(getItem(position))
         val currentItem = getItem(position)
 
+
+        when{
+            FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id -> holder.remove.visibility = View.VISIBLE
+            FirebaseAuth.getInstance().currentUser!!.uid != currentItem.user?.id -> holder.remove.visibility = View.INVISIBLE
+            //We need a creatorId after creatorId you can delete all comments!
+
+        }
+
         holder.remove.setOnClickListener {
             mItemCLicked.let {
                 mItemCLicked.onItemClicked(getItem(position))
             }
         }
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryItem {
@@ -51,6 +63,8 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
 
     class CountryItem(private val binding: CommentScreenItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        val deleteText:TextView = itemView.findViewById(R.id.tvRemove)
 
         val remove:TextView = itemView.findViewById(R.id.tvRemove)
 

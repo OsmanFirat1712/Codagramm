@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.SearchItemsBinding
 import com.tailoredapps.codagram.remoteModels.SelectedUser
 
@@ -43,12 +44,10 @@ class SearchViewHolder(private val binding:SearchItemsBinding) : RecyclerView.Vi
 
             when{
                 postData.selected ->{
-                    binding.selectedUser2.text ="invited"
-                    binding.cvInvite.setCardBackgroundColor(Color.RED)
+                    binding.selectedUser2.setImageResource(R.drawable.ic_baseline_check_24)
                 }
                 else -> {
-                    binding.selectedUser2.text ="invite"
-                    binding.cvInvite.setCardBackgroundColor(Color.GRAY)
+                    binding.selectedUser2.setImageResource(R.drawable.ic_baseline_check_24green)
                 }
             }
 

@@ -93,7 +93,7 @@ class LoginFragment : Fragment() {
     }
 
 
-        override fun onStart() {
+    override fun onStart() {
         super.onStart()
         val user = auth.currentUser
         viewModel.getToken()
@@ -107,6 +107,9 @@ class LoginFragment : Fragment() {
             Snackbar.make(requireView(),"ssdsad", Snackbar.LENGTH_SHORT).show()
         }
     }
+
+
+
 
 
 
