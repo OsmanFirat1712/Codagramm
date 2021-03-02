@@ -11,14 +11,17 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 @ExperimentalCoroutinesApi
-internal val groupscreenmodule = module {
+internal val groupScreenModule = module {
     factory { SearchAdapter() }
     factory { GroupDetailsAdapter() }
     factory { GroupInviteAdapter() }
     fragment { GroupFragment() }
     fragment { GroupDetailsFragment()}
     fragment { NewStoryFragment() }
-    viewModel { NewStoryViewModel (codagramApi = get()) }
-    viewModel { GroupViewModel (codagramApi = get(), context = androidContext()) }
-    viewModel { GroupDetailsViewModel (codagramApi = get(), context = androidContext()) }
+    viewModel { NewStoryViewModel (codaGramApi = get()) }
+    viewModel { GroupViewModel (codaGramApi = get(), context = androidContext()) }
+    viewModel { GroupDetailsViewModel (codaGramApi = get(), context = androidContext()) }
+    factory { GroupAdapter() }
+    fragment { MyGroupScreen() }
+    viewModel { MyGroupScreenViewMode(codaGramApi = get(), context = androidContext()) }
 }

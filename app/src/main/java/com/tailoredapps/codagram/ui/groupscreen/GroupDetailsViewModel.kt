@@ -13,6 +13,7 @@ import com.tailoredapps.codagram.models.GroupInviteBody
 import com.tailoredapps.codagram.models.UpdateGroup
 import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodaGramApi
+import com.tailoredapps.codagram.remoteModels.SelectedUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -36,7 +37,6 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
         }
     }*/
 
-
     @ExperimentalCoroutinesApi
     private val myGroupMembers = MutableLiveData<List<User>>()
 
@@ -48,10 +48,6 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
 
     @ExperimentalCoroutinesApi
     fun getMyGroups(): LiveData<List<Group>> = myGroups
-/*
-    private val response: GroupList = GroupList(emptyList())
-*/
-
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

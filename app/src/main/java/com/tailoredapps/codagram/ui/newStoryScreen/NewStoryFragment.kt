@@ -24,7 +24,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.io.File
-import java.net.URI
 import java.util.*
 
 
@@ -64,12 +63,6 @@ class NewStoryFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        /* binding.searchResult.apply {
-             adapter = this@NewStoryFragment.groupDetailsAdapter
-             setHasFixedSize(true)
-             layoutManager = LinearLayoutManager(context)
-         }
- */
 
         binding.spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -89,16 +82,25 @@ class NewStoryFragment : Fragment() {
                     Snackbar.LENGTH_LONG
                 ).show()
                 getSpinnerItem = adapterView?.getItemAtPosition(position).toString()
-                viewModel.searchUser(getSpinnerItem)
+                if (getSpinnerItem.isEmpty()) {
+                    Snackbar.make(
+                        requireView(),
+                        "Du musst mindestens eine Person taggen",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
+                    viewModel.searchUser(getSpinnerItem)
+
+                }
                 Timber.e(getSpinnerItem)
             }
         }
         bindToLiveData()
-        test()
+        bindGetMyGroupsLiveData()
         uploadClickAction()
         postButtonAction()
         getGroups()
-        bindToLiveData2()
+        bindToGetMyGroupMemberLiveData()
     }
 
     private fun listImages() {
@@ -106,32 +108,6 @@ class NewStoryFragment : Fragment() {
         i.type = "image/*"
         i.action = Intent.ACTION_GET_CONTENT
     }
-
-    /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
-
-
-             imageData = data.data!!
-              file = File(imageData.path.toString())
-           image =  Uri.fromFile(file)
-             //var mediaStore = MediaStore.Images.Media.getContentUri("Choose Picture",21)
-             var bitmap = MediaStore.Images.Media.getBitmap(
-                 requireActivity().contentResolver,
-                 imageData
-             )
-            val image = binding.tvUpload.setImageBitmap(bitmap).toString()
-             val auri = URI(imageData.toString())
-              juri = URI(auri.toString())
-
-             downloadUrl = imageData.toString()
-             Log.e("uri", downloadUrl.toString())
-             Log.d("bitmap", "$image")
-             Log.e("imagedata", file.toString())
-
-         }
-         super.onActivityResult(requestCode, resultCode, data)
-
-     }*/
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -152,16 +128,6 @@ class NewStoryFragment : Fragment() {
             Snackbar.make(requireView(), "Task Cancelled", Snackbar.LENGTH_SHORT).show()
         }
     }
-/*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-    when(resultCode){
-        Activity.RESULT_OK-> {
-            val fileUri = data?.data
-            Image(fileUri.toString())
-
-        }
-    }
-}*/
 
 
     private fun uploadClickAction() {
@@ -172,10 +138,6 @@ class NewStoryFragment : Fragment() {
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start()
-            /*if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(requireActivity(),
-                    Array(1){Manifest.permission.READ_EXTERNAL_STORAGE},121)
-            }*/
             listImages()
         }
     }
@@ -186,9 +148,17 @@ class NewStoryFragment : Fragment() {
         binding.btnPost.setOnClickListener {
             val description = binding.etDescription.text.toString()
 
-            viewModel.post(description, getSpinnerItem, Uri.fromFile(file))
-            view?.findNavController()
-                ?.navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
+            if(description.isEmpty()){
+                Snackbar.make(requireView(),"Bitte füge eine Beschreibung hinzu",Snackbar.LENGTH_SHORT).show()
+            }else if (::file.isInitialized&& ::getSpinnerItem.isInitialized){
+                viewModel.post(description, getSpinnerItem, Uri.fromFile(file))
+                view?.findNavController()
+                    ?.navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
+            } else {
+                Snackbar.make(requireView(),"Bitte füge ein Foto zu deiner Story hinzu",Snackbar.LENGTH_SHORT).show()
+
+            }
+
         }
 
 
@@ -234,14 +204,14 @@ class NewStoryFragment : Fragment() {
 
     @ExperimentalCoroutinesApi
     @RequiresApi(Build.VERSION_CODES.N)
-    fun test() {
+    fun bindGetMyGroupsLiveData() {
         viewModel.getMyGroups().observe(viewLifecycleOwner, androidx.lifecycle.Observer { it ->
             it.forEach {
                 val groupName = it.name
                 val groupId = it.id
                 //adapter.data.add(groupName)
                 adapter.data.add(groupId)
-                adapter.data2.add(groupName)
+                adapter.nameList.add(groupName)
                 adapter.notifyDataSetChanged()
             }
         })
@@ -255,7 +225,7 @@ class NewStoryFragment : Fragment() {
     }
 
     @ExperimentalCoroutinesApi
-    fun bindToLiveData2() {
+    fun bindToGetMyGroupMemberLiveData() {
         viewModel.getMyGroupMembers().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             groupDetailsAdapter.submitList(it)
         })

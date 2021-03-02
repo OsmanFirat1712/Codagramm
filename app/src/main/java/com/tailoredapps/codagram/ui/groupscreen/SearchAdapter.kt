@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tailoredapps.codagram.databinding.SearchItemsBinding
+import com.tailoredapps.codagram.remoteModels.SelectedUser
 
 
 class SearchAdapter : ListAdapter<SelectedUser, SearchViewHolder>(object: DiffUtil.ItemCallback<SelectedUser>(){

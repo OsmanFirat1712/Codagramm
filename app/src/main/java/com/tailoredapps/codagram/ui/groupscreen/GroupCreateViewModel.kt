@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.tailoredapps.codagram.models.GroupCreate
 import com.tailoredapps.codagram.models.GroupInviteBody
 import com.tailoredapps.codagram.remote.CodaGramApi
+import com.tailoredapps.codagram.remoteModels.SelectedUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch

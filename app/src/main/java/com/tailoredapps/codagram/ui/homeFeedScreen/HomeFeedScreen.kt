@@ -10,9 +10,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
-import com.tailoredapps.codagram.databinding.ActivityMainBinding.inflate
 import com.tailoredapps.codagram.databinding.AlertDialogFilterBinding
-import com.tailoredapps.codagram.databinding.AlertDialogFilterBinding.inflate
 import com.tailoredapps.codagram.databinding.FragmentFirstBinding
 import com.tailoredapps.codagram.databinding.HomeFeedScreenBinding
 import com.tailoredapps.codagram.models.Group
@@ -23,6 +21,8 @@ import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
+import java.net.InetAddress
+
 
 class HomeFeedScreen : Fragment() {
 
@@ -49,7 +49,6 @@ class HomeFeedScreen : Fragment() {
     ): View {
         binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
-        binding2 = HomeFeedScreenBinding.inflate(inflater, container,false)
 
     }
 
@@ -57,7 +56,6 @@ class HomeFeedScreen : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel.getStoryPost(null.toString())
 
     }
 
@@ -72,7 +70,7 @@ class HomeFeedScreen : Fragment() {
         view.findNavController().popBackStack(R.id.action_first_view_to_login, false)
 
 
-        test()
+        bindPostLiveData()
         viewModel.getStoryPost(null.toString())
     }
 
@@ -111,7 +109,7 @@ class HomeFeedScreen : Fragment() {
     }
 
     @ExperimentalCoroutinesApi
-    fun test() {
+    fun bindPostLiveData() {
         //val hello = viewModel.getStoryPost()
         viewModel.getMyPost().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
@@ -119,7 +117,7 @@ class HomeFeedScreen : Fragment() {
                 override fun onItemClicked(like: Boolean, post: Post) {
                     viewModel.likeComment(post.id, like)
                     viewModel.getStoryPostbyQuery(post.group?.id)
-               /*     adapter.notifyDataSetChanged()
+                    /*     adapter.notifyDataSetChanged()
                     adapter.submitList(it)*/
                 }
             })

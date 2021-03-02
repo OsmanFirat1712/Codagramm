@@ -11,7 +11,7 @@ import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.PostBody
 import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodaGramApi
-import com.tailoredapps.codagram.ui.groupscreen.SelectedUser
+import com.tailoredapps.codagram.remoteModels.SelectedUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -22,8 +22,9 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import timber.log.Timber
 import java.io.File
 
-class NewStoryViewModel(private val codaGramApi: CodaGramApi):ViewModel() {
+class NewStoryViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
     private lateinit var ids: String
+
     @ExperimentalCoroutinesApi
     private val myGroupMembers = MutableLiveData<List<User>>()
 
@@ -32,17 +33,19 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi):ViewModel() {
 
     @ExperimentalCoroutinesApi
     private val myGroups = MutableLiveData<List<Group>>()
+
     @ExperimentalCoroutinesApi
     fun getMyGroups(): LiveData<List<Group>> = myGroups
 
     @ExperimentalCoroutinesApi
     private val searchForUser = MutableLiveData<List<SelectedUser>>()
+
     @ExperimentalCoroutinesApi
     fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
 
 
     @ExperimentalCoroutinesApi
-     fun getGroups(){
+    fun getGroups() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getAllGroups()
             updateUi(response.groups)
@@ -73,12 +76,13 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi):ViewModel() {
     }
 
     @ExperimentalCoroutinesApi
-     fun post(description:String,groupId:String,uri: Uri){
+    fun post(description: String, groupId: String, uri: Uri) {
         val file = File(uri.path!!)
-        val requestBody:RequestBody= file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val part: MultipartBody.Part = MultipartBody.Part.createFormData("image", file.name, requestBody)
+        val requestBody: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+        val part: MultipartBody.Part =
+            MultipartBody.Part.createFormData("image", file.name, requestBody)
 
-        viewModelScope.launch (Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
 
             try {
 
@@ -86,14 +90,17 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi):ViewModel() {
                 //var groupId =codagramApi.getGroupbyId(response2.groups.first().id).toString()
                 val selectedUsers = searchForUser.value?.filter { it.selected }?.map { it.user.id }
 
-                var response =codaGramApi.newStoryPost(PostBody(description,groupId,selectedUsers as List<String>)).also {
-                    codaGramApi.addPhoto(it.id.toString(),part)
+                codaGramApi.newStoryPost(
+                    PostBody(
+                        description,
+                        groupId,
+                        selectedUsers as List<String>
+                    )
+                ).also {
+                    codaGramApi.addPhoto(it.id.toString(), part)
 
-            }
-
-
-
-            }catch (ie: Exception){
+                }
+            } catch (ie: Exception) {
                 Timber.e(ie)
             }
 
@@ -108,54 +115,16 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi):ViewModel() {
         }
 
     }
-/*    @RequiresApi(Build.VERSION_CODES.N)
-    @ExperimentalCoroutinesApi
-    fun getGroupById(id: String) {
-        try {
-            viewModelScope.launch(Dispatchers.IO) {
-               *//* val responses = codagramApi.getAllGroups()
-                responses.groups.forEach { it->
-                     id  = it.id
-                }*//*
-
-                val response = codagramApi.getGroupbyId(id)
-
-                updateMembersList(response.members)
-                *//*   response.members.forEach {
-                       val users = it.id
-                   }
-                   codagramApi.deleteMember(id)*//*
-            }
-        } catch (ie: java.lang.Exception) {
-            Timber.e(ie)
-        }
-    }
-
-    @ExperimentalCoroutinesApi
-    private fun updateMembersList(update: List<User>) {
-        viewModelScope.launch(Dispatchers.Main) {
-            myGroupMembers.value = update
-        }
-    }*/
-
 
     @RequiresApi(Build.VERSION_CODES.N)
     @ExperimentalCoroutinesApi
     fun getGroupById(id: String) {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                /* val responses = codagramApi.getAllGroups()
-                 responses.groups.forEach { it->
-                      id  = it.id
-                 }*/
 
                 val response = codaGramApi.getGroupbyId(id)
-                 ids = response.id.toString()
+                ids = response.id.toString()
                 updateMembersList(response.members)
-                /*   response.members.forEach {
-                       val users = it.id
-                   }
-                   codagramApi.deleteMember(id)*/
             }
         } catch (ie: java.lang.Exception) {
             Timber.e(ie)
@@ -169,19 +138,5 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi):ViewModel() {
         }
     }
 
-    fun addPhoto(id:String,uri: Uri){
-        try {
-            val file = File(uri.path!!)
-            val requestBody:RequestBody= file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val part: MultipartBody.Part = MultipartBody.Part.createFormData("image", file.name, requestBody)
-            viewModelScope.launch(Dispatchers.IO) {
-
-                  codaGramApi.addPhoto(id,part)
-
-            }
-        } catch (ie: Exception) {
-            Timber.e(ie)
-        }
-    }
-    }
+}
 

@@ -128,7 +128,6 @@ class GroupDetailsFragment : Fragment() {
 
             Snackbar.make(requireView(), "saasd", Snackbar.LENGTH_SHORT).show()
             dialogBuilder.setMessage("Willst du das Bild ändern oder Löschen?")
-                .setCancelable(false)
                 .setPositiveButton("EDIT", DialogInterface.OnClickListener { dialog, id ->
                     if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId) {
                         uploadClickAction()
@@ -170,9 +169,14 @@ class GroupDetailsFragment : Fragment() {
     private fun searchKey() {
 
         val input = binding.auto.text.toString()
+        if (input.isEmpty()){
+            Snackbar.make(requireView(),"Bitte einen User eingeben",Snackbar.LENGTH_SHORT).show()
+        } else {
+            viewModel.searchUser(input)
+            Timber.d(input)
 
-        viewModel.searchUser(input)
-        Timber.d(input)
+        }
+
 
     }
 

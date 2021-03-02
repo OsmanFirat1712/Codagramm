@@ -1,19 +1,15 @@
 package com.tailoredapps.codagram
 
-import android.content.Context
-import android.provider.Settings
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GetTokenResult
-import com.tailoredapps.codagram.remote.SessionManager
 import com.tailoredapps.codagram.remote.remoteModule
-import com.tailoredapps.codagram.ui.groupscreen.groupscree
-import com.tailoredapps.codagram.ui.groupscreen.groupscreenmodule
+import com.tailoredapps.codagram.ui.groupscreen.groupScreenModule
 import com.tailoredapps.codagram.ui.homeFeedScreen.firstViewModule
-import com.tailoredapps.codagram.ui.loginscreen.loginscreenModule
+import com.tailoredapps.codagram.ui.loginscreen.loginScreenModule
 import com.tailoredapps.codagram.ui.settings.SettingsModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Interceptor
@@ -77,8 +73,7 @@ internal val appModules = immutableListOf(
     appModule,
     firstViewModule,
     remoteModule,
-    loginscreenModule,
+    loginScreenModule,
     SettingsModule,
-    groupscreenmodule,
-    groupscree
+    groupScreenModule,
 )

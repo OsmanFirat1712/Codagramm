@@ -4,8 +4,8 @@ import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-internal val loginscreenModule = module {
+internal val loginScreenModule = module {
     fragment { LoginFragment() }
 
-    viewModel { LoginViewModel(codagramApi = get(), context = androidContext()) }
+    viewModel { LoginViewModel(codaGramApi = get(), context = androidContext()) }
 }

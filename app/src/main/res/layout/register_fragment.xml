@@ -59,7 +59,7 @@
             android:textColor="@color/white"
             android:padding="1dp"
             android:textStyle="italic"
-            android:text="First Name"
+            android:text="@string/vorname"
             android:layout_gravity="center"/>
 
     </androidx.cardview.widget.CardView>
@@ -117,7 +117,7 @@
             android:textColor="@color/white"
             android:padding="1dp"
             android:textStyle="italic"
-            android:text="Last Name"
+            android:text="@string/NachName"
             android:layout_gravity="center"/>
 
     </androidx.cardview.widget.CardView>
@@ -176,7 +176,7 @@
             android:textColor="@color/white"
             android:padding="1dp"
             android:textStyle="italic"
-            android:text="Nick Name"
+            android:text="@string/nickname"
             android:layout_gravity="center"/>
 
     </androidx.cardview.widget.CardView>
@@ -235,7 +235,7 @@
             android:textColor="@color/white"
             android:padding="1dp"
             android:textStyle="italic"
-            android:text="Email"
+            android:text="@string/email_adresse"
             android:layout_gravity="center"/>
 
     </androidx.cardview.widget.CardView>
@@ -294,7 +294,7 @@
         android:textColor="@color/white"
         android:padding="1dp"
         android:textStyle="italic"
-        android:text="Password"
+        android:text="@string/passwort"
         android:layout_gravity="center"/>
 
     </androidx.cardview.widget.CardView>
@@ -342,7 +342,7 @@
         android:id="@+id/btnDialogCreate"
         app:layout_constraintTop_toBottomOf="@id/card5"
         android:layout_marginTop="15dp"
-        android:text="Create Now"
+        android:text="@string/account_erstellen"
         android:textSize="20dp"
         android:textColor="@color/white"
         android:layout_gravity="center"
@@ -355,7 +355,7 @@
     <Button
         android:id="@+id/btnDialogCancel"
         android:layout_marginTop="10dp"
-        android:text="Cancel"
+        android:text="@string/abbrechen"
         android:textSize="15dp"
         android:background="@android:color/transparent"
         android:textColor="#727272"

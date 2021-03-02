@@ -13,6 +13,6 @@ internal val firstViewModule = module {
     factory { CommentScreenAdapter(codaGramApi = get ()) }
     fragment { CommentScreenFragment() }
     fragment { HomeFeedScreen() }
-    viewModel { HomeFeedViewModel(codagramApi = get()) }
-    viewModel { CommentScreenViewModel(codagramApi = get()) }
+    viewModel { HomeFeedViewModel(codaGramApi = get()) }
+    viewModel { CommentScreenViewModel(codaGramApi = get()) }
 }
