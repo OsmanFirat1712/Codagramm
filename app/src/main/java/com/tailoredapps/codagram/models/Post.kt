@@ -1,6 +1,10 @@
 package com.tailoredapps.codagram.models
 
 import java.io.Serializable
+import java.sql.Time
+import java.sql.Timestamp
+import java.text.DateFormat
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 data class Post(
@@ -27,6 +31,7 @@ data class Comment(
     val id:String,
     val user: User?,
     val text:String,
+    val createdAt:String
 ):Serializable
 
 data class CommentBody(

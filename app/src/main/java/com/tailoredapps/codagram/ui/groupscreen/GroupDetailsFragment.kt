@@ -46,6 +46,7 @@ class GroupDetailsFragment : Fragment() {
     private lateinit var dialog: AlertDialog
     private lateinit var groupName: String
     private lateinit var image:String
+    private lateinit var creatorName:String
 
 
     @ExperimentalCoroutinesApi
@@ -111,11 +112,13 @@ class GroupDetailsFragment : Fragment() {
         groupId = arguments?.getString("id").toString()
         creatorId = arguments?.getString("creatorId")
         image  = arguments?.getString("imageUrl").toString()
+        creatorName = arguments?.getString("creatorName").toString()
         //if post crashes, comment theses
 
 
         viewModel.getGroupById(groupId.toString())
         binding.tvGroupTitle.text = groupName.toString()
+        binding.tvGroupCreatedBy.text = creatorName
 
         loadGroupImage()
     }
@@ -185,9 +188,6 @@ class GroupDetailsFragment : Fragment() {
     private fun bindgetmyGroupToLiveData() {
         viewModel.getMyGroupMembers().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             groupAdapter.submitList(it)
-
-
-
             groupAdapter.setUpListener(object : GroupDetailsAdapter.ItemRemoveClickListener {
                 @RequiresApi(Build.VERSION_CODES.N)
                 override fun onItemClicked(user: User) {

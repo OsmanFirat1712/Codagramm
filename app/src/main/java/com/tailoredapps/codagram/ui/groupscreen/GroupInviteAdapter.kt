@@ -108,7 +108,7 @@ class GroupInviteAdapter : ListAdapter<GroupInvite, GroupInviteAdapter.MainViewH
 
                 }*/
 
-            binding.resultText.text = postData.inviter.firstname.toString()
+            binding.resultText.text = "Invited By :" + postData.inviter.firstname.toString()
 
         }
 
