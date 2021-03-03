@@ -197,6 +197,7 @@
         app:layout_constraintStart_toEndOf="@id/guidelineLeft">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -257,6 +258,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -283,6 +285,7 @@
                 tools:ignore="MissingConstraints">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 

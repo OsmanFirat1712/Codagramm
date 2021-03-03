@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
+import androidx.core.view.isEmpty
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -49,15 +51,32 @@ class GroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.searchResult.apply {
+
+
             adapter = this@GroupFragment.adapter1
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
+
+
+            /*
+            if (adapter1.currentList.isEmpty()){
+                binding.tvEmptyData.visibility = View.VISIBLE
+                binding.searchResult.visibility = View.GONE
+            }
+            else{
+                binding.tvEmptyData.visibility = View.GONE
+                binding.searchResult.visibility = View.VISIBLE
+            }
+
+             */
         }
         bindToLiveData()
         createButtonAction()
         uploadClickAction()
         cancelButtonAction()
-        binding.auto.setOnClickListener {
+
+
+        binding.auto.addTextChangedListener {
             searchKey()
         }
     }
@@ -65,10 +84,13 @@ class GroupFragment : Fragment() {
     private fun searchKey() {
 
         val input = binding.auto.text.toString()
-        if (input.isEmpty()) {
-            Snackbar.make(requireView(), getString(R.string.snackUserSearch), Snackbar.LENGTH_SHORT).show()
+        if (input.isEmpty()){
+            binding.searchResult.visibility = View.GONE
+            Snackbar.make(requireView(),"Bitte einen User eingeben",Snackbar.LENGTH_SHORT).show()
+
         } else {
             viewModel.searchUser(input)
+            binding.searchResult.visibility =View.VISIBLE
             Timber.d(input)
         }
     }
