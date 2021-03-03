@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +26,7 @@ import com.tailoredapps.codagram.databinding.RegisterDialogBinding
 import com.tailoredapps.codagram.models.UpdateGroup
 import com.tailoredapps.codagram.models.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.io.File
@@ -138,6 +140,8 @@ class GroupDetailsFragment : Fragment() {
         viewModel.getAllGroupsonlyObject(groupId)
         bindImage()
 
+        groupDetailPageAccess()
+
     }
 
 
@@ -207,6 +211,20 @@ class GroupDetailsFragment : Fragment() {
             viewModel.searchUser(input)
             Timber.d(input)
 
+        }
+
+
+    }
+    private fun groupDetailPageAccess(){
+
+        if (FirebaseAuth.getInstance().currentUser?.uid == creatorId){
+            binding.searchEditRecyclerview.isVisible = true
+            binding.auto.isVisible = true
+            binding.inviteButton.isVisible = true
+        }else{
+            binding.searchEditRecyclerview.isVisible = false
+            binding.auto.isVisible = false
+            binding.inviteButton.isVisible = false
         }
 
 

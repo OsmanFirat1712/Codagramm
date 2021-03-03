@@ -77,7 +77,6 @@
 
             <TextView
                 android:id="@+id/tvRemove"
-                android:text="delete"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/tvUserComment"
                 android:padding="5dp"

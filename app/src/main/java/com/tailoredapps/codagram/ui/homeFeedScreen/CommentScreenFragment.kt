@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isNotEmpty
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
@@ -12,6 +14,7 @@ import com.tailoredapps.codagram.databinding.FragmentCommentScreenBinding
 import com.tailoredapps.codagram.models.Comment
 import com.tailoredapps.codagram.models.CommentBody
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
 
 
@@ -66,6 +69,7 @@ class CommentScreenFragment : Fragment() {
 
         PostComment()
 
+
     }
 
     fun getTest(){
@@ -93,13 +97,15 @@ class CommentScreenFragment : Fragment() {
 
     @ExperimentalCoroutinesApi
     fun PostComment(){
-        binding.btnAdd.setOnClickListener{
+        binding.btnAdd.addTextChangedListener{
+
             val test = binding.etWriteComment.text.toString()
             viewModel.postComment(postIds.toString(), CommentBody(test))
             viewModel.getPostById(postIds.toString())
         }
 
     }
+
 
     fun bidning(){
         viewModel.getMyPost().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
