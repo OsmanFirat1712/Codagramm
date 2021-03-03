@@ -33,7 +33,7 @@ class HomeFeedViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.getStoryPost(id)
                 updateHomeFeed(response.posts)
-                delay(500)
+                delay(900)
 
             }
         }catch (ie:Exception){

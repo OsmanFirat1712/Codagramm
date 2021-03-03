@@ -29,25 +29,19 @@ import java.util.*
 import java.util.Collections.emptyList
 
 
-class GroupFragment : Fragment(), Get {
+class GroupFragment : Fragment() {
 
     private val adapter1: SearchAdapter by inject()
     private lateinit var binding: FragmentGroupBinding
     private val viewModel: GroupViewModel by inject()
-    private var bundle: Bundle? = null
-    var navController: NavController? = null
-    private var  file:File? = null
-    private  var input:String? = null
+    private var file: File? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentGroupBinding.inflate(layoutInflater, container, false)
         return binding.root
-
-
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -59,41 +53,24 @@ class GroupFragment : Fragment(), Get {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
         }
-
         bindToLiveData()
         createButtonAction()
         uploadClickAction()
         cancelButtonAction()
-
-
         binding.auto.setOnClickListener {
             searchKey()
         }
-
     }
-
     @ExperimentalCoroutinesApi
     private fun searchKey() {
 
         val input = binding.auto.text.toString()
-        if (input.isEmpty()){
-            Snackbar.make(requireView(),"Bitte einen User eingeben",Snackbar.LENGTH_SHORT).show()
+        if (input.isEmpty()) {
+            Snackbar.make(requireView(), getString(R.string.snackUserSearch), Snackbar.LENGTH_SHORT).show()
         } else {
             viewModel.searchUser(input)
             Timber.d(input)
-
         }
-
-
-    }
-
-    override fun onItemClicked(group: Group) {
-        bundle = bundleOf(
-            "names" to group.name,
-            "ids" to group.id,
-            "creatorName" to group.creator?.firstname
-        )
-
     }
 
     @ExperimentalCoroutinesApi
@@ -102,41 +79,43 @@ class GroupFragment : Fragment(), Get {
         binding.btnCreateGroup.setOnClickListener { view ->
 
             val nameGroup = binding.etCreateGroup.text.toString()
-            val selectedUsers = viewModel.getSearchedUser().value?.filter { it.selected }?.map { it.user.id }
+            val selectedUsers =
+                viewModel.getSearchedUser().value?.filter { it.selected }?.map { it.user.id }
 
             adapter1.currentList
             // (viewModel.createGroup(nameGroup))
-            if (selectedUsers == null){
+            if (selectedUsers == null) {
                 adapter1.currentList
                 Snackbar.make(
                     requireView(),
                     getString(R.string.snackInviteUser),
                     Snackbar.LENGTH_SHORT
                 ).show()
-            }else if(nameGroup.isEmpty()){
-                Snackbar.make(requireView(),getString(R.string.snackGroupName),Snackbar.LENGTH_SHORT).show()
-            }
-            else if (file != null){
+            } else if (nameGroup.isEmpty()) {
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.snackGroupName),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            } else if (file != null) {
 
                 viewModel.createGroup(nameGroup, Uri.fromFile(file))
                 adapter1.currentList
                 view.findNavController()
                     .navigate(GroupFragmentDirections.actionGroupScreenToMyGroupScreen())
-            } else if(nameGroup.isEmpty()) {
-                Snackbar.make(requireView(),"Bitte noch ein Titel auswählen",Snackbar.LENGTH_SHORT).show()
+            } else if (nameGroup.isEmpty()) {
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.snackGroupTitle),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
-
-
-
-/*
-            view?.findNavController()?.navigate(R.id.action_GroupScreen_to_GroupDetailScreens,bundle)
-*/
 
         }
     }
 
-    fun cancelButtonAction(){
-        binding.btnCancel.setOnClickListener {view ->
+    fun cancelButtonAction() {
+        binding.btnCancel.setOnClickListener { view ->
             view.findNavController()
                 .navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreens())
         }
@@ -151,19 +130,19 @@ class GroupFragment : Fragment(), Get {
 
     }
 
-    private fun uploadClickAction(){
+    private fun uploadClickAction() {
         binding.groupImage.setOnClickListener {
-            Toast.makeText(requireContext(),"Clicked", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_LONG).show()
             ImagePicker.with(this)
                 .crop()
                 .compress(524)
                 .maxResultSize(1080, 1080)
                 .start()
-
             listImages()
         }
     }
-    private fun listImages(){
+
+    private fun listImages() {
         var i = Intent()
         i.type = "image/*"
         i.action = Intent.ACTION_GET_CONTENT
@@ -175,10 +154,9 @@ class GroupFragment : Fragment(), Get {
             //Image Uri will not be null for RESULT_OK
             val fileUri = data?.data
             binding.groupImage.setImageURI(fileUri)
-
             //You can get File object from intent
             file = ImagePicker.getFile(data)!!
-            val filePath:String = ImagePicker.getFilePath(data)!!
+            val filePath: String = ImagePicker.getFilePath(data)!!
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Snackbar.make(requireView(), ImagePicker.getError(data), Snackbar.LENGTH_SHORT).show()
         } else {
@@ -186,14 +164,9 @@ class GroupFragment : Fragment(), Get {
         }
     }
 
-    fun getError(){
+    fun getError() {
         viewModel.getError().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
         })
     }
-}
-
-
-interface Get {
-    fun onItemClicked(group: Group)
 }

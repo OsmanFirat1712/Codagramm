@@ -42,7 +42,6 @@ class GroupDetailsFragment : Fragment() {
     private var creatorId: String? = null
     private lateinit var alertDialogBinding: RegisterDialogBinding
     private lateinit var file: File
-    private lateinit var dialog: AlertDialog
     private lateinit var groupName: String
     private lateinit var image: String
     private lateinit var creatorName: String
@@ -73,12 +72,6 @@ class GroupDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getAllGroups()
-
-/*
-        binding.tvGroupTitle.text = args.groupId?.name
-*/
-        //getGroupName()
-
         bindToLiveData()
         bindgetmyGroupToLiveData()
 
@@ -99,7 +92,6 @@ class GroupDetailsFragment : Fragment() {
             searchKey()
         }
 
-
         binding.inviteButton.setOnClickListener {
             val selectedUsers =
                 viewModel.getSearchedUser().value?.filter { it.selected }?.map { it.user.id }
@@ -113,7 +105,7 @@ class GroupDetailsFragment : Fragment() {
 
             } else {
                 viewModel.sendGroupInvites(groupId.toString())
-                Snackbar.make(requireView(),"$input wurde zur Gruppe eingeladen",Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(),"$selectedUsers wurde zur Gruppe eingeladen",Snackbar.LENGTH_SHORT).show()
 
             }
 
@@ -133,9 +125,7 @@ class GroupDetailsFragment : Fragment() {
 
 
         viewModel.getGroupById(groupId.toString())
-        // binding.tvGroupTitle.text = groupName.toString()
-
-        viewModel.getAllGroupsonlyObject(groupId)
+        viewModel.getAllGroupsByObject(groupId)
         bindImage()
 
     }

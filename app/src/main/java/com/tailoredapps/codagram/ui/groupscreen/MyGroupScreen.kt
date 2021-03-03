@@ -66,7 +66,6 @@ class MyGroupScreen() : Fragment()  {
             setHasFixedSize(true)
         }
 
-
         bindingGroup.fabAdd.setOnClickListener {
             it.findNavController().navigate(MyGroupScreenDirections.actionFirstViewToGroupscreen())
 
@@ -113,27 +112,11 @@ class MyGroupScreen() : Fragment()  {
     }
 
 
-
-
-
     @ExperimentalCoroutinesApi
     private fun respond() {
         viewModel.getSearchedUser().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-
-
-
         })
 
     }
 
     }
-
-
-/*   @ExperimentalCoroutinesApi
-    override fun replyInvite(accept: Group) {
-        viewModel.getInvites(accept)
-        TODO("Not yet implemented")
-    }*/
-
-
-

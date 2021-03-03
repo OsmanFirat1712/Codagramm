@@ -17,6 +17,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentSecondBinding
 import com.tailoredapps.codagram.ui.groupscreen.GroupDetailsAdapter
 import com.tailoredapps.codagram.ui.groupscreen.SearchAdapter
@@ -35,7 +36,6 @@ class NewStoryFragment : Fragment() {
     private val searchAdapter: SearchAdapter by inject()
     private lateinit var binding: FragmentSecondBinding
     lateinit var file: File
-
     val REQUEST_IMAGE_CAPTURE = 2
     private lateinit var getSpinnerItem: String
     private lateinit var adapter: SpinnerAdapter
@@ -65,38 +65,7 @@ class NewStoryFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-
-        binding.spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                Toast.makeText(requireContext(), "You Selected .toString()}", Toast.LENGTH_LONG)
-                    .show()
-            }
-
-            override fun onItemSelected(
-                adapterView: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                Snackbar.make(
-                    requireView(),
-                    "You Selected ${adapterView?.getItemAtPosition(position).toString()}",
-                    Snackbar.LENGTH_LONG
-                ).show()
-                getSpinnerItem = adapterView?.getItemAtPosition(position).toString()
-                if (getSpinnerItem.isEmpty()) {
-                    Snackbar.make(
-                        requireView(),
-                        "Du musst mindestens eine Person taggen",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                } else {
-                    viewModel.searchUser(getSpinnerItem)
-
-                }
-                Timber.e(getSpinnerItem)
-            }
-        }
+        spinnerSelectedItem()
         bindToLiveData()
         bindGetMyGroupsLiveData()
         uploadClickAction()
@@ -151,12 +120,12 @@ class NewStoryFragment : Fragment() {
             val description = binding.etDescription.text.toString()
 
             if(description.isEmpty()){
-                Snackbar.make(requireView(),"Bitte füge eine Beschreibung hinzu",Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(),getString(R.string.snackDescription),Snackbar.LENGTH_SHORT).show()
             }else if (::file.isInitialized&& ::getSpinnerItem.isInitialized){
                 val response = viewModel.post(description, getSpinnerItem, Uri.fromFile(file))
                 view?.findNavController()?.navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
             } else {
-                Snackbar.make(requireView(),"Bitte füge ein Foto zu deiner Story hinzu und wähle eine Gruppe aus",Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(),getString(R.string.snackRequireToPost),Snackbar.LENGTH_SHORT).show()
 
             }
 
@@ -169,23 +138,33 @@ class NewStoryFragment : Fragment() {
     private fun spinnerSelectedItem() {
         binding.spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
+                Toast.makeText(requireContext(), "You Selected .toString()}", Toast.LENGTH_LONG)
+                    .show()
             }
 
-            @RequiresApi(Build.VERSION_CODES.N)
             override fun onItemSelected(
                 adapterView: AdapterView<*>?,
                 view: View?,
                 position: Int,
                 id: Long
             ) {
-                Toast.makeText(
-                    requireContext(),
+              /*  Snackbar.make(
+                    requireView(),
                     "You Selected ${adapterView?.getItemAtPosition(position).toString()}",
-                    Toast.LENGTH_LONG
-                ).show()
+                    Snackbar.LENGTH_SHORT
+                ).show()*/
                 getSpinnerItem = adapterView?.getItemAtPosition(position).toString()
-                Log.e("spinner", getSpinnerItem)
+                if (getSpinnerItem.isEmpty()) {
+                    Snackbar.make(
+                        requireView(),
+                        getString(R.string.snackTagOneMember),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
+                    viewModel.searchUser(getSpinnerItem)
+
+                }
+                Timber.e(getSpinnerItem)
             }
         }
     }
@@ -232,97 +211,3 @@ class NewStoryFragment : Fragment() {
         })
     }
 }
-
-/*
-    val intent = Intent()
-    // Show only images, no videos or anything else
-    intent.type = "image/*"
-    intent.action = Intent.ACTION_GET_CONTENT
-    activity.startActivityForResult(intent, IMAGE_CHOOSER)
-}
-
-fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent ? ) {
-    if (resultCode != RESULT_OK) { return }
-    if (requestCode == IMAGE_CHOOSER &&
-        data != null &&
-        data.getData() != null) {
-        //We cannot access this Uri directly in android 10
-        selectedImageUri = data.getData()
-    }
-    super.onActivityResult(requestCode, resultCode, data)
-}
-
-
-fun getBitmap(context: Context, imageUri: Uri) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-
-        ImageDecoder.decodeBitmap(
-            ImageDecoder.createSource(
-                context.contentResolver,
-                imageUri))
-
-    } else {
-
-        context
-            .contentResolver
-            .openInputStream(imageUri) ?
-        .use {
-                inputStream ->
-            BitmapFactory.decodeStream(inputStream)
-        }
-
-    }
-}
-fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent ? ) {
-    if (resultCode != RESULT_OK) { return }
-
-    if (requestCode == IMAGE_CHOOSER &&
-        data != null &&
-        data.getData() != null) {
-
-        //We cannot access this Uri directly in android 10
-        selectedImageUri = data.getData()
-
-        //Later we will use this bitmap to create the File.
-        val selectedBitmap: Bitmap = getBitmap(this, selectedImageUri)
-
-    }
-    super.onActivityResult(requestCode, resultCode, data)
-}
-fun convertBitmaptoFile(destinationFile: File, bitmap: Bitmap) {
-    //create a file to write bitmap data
-    destinationFile.createNewFile()
-    //Convert bitmap to byte array
-    val bos = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bos)
-    val bitmapData = bos.toByteArray()
-    //write the bytes in file
-    val fos = FileOutputStream(destinationFile)
-    fos.write(bitmapData)
-    fos.flush()
-    fos.close()
-}
-@JvmName("onActivityResult1")
-override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent ? ) {
-    if (resultCode != RESULT_OK) { return }
-
-    if (requestCode == IMAGE_CHOOSER &&
-        data != null &&
-        data.getData() != null) {
-
-        //We cannot access this Uri directly in android 10
-        selectedImageUri = data.getData()
-
-        //Later we will use this bitmap to create the File.
-        val selectedBitmap: Bitmap = getBitmap(requireContext(), selectedImageUri)
-
-        *//*We can access getExternalFileDir() without asking any storage permission.*//*
-        val selectedImgFile = File(
-            getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            getTimestamp().toString() + "_selectedImg.jpg")
-
-        convertBitmaptoFile(selectedImgFile, selectedBitmap)
-    }
-    super.onActivityResult(requestCode, resultCode, data)
-}
-*/

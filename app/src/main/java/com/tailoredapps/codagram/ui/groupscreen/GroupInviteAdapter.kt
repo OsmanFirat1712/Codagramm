@@ -83,30 +83,6 @@ class GroupInviteAdapter : ListAdapter<GroupInvite, GroupInviteAdapter.MainViewH
 
 
         fun bind(postData: GroupInvite) {
-            /*    binding.root.setOnClickListener {
-                    postData.replyToInvite = postData.replyToInvite.not()
-                    binding.acceptInvite.visibility = if (postData.replyToInvite){
-                        mItemCLicked.let {
-                        mItemCLicked.onItemClicked(true,postData.id)
-                        }
-                        View.VISIBLE
-                    }else {
-                        View.VISIBLE
-                    }
-                }
-
-                binding.acceptInvite.visibility = if (postData.replyToInvite){
-                    mItemCLicked.let {
-                        mItemCLicked.onItemClicked(true,postData.id)
-                    }
-                    View.VISIBLE
-                }else {
-                    View.VISIBLE
-                }*/
-            /*    postData.members.forEach {
-                    val userName = it.firstname
-
-                }*/
 
             binding.resultText.text = "Invited By :" + postData.inviter.firstname.toString()
 

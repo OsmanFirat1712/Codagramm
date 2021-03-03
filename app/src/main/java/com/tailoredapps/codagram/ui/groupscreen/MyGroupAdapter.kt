@@ -14,7 +14,6 @@ import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.GroupscreenMygroupsBinding
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.ui.homeFeedScreen.firstViewModule
-import kotlinx.android.synthetic.main.home_feed_screen.view.*
 import timber.log.Timber
 
 class GroupAdapter :

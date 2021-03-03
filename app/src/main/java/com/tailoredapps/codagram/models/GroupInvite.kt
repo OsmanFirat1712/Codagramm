@@ -11,9 +11,6 @@ data class GroupInvite(
     val group: Group,
     val invitedAt: String,
     val members:List<User>,
-/*
-    val replyToInvite: ReplyToInvite
-*/
     var replyToInvite: Boolean = false
 
 )

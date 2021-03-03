@@ -6,6 +6,6 @@ import org.koin.dsl.module
 
 internal val loginScreenModule = module {
     fragment { LoginFragment() }
-
+    fragment {RegisterFragment()}
     viewModel { LoginViewModel(codaGramApi = get(), context = androidContext()) }
 }

@@ -20,7 +20,7 @@ import java.net.InetAddress
 class LoginFragment : Fragment() {
 
 
-    private  val viewModel: LoginViewModel by inject()
+    private val viewModel: LoginViewModel by inject()
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: LoginFragmentBinding
 
@@ -33,13 +33,19 @@ class LoginFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
 
         binding.btnLogin.setOnClickListener {
-            if (binding.etEmail.text.trim().toString().isNotEmpty() || binding.etPassword.text.trim().toString().isNotEmpty()) {
-                login(binding.etEmail.text.trim().toString(), binding.etPassword.text.trim().toString())
+            if (binding.etEmail.text.trim().toString()
+                    .isNotEmpty() || binding.etPassword.text.trim().toString().isNotEmpty()
+            ) {
+                login(
+                    binding.etEmail.text.trim().toString(),
+                    binding.etPassword.text.trim().toString()
+                )
                 //val tokenId = auth.currentUser!!.getIdToken(true)
 
             } else {
                 Toast.makeText(requireContext(), "input required", Toast.LENGTH_LONG).show()
-            }        }
+            }
+        }
 
         binding.btnNew.setOnClickListener {
             it.findNavController().navigate(LoginFragmentDirections.actionLoginToRegister())
@@ -54,7 +60,7 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = LoginFragmentBinding.inflate(layoutInflater,container,false)
+        binding = LoginFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -92,44 +98,18 @@ class LoginFragment : Fragment() {
 
     }
 
-
     override fun onStart() {
         super.onStart()
         val user = auth.currentUser
         viewModel.getToken()
         viewModel.getUser()
         if (user != null) {
-            Snackbar.make(requireView(),"ssdsad", Snackbar.LENGTH_SHORT).show()
 
             findNavController().navigate(action)
 
         } else {
-            Snackbar.make(requireView(),"ssdsad", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "ssdsad", Snackbar.LENGTH_SHORT).show()
         }
     }
-
-    /*fun isInternetAvailable(): Boolean {
-        return try {
-            val ipAddr: InetAddress = InetAddress.getByName( "www.googleapis.com")
-            Snackbar.make(requireView(),"concect",Snackbar.LENGTH_SHORT).show()
-            //You can replace it with your name
-            !ipAddr.equals("")
-        } catch (e: Exception) {
-            Snackbar.make(requireView(),"dsasds",Snackbar.LENGTH_SHORT).show()
-            false
-        }
-    }*/
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

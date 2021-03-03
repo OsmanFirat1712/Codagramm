@@ -30,9 +30,6 @@ import com.tailoredapps.codagram.remote.SessionManager
 import kotlinx.android.synthetic.main.fragment_group.view.*
 import kotlinx.android.synthetic.main.fragment_group_details.view.*
 import kotlinx.android.synthetic.main.home_feed_screen.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : ListAdapter<Post, HomeFeedAdapter.CountryItem>(DiffCallback()) {
     lateinit var mItemCLicked: ItemCLickedListener
@@ -45,11 +42,12 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
 
         override fun areContentsTheSame(oldItem: Post, newItem: Post
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.comments?.size == newItem.comments?.size && oldItem.likes == newItem.likes
         }
 
         override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
             return oldItem.id == newItem.id
+
         }
     }
     override fun onBindViewHolder(holder: CountryItem, position: Int) {
@@ -187,8 +185,6 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
             val bundle = bundleOf(
                 "name" to postData.id,
             )
-
-
 
 
 
