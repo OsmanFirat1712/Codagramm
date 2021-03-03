@@ -28,11 +28,13 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
 
     @ExperimentalCoroutinesApi
     private val myInvites = MutableLiveData<List<GroupInvite>>()
+
     @ExperimentalCoroutinesApi
     fun getMyInvites(): LiveData<List<GroupInvite>> = myInvites
 
     @ExperimentalCoroutinesApi
     private val myGroups = MutableLiveData<List<Group>>()
+
     @ExperimentalCoroutinesApi
     fun getMyGroups(): LiveData<List<Group>> = myGroups
 
@@ -46,7 +48,7 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
         }
     }
 
-    fun getAllGroups(){
+    fun getAllGroups() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getAllGroups()
             updateUi(response.groups)
@@ -62,19 +64,12 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
         }
     }
 
-    fun getInvites(){
+    fun getInvites() {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-               val response = codaGramApi.getGroupInvitees()
+                val response = codaGramApi.getGroupInvitees()
                 updateList(response.invites)
-
-
-/*
-                val selectedUsers = myInvites.value?.filter{}
-*/
-                val selectedUsers = searchForUser.value?.replyToInvite
-
-
+                searchForUser.value?.replyToInvite
             }
         } catch (ie: Exception) {
             Timber.e(ie)
@@ -91,12 +86,12 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
         }
     }
 
-    fun answerInvites(id: String, accept: Boolean){
+    fun answerInvites(id: String, accept: Boolean) {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                val response = codaGramApi.replyToanyInvite(id,ReplyToInvite(accept))
-                val selectedUsers = searchForUser.value?.replyToInvite
-                if (response.isSuccessful){
+                val response = codaGramApi.replyToanyInvite(id, ReplyToInvite(accept))
+                searchForUser.value?.replyToInvite
+                if (response.isSuccessful) {
                     getAllGroups()
                 }
             }
@@ -107,8 +102,6 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
 
 
     }
-
-
 
 
 }

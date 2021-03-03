@@ -26,6 +26,11 @@ import java.util.*
 @ExperimentalCoroutinesApi
 class GroupDetailsViewModel(private val context: Context, private val codaGramApi: CodaGramApi) :
     ViewModel() {
+    @ExperimentalCoroutinesApi
+    private val searchForUser = MutableLiveData<List<SelectedUser>>()
+
+    @ExperimentalCoroutinesApi
+    fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
 
     /*    val coroutineExceptionHandler = CoroutineExceptionHandler{_, t ->
             run {
@@ -66,7 +71,7 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
         }
     }
 
-    fun getAllGroupsonlyObject(id: String) {
+    fun getAllGroupsByObject(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getGroupbyId(id)
             updateImage(response)
@@ -102,21 +107,11 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.getGroupbyId(id)
                 updateMembersList(response.members)
-                /*   response.members.forEach {
-                       val users = it.id
-                   }
-                   codagramApi.deleteMember(id)*/
             }
         } catch (ie: Exception) {
             Timber.e(ie)
         }
     }
-
-    @ExperimentalCoroutinesApi
-    private val searchForUser = MutableLiveData<List<SelectedUser>>()
-
-    @ExperimentalCoroutinesApi
-    fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
 
 
     @ExperimentalCoroutinesApi
@@ -125,7 +120,6 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.getSearchedUser(input)
                 updateSearchList(response.users.map { (SelectedUser(it)) })
-
             }
         } catch (ie: Exception) {
             Timber.e(ie)
@@ -137,15 +131,12 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
         viewModelScope.launch(Dispatchers.Main) {
             searchForUser.value = userSearch
         }
-
     }
 
     fun deleteGroup(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             codaGramApi.deleteGroup(id)
-
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -154,10 +145,7 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
             val response = codaGramApi.deleteMember(id, uId)
             if (response.isSuccessful)
                 getGroupById(id)
-
         }
-
-
     }
 
     fun updateGroup(id: String, name: UpdateGroup) {
@@ -166,15 +154,13 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
             if (response.isSuccessful) {
                 val update = codaGramApi.getGroupbyId(id)
                 updateImage(update)
-
             }
         }
     }
 
     fun exitGroup(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = codaGramApi.exitGroup(id)
-
+            codaGramApi.exitGroup(id)
         }
     }
 
@@ -190,9 +176,7 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.deleteGroupImage(id)
             if (response.isSuccessful) {
-                getAllGroupsonlyObject(id)
-                /*   val com = codaGramApi.getGroupbyId(id)
-                   updateImage(com)*/
+                getAllGroupsByObject(id)
             }
 
 
@@ -207,7 +191,7 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.addImageToGroup(id, part)
             if (response.isSuccessful) {
-                getAllGroupsonlyObject(id)
+                getAllGroupsByObject(id)
             }
 
         }

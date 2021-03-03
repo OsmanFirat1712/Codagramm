@@ -98,36 +98,10 @@
         android:label="Neue Story"
         tool:layout="@layout/fragment_second">
 
-        <!-- <action android:id="@+id/action_second_to_third"
-             app:destination="@id/thirdView"/>
-
-         <action android:id="@+id/action_second_to_details"
-             app:destination="@id/detailsView">
-
-             <argument android:name="detailArgument"
-                 app:argType="string"/>
- -->
-        <!--
-                </action>
-        -->
         <action
             android:id="@+id/action_secondView_to_firstView"
             app:destination="@id/firstView" />
     </fragment>
-
-    <!-- <fragment
-         android:id="@+id/detailsView"
-         android:name="com.tailoredapps.codagram.ui.details.FragmentDetails"
-         android:label="Details"
-         tool:layout="@layout/fragment_details">
-
-         <argument
-             android:name="detailArgument"
-             android:defaultValue=""
-             app:argType="string"/>
-
-
-     </fragment>-->
 
 
     <fragment

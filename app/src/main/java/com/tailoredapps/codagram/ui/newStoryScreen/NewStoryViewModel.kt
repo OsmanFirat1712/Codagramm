@@ -84,11 +84,8 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
             MultipartBody.Part.createFormData("image", file.name, requestBody)
 
         viewModelScope.launch(Dispatchers.IO) {
-
             try {
-
-                var response2 = codaGramApi.getAllGroups()
-                //var groupId =codagramApi.getGroupbyId(response2.groups.first().id).toString()
+                codaGramApi.getAllGroups()
                 val selectedUsers = searchForUser.value?.filter { it.selected }?.map { it.user.id }
 
                 codaGramApi.newStoryPost(
@@ -108,7 +105,6 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
 
         }
     }
-
 
     @ExperimentalCoroutinesApi
     fun updateSearchList(userSearch: List<SelectedUser>) {

@@ -35,6 +35,11 @@
     <string name="snackInviteUser">Du musst mindestens einen User einladen</string>
     <string name="snackGroupName">Bitte wähle einen Gruppennamen</string>
     <string name="snackUserRequired">Bitte einen User eingeben</string>
+    <string name="snackRequireToPost">Bitte füge ein Foto zu deiner Story hinzu und wähle eine Gruppe aus</string>
+    <string name="snackTagOneMember">Du musst mindestens eine Person taggen</string>
+    <string name="snackUserSearch">Bitte einen User eingeben</string>
+    <string name="snackGroupTitle">Bitte noch ein Titel auswählen</string>
+    <string name="snackDescription">Bitte füge eine Beschreibung hinzu</string>
 
 
 </resources>
