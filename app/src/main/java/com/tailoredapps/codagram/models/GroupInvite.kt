@@ -20,5 +20,5 @@ data class GroupInvite(
 
 data class GroupInviteBody(
     val groupId:String?,
-    val invitees:List<String>?
+    val invitees:List<String>
 )

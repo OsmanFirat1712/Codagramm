@@ -119,10 +119,6 @@ class LoginFragment : Fragment() {
 
 
 
-<<<<<<< HEAD
-
-
-=======
     /*fun isInternetAvailable(): Boolean {
         return try {
             val ipAddr: InetAddress = InetAddress.getByName( "www.googleapis.com")
@@ -134,8 +130,7 @@ class LoginFragment : Fragment() {
             false
         }
     }*/
->>>>>>> 3a9a25a57fdc830a0468662167f1d14cc01fb800
-    
+
 
 
 

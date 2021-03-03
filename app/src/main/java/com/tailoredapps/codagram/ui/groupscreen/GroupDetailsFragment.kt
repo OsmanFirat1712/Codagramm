@@ -44,8 +44,9 @@ class GroupDetailsFragment : Fragment() {
     private lateinit var file: File
     private lateinit var dialog: AlertDialog
     private lateinit var groupName: String
-    private lateinit var image:String
-    private lateinit var creatorName:String
+    private lateinit var image: String
+    private lateinit var creatorName: String
+    private lateinit var input:String
 
 
     @ExperimentalCoroutinesApi
@@ -100,21 +101,39 @@ class GroupDetailsFragment : Fragment() {
 
 
         binding.inviteButton.setOnClickListener {
-            viewModel.sendGroupInvites(groupId.toString())
+            val selectedUsers =
+                viewModel.getSearchedUser().value?.filter { it.selected }?.map { it.user.id }
 
+            if (selectedUsers == null) {
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.snackInviteUser),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+
+            } else {
+                viewModel.sendGroupInvites(groupId.toString())
+                Snackbar.make(requireView(),"$input wurde zur Gruppe eingeladen",Snackbar.LENGTH_SHORT).show()
+
+            }
+
+
+        }
+        binding.ivSaveButton.setOnClickListener {
+            updateGroupImage()
         }
 
         alert()
         groupName = arguments?.getString("name").toString()
         groupId = arguments?.getString("id").toString()
         creatorId = arguments?.getString("creatorId")
-        image  = arguments?.getString("imageUrl").toString()
+        image = arguments?.getString("imageUrl").toString()
         creatorName = arguments?.getString("creatorName").toString()
         //if post crashes, comment theses
 
 
         viewModel.getGroupById(groupId.toString())
-       // binding.tvGroupTitle.text = groupName.toString()
+        // binding.tvGroupTitle.text = groupName.toString()
 
         viewModel.getAllGroupsonlyObject(groupId)
         bindImage()
@@ -134,6 +153,7 @@ class GroupDetailsFragment : Fragment() {
                     DialogInterface.OnClickListener { dialog, id ->
                         if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId) {
                             uploadClickAction()
+                            binding.ivSaveButton.visibility = View.VISIBLE
 
 
                         } else {
@@ -176,9 +196,13 @@ class GroupDetailsFragment : Fragment() {
     @ExperimentalCoroutinesApi
     private fun searchKey() {
 
-        val input = binding.auto.text.toString()
+         input = binding.auto.text.toString()
         if (input.isEmpty()) {
-            Snackbar.make(requireView(), "Bitte einen User eingeben", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(
+                requireView(),
+                getString(R.string.snackUserRequired),
+                Snackbar.LENGTH_SHORT
+            ).show()
         } else {
             viewModel.searchUser(input)
             Timber.d(input)
@@ -200,8 +224,10 @@ class GroupDetailsFragment : Fragment() {
                     val dialogBuilder = AlertDialog.Builder(requireContext())
                     dialogBuilder.setMessage("Möchst den folgenden User ${user.firstname} aus der Gruppe entfernen")
                         .setCancelable(true)
-                        .setPositiveButton(getString(R.string.alertCancel), DialogInterface.OnClickListener { dialog, id ->
-                        })
+                        .setPositiveButton(
+                            getString(R.string.alertCancel),
+                            DialogInterface.OnClickListener { dialog, id ->
+                            })
                         // negative button text and action
                         .setNegativeButton(
                             getString(R.string.alertDelete),
@@ -254,9 +280,9 @@ class GroupDetailsFragment : Fragment() {
             alertDialog.create()
             val alert = alertDialog.show()
 
-            alertDialogBinding.button.setOnClickListener {
+            alertDialogBinding.updateBtn.setOnClickListener {
                 if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId) {
-                    val firstNameFire = alertDialogBinding.editTextTextPersonName.text.toString()
+                    val firstNameFire = alertDialogBinding.groupName.text.toString()
                     viewModel.updateGroup(groupId.toString(), UpdateGroup(firstNameFire))
 
                 } else {
@@ -268,7 +294,7 @@ class GroupDetailsFragment : Fragment() {
                 }
                 when {
 
-                    alertDialogBinding.editTextTextPersonName.text.toString()
+                    alertDialogBinding.groupName.text.toString()
                         .isEmpty() -> Toast.makeText(
                         context,
                         "nick name can not be empty!",
@@ -282,7 +308,7 @@ class GroupDetailsFragment : Fragment() {
                 }
 
             }
-            alertDialogBinding.button2.setOnClickListener {
+            alertDialogBinding.cancelbtn.setOnClickListener {
                 Log.e("message", "clicked")
                 alert.dismiss()
             }
@@ -304,7 +330,7 @@ class GroupDetailsFragment : Fragment() {
 
         val dialogBuilder = AlertDialog.Builder(requireContext())
 
-        dialogBuilder.setMessage("Möchst du die folgende Gruppe  ${groupName} wirklich löschen?")
+        dialogBuilder.setMessage("Möchst du die folgende Gruppe  ${groupName} wirklich löschen/verlassen?")
             .setCancelable(true)
             .setPositiveButton(
                 getString(R.string.cancel),
@@ -317,7 +343,11 @@ class GroupDetailsFragment : Fragment() {
                     if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId) {
                         viewModel.deleteGroup(groupId.toString())
                         view?.findNavController()?.popBackStack()
-
+                        Snackbar.make(
+                            requireView(),
+                            "$groupName wurde gelöscht/verlassen",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     } else {
                         viewModel.exitGroup(groupId.toString())
                         Snackbar.make(
@@ -325,7 +355,11 @@ class GroupDetailsFragment : Fragment() {
                             "Möchstes du wirklich die Gruppe $groupName verlassen?",
                             Snackbar.LENGTH_SHORT
                         ).show()
-                        dialogBuilder.setMessage("Möchst du die folgende Gruppe  ${groupName} wirklich löschen?")
+                        Snackbar.make(
+                            requireView(),
+                            "$groupName wurde gelösch/verlassen",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                         view?.findNavController()?.popBackStack()
                     }
 
@@ -370,7 +404,8 @@ class GroupDetailsFragment : Fragment() {
         i.action = Intent.ACTION_GET_CONTENT
     }
 
-    private fun updateGroupImage() {
+    @ExperimentalCoroutinesApi
+    fun updateGroupImage() {
         viewModel.updateGroupImage(groupId.toString(), Uri.fromFile(file))
     }
 
@@ -402,17 +437,8 @@ class GroupDetailsFragment : Fragment() {
             .compress(1024)
             .maxResultSize(1080, 1080)
             .start()
-        /*if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(requireActivity(),
-                Array(1){Manifest.permission.READ_EXTERNAL_STORAGE},121)
-        }*/
-        listImages()
-    }
 
-    fun loadGroupImage() {
-        Glide.with(requireContext())
-            .load(image)
-            .into(binding.imageView2)
+        listImages()
     }
 
 
@@ -422,70 +448,12 @@ class GroupDetailsFragment : Fragment() {
         viewModel.getMyImage().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             createAlertDialog()
             binding.tvGroupTitle.text = it.name.toString()
+            binding.tvGroupCreatedBy.text = it.creator?.firstname.toString()
 
             Glide.with(requireContext())
                 .load(it.image?.url)
+                .placeholder(R.drawable.ic_baseline_image_48)
                 .into(binding.imageView2)
         })
     }
-/*    @ExperimentalCoroutinesApi
-    fun updateGroup(){
-        MaterialAlertDialogBuilder(requireContext())
-        binding2 = RegisterDialogBinding.inflate(layoutInflater, container, false)
-        return binding.root
-            .setView(R.layout.register_dialog)
-            .setTitle("löschen")
-            .setNeutralButton("cancel") { dialogInterface, i ->
-
-            viewModel.updateGroup()}
-            .setNegativeButton("löschen") { dialogInterface, i ->
-            }
-    }*/
-/*
-    fun updateGroup(){
-
-        val mDialogView = LayoutInflater.from(context).inflate(R.layout.register_dialog, null)
-
-        //AlertDialogBuilder
-        val mBuilder = AlertDialog.Builder(context)
-            .setView(mDialogView)
-            .setTitle("Login Form")
-        //show dialog
-        val  mAlertDialog = mBuilder.show()
-        //login button click of custom layout
-
-        mDialogView.button.setOnClickListener {
-            //dismiss dialog
-            mAlertDialog.dismiss()
-            //get text from EditTexts of custom layout
-            val name = mDialogView.edit.text.toString()
-            //set the input text in TextView
-            mainInfoTv.setText("Name:"+ name +"\nEmail: "+ email +"\nPassword: "+ password)
-        }
-        //cancel button click of custom layout
-        mDialogView.dialogCancelBtn.setOnClickListener {
-            //dismiss dialog
-            mAlertDialog.dismiss()
-        }*/
-
 }
-
-
-/*  item.setOnMenuItemClickListener {
-      if (item.itemId == R.id.delete) {
-          if (groupId != null) {
-              viewModel.deleteGroup(groupId)
-          }
-      }
-
-      return@setOnMenuItemClickListener super.onOptionsItemSelected(item)
-  }*/
-/*
-        return super.onOptionsItemSelected(item)
-
-*/
-
-
-
-
-

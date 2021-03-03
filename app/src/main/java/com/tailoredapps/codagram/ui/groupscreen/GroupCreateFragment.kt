@@ -17,6 +17,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupBinding
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.User
@@ -33,11 +34,10 @@ class GroupFragment : Fragment(), Get {
     private val adapter1: SearchAdapter by inject()
     private lateinit var binding: FragmentGroupBinding
     private val viewModel: GroupViewModel by inject()
-    private var user: List<User> = emptyList()
     private var bundle: Bundle? = null
     var navController: NavController? = null
     private var  file:File? = null
-    private lateinit var input:String
+    private  var input:String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,12 +75,7 @@ class GroupFragment : Fragment(), Get {
     @ExperimentalCoroutinesApi
     private fun searchKey() {
 
-<<<<<<< HEAD:app/src/main/java/com/tailoredapps/codagram/ui/groupscreen/GroupFragment.kt
         val input = binding.auto.text.toString()
-        viewModel.searchUser(input)
-        Timber.d(input)
-=======
-         input = binding.auto.text.toString()
         if (input.isEmpty()){
             Snackbar.make(requireView(),"Bitte einen User eingeben",Snackbar.LENGTH_SHORT).show()
         } else {
@@ -89,7 +84,6 @@ class GroupFragment : Fragment(), Get {
 
         }
 
->>>>>>> 3a9a25a57fdc830a0468662167f1d14cc01fb800:app/src/main/java/com/tailoredapps/codagram/ui/groupscreen/GroupCreateFragment.kt
 
     }
 
@@ -108,16 +102,28 @@ class GroupFragment : Fragment(), Get {
         binding.btnCreateGroup.setOnClickListener { view ->
 
             val nameGroup = binding.etCreateGroup.text.toString()
+            val selectedUsers = viewModel.getSearchedUser().value?.filter { it.selected }?.map { it.user.id }
 
+            adapter1.currentList
             // (viewModel.createGroup(nameGroup))
-            if (nameGroup.isEmpty()&& input.isEmpty()){
-                Snackbar.make(requireView(),"Es muss eine Description gesetzt werden",Snackbar.LENGTH_SHORT).show()
-            } else if (file != null){
+            if (selectedUsers == null){
+                adapter1.currentList
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.snackInviteUser),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }else if(nameGroup.isEmpty()){
+                Snackbar.make(requireView(),getString(R.string.snackGroupName),Snackbar.LENGTH_SHORT).show()
+            }
+            else if (file != null){
+
                 viewModel.createGroup(nameGroup, Uri.fromFile(file))
+                adapter1.currentList
                 view.findNavController()
                     .navigate(GroupFragmentDirections.actionGroupScreenToMyGroupScreen())
-            } else{
-                Snackbar.make(requireView(),"Bitte noch ein Gruppenfoto auswählen",Snackbar.LENGTH_SHORT).show()
+            } else if(nameGroup.isEmpty()) {
+                Snackbar.make(requireView(),"Bitte noch ein Titel auswählen",Snackbar.LENGTH_SHORT).show()
             }
 
 
@@ -180,7 +186,13 @@ class GroupFragment : Fragment(), Get {
         }
     }
 
+    fun getError(){
+        viewModel.getError().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+        })
+    }
 }
+
 
 interface Get {
     fun onItemClicked(group: Group)
