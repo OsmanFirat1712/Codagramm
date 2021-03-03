@@ -1,12 +1,9 @@
 package com.tailoredapps.codagram.ui.homeFeedScreen
 
 import android.content.Context
-<<<<<<< HEAD
 import android.graphics.Color
 import android.opengl.Visibility
 import android.os.Bundle
-=======
->>>>>>> 3a9a25a57fdc830a0468662167f1d14cc01fb800
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

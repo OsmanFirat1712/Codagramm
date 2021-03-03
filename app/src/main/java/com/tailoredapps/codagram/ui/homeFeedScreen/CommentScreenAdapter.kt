@@ -14,10 +14,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.models.Comment
-<<<<<<< HEAD
 import com.tailoredapps.codagram.models.Post
 import com.tailoredapps.codagram.models.User
-import com.tailoredapps.codagram.remote.CodagramApi
+import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.ui.HomeFeedScreenDirections
 import com.tailoredapps.codagram.ui.groupscreen.GroupDetailsAdapter
 import kotlinx.android.synthetic.main.comment_screen_items.view.*
@@ -26,12 +25,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.time.days
 
-class CommentScreenAdapter(val codagramApi: CodagramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(DiffCallback()) {
-=======
-import com.tailoredapps.codagram.remote.CodaGramApi
+
 
 class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(DiffCallback()) {
->>>>>>> 3a9a25a57fdc830a0468662167f1d14cc01fb800
+
 
     lateinit var mItemCLicked: ItemRemove2ClickListener
 

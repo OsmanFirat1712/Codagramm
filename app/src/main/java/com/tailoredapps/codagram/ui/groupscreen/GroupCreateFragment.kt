@@ -75,11 +75,6 @@ class GroupFragment : Fragment(), Get {
     @ExperimentalCoroutinesApi
     private fun searchKey() {
 
-<<<<<<< HEAD:app/src/main/java/com/tailoredapps/codagram/ui/groupscreen/GroupFragment.kt
-        val input = binding.auto.text.toString()
-        viewModel.searchUser(input)
-        Timber.d(input)
-=======
          input = binding.auto.text.toString()
         if (input.isEmpty()){
             Snackbar.make(requireView(),"Bitte einen User eingeben",Snackbar.LENGTH_SHORT).show()
@@ -89,7 +84,6 @@ class GroupFragment : Fragment(), Get {
 
         }
 
->>>>>>> 3a9a25a57fdc830a0468662167f1d14cc01fb800:app/src/main/java/com/tailoredapps/codagram/ui/groupscreen/GroupCreateFragment.kt
 
     }
 
