@@ -39,11 +39,11 @@ class GroupInviteAdapter : ListAdapter<GroupInvite, GroupInviteAdapter.MainViewH
         val curentItem = getItem(position)
 
         holder.apply {
-            accept.setOnClickListener {
-                accept.text = curentItem.name
+            myBinding.acceptInvite.setOnClickListener {
+                myBinding.acceptInvite.text = curentItem.name
 
                 curentItem.replyToInvite = curentItem.replyToInvite.not()
-                accept.visibility = if (curentItem.replyToInvite) {
+                myBinding.acceptInvite.visibility = if (curentItem.replyToInvite) {
                     mItemCLicked.let {
                         mItemCLicked.onItemClicked(true, curentItem.id)
                     }
@@ -52,9 +52,9 @@ class GroupInviteAdapter : ListAdapter<GroupInvite, GroupInviteAdapter.MainViewH
                     View.VISIBLE
                 }
             }
-            deny.setOnClickListener {
+            myBinding.denyInvite.setOnClickListener {
                 curentItem.replyToInvite = curentItem.replyToInvite.not()
-                accept.visibility = if (curentItem.replyToInvite) {
+                myBinding.acceptInvite.visibility = if (curentItem.replyToInvite) {
                     mItemCLicked.let {
                         mItemCLicked.onItemClicked(false, curentItem.id)
                     }
@@ -78,35 +78,10 @@ class GroupInviteAdapter : ListAdapter<GroupInvite, GroupInviteAdapter.MainViewH
 
     class MainViewHolder(private val binding: GroupInviteListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val accept: TextView = itemView.findViewById(R.id.acceptInvite)
-        val deny: TextView = itemView.findViewById(R.id.denyInvite)
 
-
+        val myBinding = binding
+        
         fun bind(postData: GroupInvite) {
-            /*    binding.root.setOnClickListener {
-                    postData.replyToInvite = postData.replyToInvite.not()
-                    binding.acceptInvite.visibility = if (postData.replyToInvite){
-                        mItemCLicked.let {
-                        mItemCLicked.onItemClicked(true,postData.id)
-                        }
-                        View.VISIBLE
-                    }else {
-                        View.VISIBLE
-                    }
-                }
-
-                binding.acceptInvite.visibility = if (postData.replyToInvite){
-                    mItemCLicked.let {
-                        mItemCLicked.onItemClicked(true,postData.id)
-                    }
-                    View.VISIBLE
-                }else {
-                    View.VISIBLE
-                }*/
-            /*    postData.members.forEach {
-                    val userName = it.firstname
-
-                }*/
 
             binding.resultText.text = "Invited By :" + postData.inviter.firstname.toString()
 

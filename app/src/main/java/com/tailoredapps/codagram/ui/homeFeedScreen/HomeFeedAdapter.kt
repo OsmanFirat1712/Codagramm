@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
@@ -37,8 +38,6 @@ import kotlinx.coroutines.launch
 class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : ListAdapter<Post, HomeFeedAdapter.CountryItem>(DiffCallback()) {
     lateinit var mItemCLicked: ItemCLickedListener
     lateinit var mItemRemoveClicked: ItemGroupRemoveListener
-    private val sessionManager = SessionManager(context)
-    private lateinit var token:String
     lateinit var post:Post
 
     class DiffCallback : DiffUtil.ItemCallback<Post>() {
@@ -73,75 +72,84 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
                 .load(currentItem.user?.image?.url)
                 .into(itemView.user_photo_image)
 
-            userName.text = currentItem.user?.firstname
-            likeCount.text = currentItem.likes.toString()
-            tagSize.text = currentItem.tags.size.toString()
-            tvGroupName.text = currentItem.group?.name.toString()
-            tvNickName.text = "(" + currentItem.user?.nickname.toString() + ")"
 
+            myBinding.usernameText.text = currentItem.user?.firstname
+            myBinding.likesText.text = currentItem.likes.toString()
+            myBinding.tvTagSize.text = currentItem.tags.size.toString()
+            myBinding.tvGroupName.text = currentItem.group?.name.toString()
+            myBinding.tvNickName.text = "(" + currentItem.user?.nickname.toString() +")"
 
+            if (currentItem.comments == null || currentItem.comments.isEmpty()){
+                myBinding.cl1.isVisible = false
+            }
+            else if (currentItem.comments?.size!! > 1 ){
+                myBinding.lastCvv.visibility = View.VISIBLE
+                myBinding.tvWrittenBy.text = currentItem.comments?.get(0)?.user?.firstname.toString()
+                myBinding.tvFirstComment.text = currentItem.comments?.get(0)?.text
 
-            writtenBy.text = currentItem.comments?.firstOrNull()?.user?.firstname.toString()
-            firstComment.text = currentItem.comments?.firstOrNull()?.text
+                myBinding.tvWrittenBy2.text = currentItem.comments?.get(1)?.user?.firstname.toString()
+                myBinding.tvFirstComment2.text = currentItem.comments?.get(1)?.text.toString()
+            }
 
-            writtenBy2.text = currentItem.comments?.getOrNull(1)?.user?.firstname.toString()
-            secondComment.text = currentItem.comments?.getOrNull(1)?.text.toString()
+            else if(currentItem.comments?.size == 1){
+                myBinding.tvWrittenBy.text = currentItem.comments?.get(0)?.user?.firstname.toString()
+                myBinding.tvFirstComment.text = currentItem.comments?.get(0)?.text.toString()
+                myBinding.cl2.isVisible = false
 
+            }
 
+            myBinding.commentText.text = currentItem.comments?.size.toString()+" "+"Comment"
 
-            commentCount2.text = currentItem.comments?.size.toString()+" "+"Comment"
+            if (currentItem.userLiked){
+                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_24)
+            }
 
-            like.setOnClickListener {
-                like.setImageResource(R.drawable.ic_baseline_favoritelike_24)
+            myBinding.likeImage.setOnClickListener {
+                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_24)
                 currentItem.userLiked = currentItem.userLiked.not()
 
                 when{
                     currentItem.userLiked -> {
                         mItemCLicked.let {
                             mItemCLicked.onItemClicked(true,getItem(position))
-                            like.setImageResource(R.drawable.ic_baseline_favoritelike_24)
-                            if (FirebaseAuth.getInstance().currentUser!!.uid == currentItem.member.toString()){
-                                like.setImageResource(R.drawable.ic_baseline_favoritelike_24)
+                            myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_24)
+                            if (FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id ){
+                                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_24)
                             }
                         }
                     }
                     else->{
                         mItemCLicked.onItemClicked(false,getItem(position))
 
-                        like.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                        myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
                     }
                 }
             }
-        }
-        holder.itemView.setOnClickListener {
-            mItemCLicked.let {
-                mItemCLicked.onItemClicked(currentItem.userLiked,getItem(position))
+
+            itemView.setOnClickListener {
+                mItemCLicked.let {
+                    mItemCLicked.onItemClicked(currentItem.userLiked,getItem(position))
+                }
+            }
+
+            when (FirebaseAuth.getInstance().currentUser!!.uid) {
+                currentItem.user?.id -> myBinding.ivDelete.visibility = View.VISIBLE
+                else -> myBinding.ivDelete.visibility = View.INVISIBLE
+            }
+
+            when {
+                FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id-> myBinding.ivDelete.visibility = View.VISIBLE
+                else->myBinding.ivDelete.visibility = View.INVISIBLE
+            }
+
+            myBinding.ivDelete.setOnClickListener {
+                mItemRemoveClicked.let{
+                    mItemRemoveClicked.onGroupRemoved(getItem(position))
+                }
             }
         }
 
-        when (FirebaseAuth.getInstance().currentUser!!.uid) {
-            currentItem.user?.id -> holder.delete.visibility = View.VISIBLE
-            else -> holder.delete.visibility = View.INVISIBLE
-        }
-
-        when {
-            FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id-> holder.delete.visibility = View.VISIBLE
-            else->holder.delete.visibility = View.INVISIBLE
-
-        }
-        val likes = 1
-        val currentlikes = currentItem.likes
-
-
-
-
-        holder.delete.setOnClickListener {
-            mItemRemoveClicked.let{
-                mItemRemoveClicked.onGroupRemoved(getItem(position))
-            }
-        }
     }
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -161,36 +169,16 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
     }
 
 
-    class CountryItem(private val binding: HomeFeedScreenBinding) :
+    class CountryItem(val binding: HomeFeedScreenBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-
-        val like: ImageView = itemView.findViewById(R.id.like_image)
-        val userName:TextView = itemView.findViewById(R.id.username_text)
-        val likeCount:TextView = itemView.findViewById(R.id.likes_text)
-        val firstComment:TextView = itemView.findViewById(R.id.tvFirstComment)
-        val secondComment:TextView = itemView.findViewById(R.id.tvFirstComment2)
-        val writtenBy2:TextView = itemView.findViewById(R.id.tvWrittenBy2)
-        val writtenBy:TextView = itemView.findViewById(R.id.tvWrittenBy)
-        val commentCount2:TextView = itemView.findViewById(R.id.comment_text)
-        val delete:ImageView = itemView.findViewById(R.id.ivDelete)
-        val cardCommend:CardView = itemView.findViewById(R.id.lastCvv)
-        val cardCommend2:CardView = itemView.findViewById(R.id.cvLastCommend2)
-        val tagSize:TextView = itemView.findViewById(R.id.tvTagSize)
-        val tvGroupName:TextView = itemView.findViewById(R.id.tvGroupName)
-        val tvNickName:TextView = itemView.findViewById(R.id.tvNickName)
-        val image1:ImageView = itemView.findViewById(R.id.ivUserImage)
-        val image2:ImageView = itemView.findViewById(R.id.ivUser2Image)
+        val myBinding = binding
 
         fun bind(postData: Post) {
 
             val bundle = bundleOf(
                 "name" to postData.id,
             )
-
-
-
-
 
             binding.captionText.text = postData.description.toString()
             binding.commentImage.setOnClickListener {
@@ -209,9 +197,7 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
                     .navigate(R.id.action_firstView_to_CommentScreenFragment, bundle)
             }
 
-
         }
-
 
     }
     interface ItemCLickedListener {
