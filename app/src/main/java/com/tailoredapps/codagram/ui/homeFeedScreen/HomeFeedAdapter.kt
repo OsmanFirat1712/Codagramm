@@ -100,6 +100,8 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
 
             if (currentItem.userLiked){
                 myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_24)
+            }else{
+                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
 
             myBinding.likeImage.setOnClickListener {
@@ -178,11 +180,7 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
                 "name" to postData.id,
             )
 
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/ui/homeFeedScreen/HomeFeedAdapter.kt
 
-
-=======
->>>>>>> app/src/main/java/com/tailoredapps/codagram/ui/homeFeedScreen/HomeFeedAdapter.kt
             binding.captionText.text = postData.description.toString()
             binding.commentImage.setOnClickListener {
                 it.findNavController()
