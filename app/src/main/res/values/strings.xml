@@ -32,6 +32,9 @@
     <string name="snackOnlyCreatorCanDeleteMember">Du kannst nur als Ersteller der Gruppe Mitglieder entfernen</string>
     <string name="snackOnlyCreatorCanEditTitle">Du kannst nur als Ersteller den Gruppennamen ändern</string>
     <string name="alertCancel">Abbrechen</string>
+    <string name="snackInviteUser">Du musst mindestens einen User einladen</string>
+    <string name="snackGroupName">Bitte wähle einen Gruppennamen</string>
+    <string name="snackUserRequired">Bitte einen User eingeben</string>
 
 
 </resources>

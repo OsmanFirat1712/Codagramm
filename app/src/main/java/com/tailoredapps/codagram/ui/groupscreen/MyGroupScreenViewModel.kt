@@ -96,7 +96,9 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.replyToanyInvite(id,ReplyToInvite(accept))
                 val selectedUsers = searchForUser.value?.replyToInvite
-
+                if (response.isSuccessful){
+                    getAllGroups()
+                }
             }
         } catch (ie: Exception) {
             Timber.e(ie)

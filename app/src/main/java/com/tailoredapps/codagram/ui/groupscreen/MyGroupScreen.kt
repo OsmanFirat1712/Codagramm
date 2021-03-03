@@ -96,13 +96,13 @@ class MyGroupScreen() : Fragment()  {
 
             myGroupInviteAdapter.setUpListener(object : GroupInviteAdapter.ItemCLickedListener {
                 override fun onItemClicked(accept: Boolean,id:String,) {
-
                     viewModel.answerInvites(id,accept)
                     viewModel.getInvites()
                     viewModel.getAllGroups()
                     myGroupInviteAdapter.currentList
                     myGroupInviteAdapter.notifyDataSetChanged()
                     myGroupInviteAdapter.submitList(it)
+
                 }
 
             })

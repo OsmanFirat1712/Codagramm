@@ -24,11 +24,11 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="20dp" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView2"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_baseline_cloud_upload_24"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
@@ -38,6 +38,7 @@
         android:id="@+id/ivSaveButton"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:visibility="invisible"
         android:src="@drawable/ic_baseline_save_24"
         app:layout_constraintTop_toBottomOf="@id/tvGroupCreatedBy"
         android:layout_marginTop="30dp"

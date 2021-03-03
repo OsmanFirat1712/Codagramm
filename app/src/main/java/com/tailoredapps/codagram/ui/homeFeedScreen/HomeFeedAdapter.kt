@@ -1,12 +1,9 @@
 package com.tailoredapps.codagram.ui.homeFeedScreen
 
 import android.content.Context
-<<<<<<< HEAD
 import android.graphics.Color
 import android.opengl.Visibility
 import android.os.Bundle
-=======
->>>>>>> 3a9a25a57fdc830a0468662167f1d14cc01fb800
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +39,7 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
     lateinit var mItemRemoveClicked: ItemGroupRemoveListener
     private val sessionManager = SessionManager(context)
     private lateinit var token:String
+    lateinit var post:Post
 
     class DiffCallback : DiffUtil.ItemCallback<Post>() {
 
@@ -121,11 +119,18 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
             }
         }
 
+        when (FirebaseAuth.getInstance().currentUser!!.uid) {
+            currentItem.user?.id -> holder.delete.visibility = View.VISIBLE
+            else -> holder.delete.visibility = View.INVISIBLE
+        }
+
         when {
             FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id-> holder.delete.visibility = View.VISIBLE
             else->holder.delete.visibility = View.INVISIBLE
 
         }
+        val likes = 1
+        val currentlikes = currentItem.likes
 
 
 
@@ -159,6 +164,7 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
     class CountryItem(private val binding: HomeFeedScreenBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+
         val like: ImageView = itemView.findViewById(R.id.like_image)
         val userName:TextView = itemView.findViewById(R.id.username_text)
         val likeCount:TextView = itemView.findViewById(R.id.likes_text)
@@ -185,9 +191,9 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
 
 
 
+
             binding.captionText.text = postData.description.toString()
             binding.commentImage.setOnClickListener {
-
                 it.findNavController()
                     .navigate(R.id.action_firstView_to_CommentScreenFragment, bundle)
             }

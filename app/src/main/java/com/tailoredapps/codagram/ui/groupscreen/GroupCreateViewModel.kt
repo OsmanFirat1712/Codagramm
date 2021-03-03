@@ -2,6 +2,7 @@ package com.tailoredapps.codagram.ui.groupscreen
 
 import android.content.Context
 import android.net.Uri
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +25,12 @@ import java.io.File
 class GroupViewModel(private val context: Context, private val codaGramApi: CodaGramApi) :
     ViewModel() {
     @ExperimentalCoroutinesApi
+    private val error = MutableLiveData<Boolean>()
+
+    @ExperimentalCoroutinesApi
+    fun getError(): LiveData<Boolean> = error
+
+
     private val searchForUser = MutableLiveData<List<SelectedUser>>()
 
 
@@ -52,22 +59,29 @@ class GroupViewModel(private val context: Context, private val codaGramApi: Coda
     }
 
     @ExperimentalCoroutinesApi
-    fun createGroup(group: String,uri: Uri) {
+    fun createGroup(group: String, uri: Uri) {
+        Timber.d("${searchForUser.value}")
         val file = File(uri.path!!)
         val requestBody: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val part: MultipartBody.Part = MultipartBody.Part.createFormData("image", file.name, requestBody)
+        val part: MultipartBody.Part =
+            MultipartBody.Part.createFormData("image", file.name, requestBody)
         try {
 
             viewModelScope.launch(Dispatchers.IO) {
                 val selectedUsers = searchForUser.value?.filter { it.selected }?.map { it.user.id }
+                val response =
+                    codaGramApi.createGroup(GroupCreate(group, selectedUsers as List<String>))
+                        .also {
+                            codaGramApi.addImageToGroup(it.id, part)
+                            codaGramApi.getGroupbyId(it.id)
+                            codaGramApi.sendGroupInvites(
+                                GroupInviteBody(
+                                    it.id,
+                                    selectedUsers as List<String>,
+                                )
+                            )
 
-                val response = codaGramApi.createGroup(GroupCreate(group, selectedUsers as List<String>)).also {
-                    codaGramApi.addImageToGroup(it.id,part)
-                    codaGramApi.getGroupbyId(it.id)
-                }
-
-
-                codaGramApi.sendGroupInvites(GroupInviteBody(response.id, selectedUsers as List<String>,))
+                        }
 
 
             }

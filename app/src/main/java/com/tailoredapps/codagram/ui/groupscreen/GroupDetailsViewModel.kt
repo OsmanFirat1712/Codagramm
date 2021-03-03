@@ -27,19 +27,17 @@ import java.util.*
 class GroupDetailsViewModel(private val context: Context, private val codaGramApi: CodaGramApi) :
     ViewModel() {
 
-/*    val coroutineExceptionHandler = CoroutineExceptionHandler{_, t ->
-        run {
-            t.printStackTrace()
-           // showErrorOrSomething()
-        }
-    }*/
-@ExperimentalCoroutinesApi
-private val myImage = MutableLiveData<Group>()
+    /*    val coroutineExceptionHandler = CoroutineExceptionHandler{_, t ->
+            run {
+                t.printStackTrace()
+               // showErrorOrSomething()
+            }
+        }*/
+    @ExperimentalCoroutinesApi
+    private val myImage = MutableLiveData<Group>()
 
     @ExperimentalCoroutinesApi
     fun getMyImage(): LiveData<Group> = myImage
-
-
 
 
     @ExperimentalCoroutinesApi
@@ -68,14 +66,14 @@ private val myImage = MutableLiveData<Group>()
         }
     }
 
-    fun getAllGroupsonlyObject(id: String){
+    fun getAllGroupsonlyObject(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getGroupbyId(id)
             updateImage(response)
         }
     }
 
-     fun getAllGroups(){
+    fun getAllGroups() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getAllGroups()
             updateUi(response.groups)
@@ -153,7 +151,7 @@ private val myImage = MutableLiveData<Group>()
     @RequiresApi(Build.VERSION_CODES.N)
     fun deleteMember(id: String, uId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-           val response = codaGramApi.deleteMember(id, uId)
+            val response = codaGramApi.deleteMember(id, uId)
             if (response.isSuccessful)
                 getGroupById(id)
 
@@ -164,9 +162,9 @@ private val myImage = MutableLiveData<Group>()
 
     fun updateGroup(id: String, name: UpdateGroup) {
         viewModelScope.launch(Dispatchers.IO) {
-            val  response = codaGramApi.updateGroup(id, name)
-            if (response.isSuccessful){
-               val update = codaGramApi.getGroupbyId(id)
+            val response = codaGramApi.updateGroup(id, name)
+            if (response.isSuccessful) {
+                val update = codaGramApi.getGroupbyId(id)
                 updateImage(update)
 
             }
@@ -175,39 +173,40 @@ private val myImage = MutableLiveData<Group>()
 
     fun exitGroup(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val  response = codaGramApi.exitGroup(id)
+            val response = codaGramApi.exitGroup(id)
 
         }
     }
 
-    fun sendGroupInvites(id: String){
+    fun sendGroupInvites(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val selectedUsers = searchForUser.value?.filter { it.selected }?.map { it.user.id }
-            codaGramApi.sendGroupInvites(GroupInviteBody(id,selectedUsers as List<String>))
+            codaGramApi.sendGroupInvites(GroupInviteBody(id, selectedUsers as List<String>))
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun deleteGroupImage(id: String){
+    fun deleteGroupImage(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-        val response = codaGramApi.deleteGroupImage(id)
-            if (response.isSuccessful){
+            val response = codaGramApi.deleteGroupImage(id)
+            if (response.isSuccessful) {
                 getAllGroupsonlyObject(id)
-             /*   val com = codaGramApi.getGroupbyId(id)
-                updateImage(com)*/
+                /*   val com = codaGramApi.getGroupbyId(id)
+                   updateImage(com)*/
             }
 
 
         }
     }
 
-    fun updateGroupImage(id: String,uri: Uri){
+    fun updateGroupImage(id: String, uri: Uri) {
         val file = File(uri.path!!)
         val requestBody: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val part: MultipartBody.Part = MultipartBody.Part.createFormData("image", file.name, requestBody)
+        val part: MultipartBody.Part =
+            MultipartBody.Part.createFormData("image", file.name, requestBody)
         viewModelScope.launch(Dispatchers.IO) {
-           val response = codaGramApi.addImageToGroup(id,part)
-            if (response.isSuccessful){
+            val response = codaGramApi.addImageToGroup(id, part)
+            if (response.isSuccessful) {
                 getAllGroupsonlyObject(id)
             }
 

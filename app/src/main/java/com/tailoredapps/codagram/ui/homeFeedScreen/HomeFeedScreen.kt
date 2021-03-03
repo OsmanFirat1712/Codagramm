@@ -120,6 +120,7 @@ class HomeFeedScreen : Fragment() {
     fun bindPostLiveData() {
         viewModel.getMyPost().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
+            adapter.notifyDataSetChanged()
             adapter.setUpListener(object : HomeFeedAdapter.ItemCLickedListener {
                 override fun onItemClicked(like: Boolean, post: Post) {
                   likePost(post.id,like)
