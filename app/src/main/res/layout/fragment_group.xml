@@ -25,8 +25,8 @@
 
     <ImageView
         android:id="@+id/groupImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_baseline_image_24"
         app:layout_constraintEnd_toEndOf="@id/guidelineRight"
@@ -51,6 +51,8 @@
             android:layout_marginLeft="20dp"
             android:hint="..."
             android:textColorHint="#FF86FC"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:textSize="13dp"
             android:padding="1dp"
             android:textColor="#FF86FC"
@@ -67,6 +69,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
         android:completionThreshold="1"
         android:hint="Invite an User ..."
         android:padding="5dp"

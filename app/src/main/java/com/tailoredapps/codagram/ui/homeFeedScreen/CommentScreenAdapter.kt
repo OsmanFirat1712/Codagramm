@@ -7,28 +7,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.GlideApp
 import com.bumptech.glide.Glide
-import com.google.android.play.core.assetpacks.dd
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.models.Comment
-import com.tailoredapps.codagram.models.Post
-import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodaGramApi
-import com.tailoredapps.codagram.ui.HomeFeedScreenDirections
-import com.tailoredapps.codagram.ui.groupscreen.GroupDetailsAdapter
 import kotlinx.android.synthetic.main.comment_screen_items.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlin.time.days
-
 
 
 class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(DiffCallback()) {
-
 
     lateinit var mItemCLicked: ItemRemove2ClickListener
 

@@ -37,8 +37,8 @@
 
     <ImageView
         android:id="@+id/ivImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
         app:layout_constraintTop_toBottomOf="@id/waveHeader"
         android:src="@drawable/ic_baseline_cloud_upload_24"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
@@ -83,6 +83,8 @@
                 android:id="@+id/dialogFirstName"
                 android:layout_weight="1"
                 android:hint="FirstName "
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:textSize="15dp"
                 android:padding="5dp"
                 android:layout_marginLeft="5dp"
@@ -142,6 +144,8 @@
                 android:id="@+id/dialogLastName"
                 android:layout_weight="1"
                 android:hint="FirstName "
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:textSize="15dp"
                 android:padding="5dp"
                 android:layout_marginLeft="5dp"
@@ -203,6 +207,8 @@
                 android:hint="FirstName "
                 android:textSize="15dp"
                 android:padding="5dp"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:layout_marginLeft="5dp"
                 android:background="@android:color/transparent"
                 android:textColorHint="@android:color/white"
@@ -265,6 +271,8 @@
                 android:layout_marginLeft="5dp"
                 android:background="@android:color/transparent"
                 android:textColorHint="@android:color/white"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -325,6 +333,8 @@
                 android:background="@android:color/transparent"
                 android:textColorHint="@android:color/white"
                 android:layout_width="match_parent"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:layout_height="wrap_content"/>
 
             <ImageView

@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentThirdBinding
 import com.tailoredapps.codagram.models.Group
@@ -95,13 +96,13 @@ class MyGroupScreen() : Fragment()  {
 
             myGroupInviteAdapter.setUpListener(object : GroupInviteAdapter.ItemCLickedListener {
                 override fun onItemClicked(accept: Boolean,id:String,) {
-
                     viewModel.answerInvites(id,accept)
                     viewModel.getInvites()
                     viewModel.getAllGroups()
                     myGroupInviteAdapter.currentList
                     myGroupInviteAdapter.notifyDataSetChanged()
                     myGroupInviteAdapter.submitList(it)
+
                 }
 
             })

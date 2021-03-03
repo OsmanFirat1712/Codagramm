@@ -14,6 +14,7 @@ import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.remoteModels.SelectedUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -97,9 +98,10 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
                         selectedUsers as List<String>
                     )
                 ).also {
-                    codaGramApi.addPhoto(it.id.toString(), part)
+                    codaGramApi.addPhoto(it.body()?.id.toString(), part)
 
                 }
+
             } catch (ie: Exception) {
                 Timber.e(ie)
             }

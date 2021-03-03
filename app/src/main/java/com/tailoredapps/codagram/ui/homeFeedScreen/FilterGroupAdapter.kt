@@ -10,6 +10,8 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FilterGroupItemBinding
 import com.tailoredapps.codagram.databinding.SearchDetailPageBinding
 import com.tailoredapps.codagram.models.Group
@@ -98,9 +100,14 @@ class GroupScreenViewHolder(private val binding: FilterGroupItemBinding) :
             val userName = it.id
         }
 
+        Glide.with(itemView)
+            .load(postData.image?.url)
+            .placeholder(R.drawable.ic_baseline_image_48)
+            .into(binding.groupImage)
+
+
         binding.tvGroupName.text = postData.name.toString()
         binding.tvCreatorName.text = postData.creator?.lastname.toString()
-        binding.tvGroupInviter.text = postData.inviter?.lastname
 
 
     }

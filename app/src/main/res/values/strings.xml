@@ -20,6 +20,21 @@
     <string name="passwort">Passwort</string>
     <string name="account_erstellen">Account Erstellen</string>
     <string name="abbrechen">Abbrechen</string>
+    <string name="cancel">ABBRECHEN</string>
+    <string name="delete">LÖSCHEN</string>
+    <string name="deletePost">Willst du deinen Post wirklich löschen?</string>
+    <string name="postDeleteSnack">Dein Post wurde gelöscht</string>
+    <string name="snackOnlyDeleteownPost">Du kannst nur deine eigenen Posts Löschen</string>
+    <string name="alertDeleteOrEdit">Willst du das Gruppenfoto ändern oder löschen?</string>
+    <string name="alertOnlyCreatorEdit">Du kannst nur als Ersteller der Gruppe das Foto bearbeiten</string>
+    <string name="alertEdit">EDIT</string>
+    <string name="alertDelete">DELETE</string>
+    <string name="snackOnlyCreatorCanDeleteMember">Du kannst nur als Ersteller der Gruppe Mitglieder entfernen</string>
+    <string name="snackOnlyCreatorCanEditTitle">Du kannst nur als Ersteller den Gruppennamen ändern</string>
+    <string name="alertCancel">Abbrechen</string>
+    <string name="snackInviteUser">Du musst mindestens einen User einladen</string>
+    <string name="snackGroupName">Bitte wähle einen Gruppennamen</string>
+    <string name="snackUserRequired">Bitte einen User eingeben</string>
 
 
 </resources>

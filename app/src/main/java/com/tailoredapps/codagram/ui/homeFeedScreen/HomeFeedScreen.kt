@@ -1,5 +1,7 @@
 package com.tailoredapps.codagram.ui
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -72,6 +74,12 @@ class HomeFeedScreen : Fragment() {
 
         bindPostLiveData()
         viewModel.getStoryPost(null.toString())
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.getStoryPost(null.toString())
+            binding.swipeRefresh.isRefreshing = false
+
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -110,13 +118,12 @@ class HomeFeedScreen : Fragment() {
 
     @ExperimentalCoroutinesApi
     fun bindPostLiveData() {
-        //val hello = viewModel.getStoryPost()
         viewModel.getMyPost().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
+            adapter.notifyDataSetChanged()
             adapter.setUpListener(object : HomeFeedAdapter.ItemCLickedListener {
                 override fun onItemClicked(like: Boolean, post: Post) {
-                    viewModel.likeComment(post.id, like)
-                    viewModel.getStoryPostbyQuery(post.group?.id)
+                  likePost(post.id,like)
                     /*     adapter.notifyDataSetChanged()
                     adapter.submitList(it)*/
                 }
@@ -124,12 +131,11 @@ class HomeFeedScreen : Fragment() {
             adapter.removeUpListener(object : HomeFeedAdapter.ItemGroupRemoveListener {
                 override fun onGroupRemoved(post: Post) {
                     if (FirebaseAuth.getInstance().currentUser!!.uid == post.user?.id) {
-                        viewModel.removePost(post.id)
-                        viewModel.getStoryPost(null.toString())
+                        alert(post.id)
                     } else {
                         Snackbar.make(
                             requireView(),
-                            "Du kannst nur deine eigenen Post Löschen",
+                            getString(R.string.snackOnlyDeleteownPost),
                             Snackbar.LENGTH_SHORT
                         ).show()
                     }
@@ -160,6 +166,33 @@ class HomeFeedScreen : Fragment() {
         })
 
 
+    }
+
+    fun alert(ids: String) {
+            val dialogBuilder = AlertDialog.Builder(requireContext())
+
+            dialogBuilder.setMessage(getString(R.string.deletePost))
+                .setPositiveButton(getString(R.string.cancel), DialogInterface.OnClickListener { dialog, id ->
+                })
+                // negative button text and action
+                .setNegativeButton(getString(R.string.delete), DialogInterface.OnClickListener { dialog, id ->
+                    viewModel.removePost(ids)
+                    Snackbar.make(requireView(), getString(R.string.postDeleteSnack), Snackbar.LENGTH_SHORT).show()
+
+                    dialog.cancel()
+
+                })
+
+            val alert = dialogBuilder.create()
+            alert.setTitle("AlertDialogExample")
+            alert.show()
+        }
+
+
+
+    @ExperimentalCoroutinesApi
+    fun likePost(ids: String, like:Boolean) {
+        viewModel.likeComment(ids,like)
     }
 
 }

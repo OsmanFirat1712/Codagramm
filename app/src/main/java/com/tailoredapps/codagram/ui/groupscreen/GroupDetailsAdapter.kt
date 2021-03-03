@@ -49,6 +49,7 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
             SearchDetailPageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
+
     fun setUpListener(itemCLicked: ItemRemoveClickListener) {
         mItemCLicked = itemCLicked
     }
@@ -66,12 +67,16 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
             binding.tvLastNameMemberCards.text = postData.lastname
             binding.tvEmailMemberCards.text = postData.email
 
+            Glide.with(itemView)
+                .load(postData.image?.url)
+                .into(binding.ivUserProfileImage)
 
 
         }
 
 
     }
+
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: GroupDetailsSearchViewHolder, position: Int) {
         holder.bind(getItem(position))
@@ -94,7 +99,8 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
         }
     }
 
-    interface ItemRemoveClickListener{
+    interface ItemRemoveClickListener {
         fun onItemClicked(user: User)
     }
+
 }
