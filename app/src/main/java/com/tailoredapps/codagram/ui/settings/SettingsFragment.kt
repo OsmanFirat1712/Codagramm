@@ -36,7 +36,7 @@ class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var file: File
     private val viewModel: SettingsViewModel by inject()
-    private lateinit var auth: FirebaseAuth
+    private lateinit var auth:FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,9 +89,7 @@ class SettingsFragment : Fragment() {
 
                 auth.signOut()
                 findNavController().navigate(SettingsFragmentDirections.actionSettingsViewToLogin())
-
             }
-
         }
         return true
     }
@@ -125,10 +123,7 @@ class SettingsFragment : Fragment() {
             // show alert dialog
             alert.show()
         }
-
-
     }
-
 
     fun deleteUserImage() {
         viewModel.deleteUserImage()

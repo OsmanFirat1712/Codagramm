@@ -65,7 +65,7 @@
                 android:layout_centerHorizontal="true"
                 android:textAlignment="center"
                 android:textSize="20dp"
-                android:text="By" />
+                android:text="From" />
 
             <View
                 android:layout_below="@id/tvBy"
@@ -83,7 +83,7 @@
                 android:layout_centerHorizontal="true"
                 android:padding="5dp"
                 android:textSize="20dp"
-                android:text="Osman Volkan"/>
+                android:text="Osman And Volkan"/>
 
         </RelativeLayout>
 

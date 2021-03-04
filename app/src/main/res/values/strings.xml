@@ -108,7 +108,10 @@
     <string name="dialogDelteOwnProfile">Möchst du wirklich dein Account löschen?</string>
     <string name="snackMinCharakte">Bitte mindestens ein Zeichen schreiben</string>
     <string name="statusGroupInvite">Auf Gruppeneinladung geantwortet</string>
+<<<<<<< app/src/main/res/values/strings.xml
     <string name="snackUserRequireds">Bitte einen User eingeben</string>
+=======
+>>>>>>> app/src/main/res/values/strings.xml
     <string name="snackCancelled">Abgebrochen</string>
     <string name="alertText">"Möchst den folgenden User %s aus der Gruppe entfernen"</string>
     <string name="eventPostCreate">Post wurde erstellt</string>

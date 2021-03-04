@@ -114,7 +114,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="left"
-        android:drawableLeft="@drawable/ic_baseline_favoritelike_24"
+        android:drawableLeft="@drawable/ic_baseline_like_18"
         app:layout_constraintTop_toBottomOf="@id/post_image"
         app:layout_constraintEnd_toStartOf="@id/comment_text"
         android:layout_marginRight="10dp"
@@ -144,8 +144,6 @@
         tools:text="message count"
         android:textColor="#737375" />
 
-
-
     <View
         android:id="@+id/space1"
         android:layout_marginTop="5dp"
@@ -159,7 +157,7 @@
         android:id="@+id/like_image"
         android:layout_height="0dp"
         android:layout_width="wrap_content"
-        android:src="@drawable/ic_baseline_favorite_border_24"
+        android:src="@drawable/ic_baseline_favorite_border_false_24"
         app:layout_constraintTop_toBottomOf="@id/space1"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft" />
 
@@ -168,8 +166,8 @@
         android:layout_height="0dp"
         android:layout_width="wrap_content"
         android:layout_marginLeft="20dp"
+        android:src="@drawable/ic_baseline_comment_1_24"
         android:layout_marginTop="2dp"
-        android:src="@drawable/ic_baseline_comment_24"
         app:layout_constraintTop_toBottomOf="@id/space1"
         app:layout_constraintStart_toEndOf="@id/like_image"/>
 
@@ -178,10 +176,11 @@
         app:layout_constraintTop_toBottomOf="@id/space1"
         app:layout_constraintStart_toEndOf="@id/comment_image"
         android:layout_marginLeft="20dp"
+        android:src="@drawable/ic_baseline_restore_from_trash_1_24"
         android:layout_marginTop="1dp"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:src="@drawable/ic_baseline_delete_24" />
+       />
     
 
     <View

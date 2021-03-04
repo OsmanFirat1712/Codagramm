@@ -109,30 +109,30 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
             myBinding.commentText.text = currentItem.comments?.size.toString()+" "+"Comment"
 
             if (currentItem.userLiked){
-                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_24)
+                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_true_24)
             }else{
-                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_border_false_24)
             }
 
             myBinding.tvTime.text = "${currentItem.createdAt?.let { convertDateString(it) }}"
             myBinding.likeImage.setOnClickListener {
-                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_24)
+                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_true_24)
                 currentItem.userLiked = currentItem.userLiked.not()
 
                 when{
                     currentItem.userLiked -> {
                         mItemCLicked.let {
                             mItemCLicked.onItemClicked(true,getItem(position))
-                            myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_24)
+                            myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_true_24)
                             if (FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id ){
-                                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_24)
+                                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_true_24)
                             }
                         }
                     }
                     else->{
                         mItemCLicked.onItemClicked(false,getItem(position))
 
-                        myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                        myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_border_false_24)
                     }
                 }
             }

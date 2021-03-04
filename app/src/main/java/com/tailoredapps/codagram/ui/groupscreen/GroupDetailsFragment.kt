@@ -12,6 +12,7 @@ import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -88,7 +89,7 @@ class GroupDetailsFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        binding.auto.setOnClickListener {
+        binding.auto.addTextChangedListener {
             searchKey()
         }
 
@@ -127,6 +128,7 @@ class GroupDetailsFragment : Fragment() {
         bindImage()
 
         groupDetailPageAccess()
+        searchKey()
 
     }
 
@@ -188,6 +190,9 @@ class GroupDetailsFragment : Fragment() {
 
          input = binding.auto.text.toString()
         if (input.isEmpty()) {
+            binding.searchEditRecyclerview.visibility = View.GONE
+            binding.inviteButton.isEnabled = false
+            binding.inviteButton.setImageResource(R.drawable.ic_baseline_add_box_inactive_24)
             Snackbar.make(
                 requireView(),
                 getString(R.string.snackUserRequired),
@@ -195,6 +200,9 @@ class GroupDetailsFragment : Fragment() {
             ).show()
         } else {
             viewModel.searchUser(input)
+            binding.searchEditRecyclerview.visibility = View.VISIBLE
+            binding.inviteButton.isEnabled = true
+            binding.inviteButton.setImageResource(R.drawable.ic_baseline_add_box_24)
             Timber.d(input)
 
         }
