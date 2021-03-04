@@ -1,11 +1,15 @@
 package com.tailoredapps.codagram.ui.loginscreen
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.SharedPreferencesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -31,8 +35,11 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
+        switchLoadData()
 
         binding.btnLogin.setOnClickListener {
+
+           saveData()
 
             when{
                 binding.etEmail.text.trim().toString().isEmpty() ->Toast.makeText(requireContext(), "email can not be empty", Toast.LENGTH_LONG).show()
@@ -49,7 +56,6 @@ class LoginFragment : Fragment() {
 
 
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,21 +99,38 @@ class LoginFragment : Fragment() {
         }
 
     }
-/*
+
     override fun onStart() {
         super.onStart()
-        val user = auth.currentUser
-        viewModel.getToken()
-        viewModel.getUser()
-        if (user != null) {
-
-            findNavController().navigate(action)
-
-        } else {
-            Snackbar.make(requireView(), "ssdsad", Snackbar.LENGTH_SHORT).show()
+        if (binding.switch1.isChecked){
+            val user = auth.currentUser
+            if (user != null) {
+                viewModel.getToken()
+                viewModel.getUser()
+                findNavController().navigate(action)
+            }
+        }
+        else{
+            Toast.makeText(context,"test",Toast.LENGTH_LONG).show()
         }
     }
 
- */
+    private fun saveData(){
+        val sharedPreferences:SharedPreferences = context?.getSharedPreferences("sharedPrefs",Context.MODE_PRIVATE)!!
+        val editor = sharedPreferences.edit()
+        editor.apply{
+            putBoolean("BOOLEAN_KEY",binding.switch1.isChecked)
+        }.apply()
+    }
+
+    private fun switchLoadData(){
+        val sharedPreferences:SharedPreferences = context?.getSharedPreferences("sharedPrefs",Context.MODE_PRIVATE)!!
+        val savedBoolean = sharedPreferences.getBoolean("BOOLEAN_KEY",false)
+        binding.switch1.isChecked = savedBoolean
+    }
 
 }
+
+
+
+

@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.SearchItemsBinding
 import com.tailoredapps.codagram.remoteModels.SelectedUser
@@ -34,6 +35,8 @@ class SearchAdapter :
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(getItem(position))
+
+
     }
 
 }
@@ -43,6 +46,8 @@ class SearchViewHolder(private val binding: SearchItemsBinding) :
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun bind(postData: SelectedUser) {
+
+        val myBinding = binding
 
         binding.root.setOnClickListener {
             postData.selected = postData.selected.not()
@@ -58,6 +63,10 @@ class SearchViewHolder(private val binding: SearchItemsBinding) :
         } else {
             View.GONE
         }
+
+        Glide.with(itemView)
+            .load(postData.user.image?.url)
+            .into(binding.ivGroupInviteUserImage)
 
 
 /*

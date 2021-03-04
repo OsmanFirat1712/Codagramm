@@ -154,23 +154,29 @@
             </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="50dp"
                 android:layout_below="@+id/rlBottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true">
 
+                <Switch
+                    android:id="@+id/switch1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Keep Login" />
+
                 <TextView
                     android:id="@+id/btnNewAccountInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/du_hast_noch_keinen_account"
+                    app:layout_constraintTop_toBottomOf="@id/switch1"
+                    android:text="Dont have an Account Yet?"
                     android:elevation="3dp"
+                    android:layout_marginTop="10dp"
                     android:textColor="@color/black"
                     android:textSize="15dp"
                     tools:ignore="MissingConstraints" />
-
-
 
                 <TextView
                     android:id="@+id/btnNew"
@@ -178,6 +184,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/jetzt_registrieren"
                     android:layout_marginLeft="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/switch1"
+                    android:layout_marginTop="10dp"
                     android:elevation="3dp"
                     app:layout_constraintStart_toEndOf="@id/btnNewAccountInfo"
                     android:textColor="#FF86FC"
@@ -185,8 +193,9 @@
                     android:textStyle="bold"
                     tools:ignore="MissingConstraints" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
