@@ -15,6 +15,8 @@ import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.models.Comment
 import com.tailoredapps.codagram.remote.CodaGramApi
 import kotlinx.android.synthetic.main.comment_screen_items.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(DiffCallback()) {
@@ -42,6 +44,8 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
                 .load(currentItem.user?.image?.url)
                 .placeholder(R.drawable.person)
                 .into(itemView.ivUserImage)
+
+            itemView.tvCommendTime.text = "${convertDateToString(currentItem.createdAt)}"
 
         }
 
@@ -71,6 +75,14 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
 
     fun setUpListener(itemCLicked: ItemRemove2ClickListener) {
         mItemCLicked = itemCLicked
+    }
+
+    fun convertDateToString(date:String):String{
+        val orgFormat = SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss.SSS'Z'")
+        val needFormat = SimpleDateFormat( "YYYY-MM-dd")
+        val date: Date = orgFormat.parse(date)
+
+        return needFormat.format(date)
     }
 
     class CountryItem(private val binding: CommentScreenItemsBinding) :

@@ -47,7 +47,6 @@
                 android:layout_marginLeft="5dp"
                 app:layout_constraintStart_toEndOf="@id/groupImage"
                 android:textSize="20dp"
-                android:text="TextView"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -56,7 +55,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 app:layout_constraintStart_toEndOf="@id/groupImage"
-                android:text="TextView"
                 app:layout_constraintTop_toBottomOf="@id/tvGroupName"
                 tools:ignore="MissingConstraints" />
 
@@ -66,7 +64,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 app:layout_constraintStart_toEndOf="@id/groupImage"
-                android:text="TextView"
                 app:layout_constraintTop_toBottomOf="@+id/tvCreatorName"
                 tools:ignore="MissingConstraints" />
 

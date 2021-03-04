@@ -68,7 +68,7 @@
 
              <TextView
                  android:id="@+id/tvUserComment"
-                 android:text="asdasdasdasda asdasdas asdasdas eqweqweqw qweqweqwe asdasdas asdasdasdadsadaasdasdqweqweqweqweasd as dasda asd asdasdqw  qweqweq "
+                 android:text="@string/asdasdasdasda_asdasdas_asdasdas_eqweqweqw_qweqweqwe_asdasdas_asdasdasdadsadaasdasdqweqweqweqweasd_as_dasda_asd_asdasdqw_qweqweq"
                  app:layout_constraintTop_toBottomOf="@id/ivUserImage"
                  android:textColor="#797777"
                  android:padding="5dp"

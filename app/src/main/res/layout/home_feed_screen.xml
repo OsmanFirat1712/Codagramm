@@ -130,7 +130,6 @@
         android:drawableLeft="@drawable/ic_baseline_person_add_24"
         android:textColor="#737375"
         android:layout_marginLeft="10dp"
-        android:text="Tag Size"
         android:layout_width="0dp"
         android:layout_height="wrap_content"/>
 
@@ -243,10 +242,9 @@
                     android:textColor="#072758"
                     android:textStyle="bold"
                     android:gravity="left"
-                    android:text="created by user"
                     android:padding="2dp"
                     android:layout_marginLeft="10dp"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -257,8 +255,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:padding="5dp"
-                    android:text="Description"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvWrittenBy" />
 

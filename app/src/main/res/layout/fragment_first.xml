@@ -20,7 +20,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:listitem="@layout/home_feed_screen_item"/>
+    tools:listitem="@layout/home_feed_screen"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

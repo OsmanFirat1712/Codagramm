@@ -1,9 +1,12 @@
 package com.tailoredapps.codagram.ui.homeFeedScreen
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tailoredapps.Event
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.Post
 import com.tailoredapps.codagram.remote.CodaGramApi
@@ -14,7 +17,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class HomeFeedViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
+class HomeFeedViewModel(private val context: Context, val codaGramApi: CodaGramApi) : ViewModel() {
+     val statusMessage = MutableLiveData<Event<String>>()
+
+    val message: LiveData<Event<String>>
+        get() = statusMessage
 
     @ExperimentalCoroutinesApi
     private val myPosts = MutableLiveData<List<Post>>()
@@ -28,12 +35,23 @@ class HomeFeedViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
 
 
 
+    @ExperimentalCoroutinesApi
     fun getStoryPost(id:String?){
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.getStoryPost(id)
-                updateHomeFeed(response.posts)
-                delay(900)
+                response.body()?.let { updateHomeFeed(it.posts) }
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful){
+                        statusMessage.value = Event(context.getString(R.string.statusListLoad))
+                    } else if (response.body()?.posts?.isEmpty() == true){
+                     statusMessage.value = Event(context.getString(R.string.statusNoPosts))
+                    } else{
+                        statusMessage.value = Event( context.getString(R.string.statusError))
+
+                    }
+                }
 
             }
         }catch (ie:Exception){
@@ -42,11 +60,26 @@ class HomeFeedViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
     }
 
 
-    fun getStoryPostbyQuery(id:String?){
+    @ExperimentalCoroutinesApi
+    fun getStoryPostByQuery(id:String?){
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.getStoryPostbyQuery(id)
-                updateHomeFeed(response.posts)
+                response.body()?.posts?.let { updateHomeFeed(it) }
+
+                viewModelScope.launch(Dispatchers.Main) {
+
+                    if (response.isSuccessful){
+                        statusMessage.value = Event( context.getString(R.string.statusGroup))
+                    } else if (response.body()?.posts?.isEmpty() == true){
+                        statusMessage.value = Event(context.getString(R.string.statusNoPosts))
+                    }else{
+                        statusMessage.value = Event( context.getString(R.string.statusError))
+
+                    }
+                }
+
+
             }
         }catch (ie:Exception){
             Timber.e(ie)
@@ -56,7 +89,7 @@ class HomeFeedViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
     fun getAllGroups(){
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getAllGroups()
-            updateUi(response.groups)
+            response.body()?.groups?.let { updateUi(it) }
         }
     }
 
@@ -84,8 +117,12 @@ class HomeFeedViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
 
                 viewModelScope.launch(Dispatchers.Main) {
                     if (response.isSuccessful){
-                        val update = codaGramApi.getStoryPost(null.toString())
-                        updateHomeFeed(update.posts)
+                        statusMessage.value = Event (context.getString(R.string.likePost))
+
+                        getStoryPost(id)
+                    } else {
+                        statusMessage.value = Event( context.getString(R.string.statusError))
+
                     }
                 }
 
@@ -97,13 +134,28 @@ class HomeFeedViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
         }
     }
 
+    @ExperimentalCoroutinesApi
     fun removePost(id:String){
         viewModelScope.launch(Dispatchers.IO) {
-            val response = codaGramApi.deletePost(id)
-            if (response.isSuccessful){
-                val update = codaGramApi.getStoryPost(null.toString())
-                updateHomeFeed(update.posts)
+            try {
+                val response = codaGramApi.deletePost(id)
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful){
+                        statusMessage.value = Event (context.getString(R.string.statusRemovePost))
+                        getStoryPost(id)
+                    }  else{
+                        statusMessage.value = Event( context.getString(R.string.statusError))
+
+                    }
+
+                }
+
+
+            }catch (ie: Exception) {
+
             }
+
 
         }
     }

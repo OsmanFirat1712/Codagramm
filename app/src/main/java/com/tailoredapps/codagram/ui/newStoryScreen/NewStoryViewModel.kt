@@ -49,7 +49,7 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
     fun getGroups() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getAllGroups()
-            updateUi(response.groups)
+            response.body()?.groups?.let { updateUi(it) }
 
         }
     }

@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tailoredapps.Event
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.models.*
 import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.remoteModels.SelectedUser
@@ -23,21 +25,29 @@ import java.io.File
 import java.lang.Exception
 import java.util.*
 
+/*    val coroutineExceptionHandler = CoroutineExceptionHandler{_, t ->
+         run {
+             t.printStackTrace()
+            // showErrorOrSomething()
+         }
+     }*/
 @ExperimentalCoroutinesApi
 class GroupDetailsViewModel(private val context: Context, private val codaGramApi: CodaGramApi) :
     ViewModel() {
+
+    private val statusMessage = MutableLiveData<Event<String>>()
+
+    val message: LiveData<Event<String>>
+        get() = statusMessage
+
+
     @ExperimentalCoroutinesApi
     private val searchForUser = MutableLiveData<List<SelectedUser>>()
 
     @ExperimentalCoroutinesApi
     fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
 
-    /*    val coroutineExceptionHandler = CoroutineExceptionHandler{_, t ->
-            run {
-                t.printStackTrace()
-               // showErrorOrSomething()
-            }
-        }*/
+
     @ExperimentalCoroutinesApi
     private val myImage = MutableLiveData<Group>()
 
@@ -57,13 +67,6 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
     @ExperimentalCoroutinesApi
     fun getMyGroups(): LiveData<List<Group>> = myGroups
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = codaGramApi.getAllGroups()
-            updateUi(response.groups)
-        }
-    }
-
     @ExperimentalCoroutinesApi
     private fun updateImage(group: Group) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -79,10 +82,23 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
     }
 
     fun getAllGroups() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = codaGramApi.getAllGroups()
-            updateUi(response.groups)
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = codaGramApi.getAllGroups()
+                response.body()?.groups?.let { updateUi(it) }
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (!response.isSuccessful) {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
+                    }
+
+                }
+            }
+
+        } catch (ie: Exception) {
+
         }
+
     }
 
     @ExperimentalCoroutinesApi
@@ -107,6 +123,7 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.getGroupbyId(id)
                 updateMembersList(response.members)
+
             }
         } catch (ie: Exception) {
             Timber.e(ie)
@@ -134,53 +151,148 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
     }
 
     fun deleteGroup(id: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            codaGramApi.deleteGroup(id)
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = codaGramApi.deleteGroup(id)
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        statusMessage.value = Event(context.getString(R.string.statusGroupDeletes))
+
+                    } else {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
+
+                    }
+                }
+            }
+        } catch (ie: Exception) {
+
         }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun deleteMember(id: String, uId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = codaGramApi.deleteMember(id, uId)
-            if (response.isSuccessful)
-                getGroupById(id)
+        try {
+
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = codaGramApi.deleteMember(id, uId)
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        statusMessage.value =
+                            Event(context.getString(R.string.statusGroupMemberDelete))
+                        getGroupById(id)
+                    } else {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
+
+                    }
+
+                }
+
+            }
+
+        } catch (ie: Exception) {
+
         }
+
+
     }
 
     fun updateGroup(id: String, name: UpdateGroup) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = codaGramApi.updateGroup(id, name)
-            if (response.isSuccessful) {
-                val update = codaGramApi.getGroupbyId(id)
-                updateImage(update)
+        try {
+
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = codaGramApi.updateGroup(id, name)
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        val update = codaGramApi.getGroupbyId(id)
+                        updateImage(update)
+                        statusMessage.value =
+                            Event(context.getString(R.string.statusChangeGroupName))
+                    } else {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
+
+                    }
+                }
             }
+
+
+        } catch (ie: Exception) {
+
         }
+
     }
 
     fun exitGroup(id: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            codaGramApi.exitGroup(id)
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = codaGramApi.exitGroup(id)
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        statusMessage.value = Event(context.getString(R.string.statusGroupDelete))
+
+                    } else {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
+
+                    }
+                }
+            }
+
+        } catch (ie: Exception) {
+
         }
+
     }
 
     fun sendGroupInvites(id: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val selectedUsers = searchForUser.value?.filter { it.selected }?.map { it.user.id }
-            codaGramApi.sendGroupInvites(GroupInviteBody(id, selectedUsers as List<String>))
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val selectedUsers = searchForUser.value?.filter { it.selected }?.map { it.user.id }
+                val response =
+                    codaGramApi.sendGroupInvites(GroupInviteBody(id, selectedUsers as List<String>))
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        statusMessage.value = Event(context.getString(R.string.statusInviteUser))
+                    } else {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
+
+                    }
+                }
+            }
+
+        } catch (ie: Exception) {
+
         }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun deleteGroupImage(id: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = codaGramApi.deleteGroupImage(id)
-            if (response.isSuccessful) {
-                getAllGroupsByObject(id)
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = codaGramApi.deleteGroupImage(id)
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        statusMessage.value =
+                            Event(context.getString(R.string.snackGroupImageDelete))
+                        getAllGroupsByObject(id)
+                    } else {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
+
+                    }
+
+                }
+
             }
 
+        } catch (ie: Exception) {
 
         }
+
     }
 
     fun updateGroupImage(id: String, uri: Uri) {
@@ -188,12 +300,26 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
         val requestBody: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
         val part: MultipartBody.Part =
             MultipartBody.Part.createFormData("image", file.name, requestBody)
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = codaGramApi.addImageToGroup(id, part)
-            if (response.isSuccessful) {
-                getAllGroupsByObject(id)
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val response = codaGramApi.addImageToGroup(id, part)
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        getAllGroupsByObject(id)
+                        statusMessage.value = Event(context.getString(R.string.statusGroupRefresh))
+
+                    } else {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
+
+                    }
+                }
+
             }
 
+        } catch (ie: Exception) {
+
         }
+
     }
 }

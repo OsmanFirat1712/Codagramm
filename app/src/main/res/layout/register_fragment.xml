@@ -82,7 +82,7 @@
             <EditText
                 android:id="@+id/dialogFirstName"
                 android:layout_weight="1"
-                android:hint="FirstName "
+                android:hint="@string/firstname"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textSize="15dp"

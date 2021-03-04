@@ -76,6 +76,7 @@ class GroupDetailsFragment : Fragment() {
         viewModel.getAllGroups()
         bindToLiveData()
         bindgetmyGroupToLiveData()
+        myMessage()
 
 
         binding.searchEditRecyclerview.apply {
@@ -107,8 +108,6 @@ class GroupDetailsFragment : Fragment() {
 
             } else {
                 viewModel.sendGroupInvites(groupId.toString())
-                Snackbar.make(requireView(),"$selectedUsers wurde zur Gruppe eingeladen",Snackbar.LENGTH_SHORT).show()
-
             }
 
 
@@ -242,11 +241,11 @@ class GroupDetailsFragment : Fragment() {
                             DialogInterface.OnClickListener { dialog, id ->
                                 if (FirebaseAuth.getInstance().currentUser?.uid == creatorId) {
                                     viewModel.deleteMember(groupId.toString(), user.id.toString())
-                                    Snackbar.make(
+                               /*     Snackbar.make(
                                         requireView(),
                                         " User ${user.firstname} wurde aus der Gruppe entfernt",
                                         Snackbar.LENGTH_SHORT
-                                    ).show()
+                                    ).show()*/
 
                                 } else {
                                     Snackbar.make(
@@ -292,6 +291,7 @@ class GroupDetailsFragment : Fragment() {
                 if (FirebaseAuth.getInstance().currentUser!!.uid == creatorId) {
                     val firstNameFire = alertDialogBinding.groupName.text.toString()
                     viewModel.updateGroup(groupId.toString(), UpdateGroup(firstNameFire))
+                    alert.dismiss()
 
                 } else {
                     Snackbar.make(
@@ -361,11 +361,6 @@ class GroupDetailsFragment : Fragment() {
                         Snackbar.make(
                             requireView(),
                             "Möchstes du wirklich die Gruppe $groupName verlassen?",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                        Snackbar.make(
-                            requireView(),
-                            "$groupName wurde gelösch/verlassen",
                             Snackbar.LENGTH_SHORT
                         ).show()
                         view?.findNavController()?.popBackStack()
@@ -463,5 +458,21 @@ class GroupDetailsFragment : Fragment() {
                 .placeholder(R.drawable.ic_baseline_image_48)
                 .into(binding.imageView2)
         })
+    }
+
+    fun myMessage() {
+
+        viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            it.getContentIfNotHandled()?.let {
+                Snackbar.make(requireView(),getString(R.string.snackDeleteMember),Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(),getString(R.string.snackGroupNames),Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(),it,Snackbar.LENGTH_SHORT).show()
+
+
+
+
+            }
+        })
+
     }
 }
