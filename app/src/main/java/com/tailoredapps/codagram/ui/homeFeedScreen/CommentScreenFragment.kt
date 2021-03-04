@@ -85,10 +85,7 @@ class CommentScreenFragment : Fragment() {
     @ExperimentalCoroutinesApi
     fun bindComments() {
         viewModel.getMyCommentsObject().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            Glide.with(requireContext())
-                .load(it.user?.image?.url)
-                .placeholder(R.drawable.person)
-                .into(binding.ivUserCommentPageImage)
+
         })
     }
 

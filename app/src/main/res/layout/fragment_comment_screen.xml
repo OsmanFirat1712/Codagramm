@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         app:cardElevation="2dp"
         app:cardBackgroundColor="#FF86FC"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@id/rvCommentsRecyclerview">
@@ -91,14 +91,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ivUserCommentPageImage"
-                app:layout_constraintStart_toStartOf="parent"
-                android:src="@drawable/person"
-                android:layout_width="40dp"
-                android:layout_marginLeft="5dp"
-                android:layout_height="40dp"
-                tools:ignore="MissingConstraints" />
 
             <EditText
                 android:id="@+id/etWriteComment"
@@ -106,14 +98,14 @@
                 android:textColor="#A6A6A6"
                 android:textColorHint="#A6A6A6"
                 android:hint="@string/schreibe_ein_kommentar"
-                android:layout_marginLeft="5dp"
                 android:textSize="15dp"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:padding="4dp"
+                android:layout_marginLeft="20dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/ivUserCommentPageImage"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnAdd"
                 android:background="@drawable/custom_edittext_comment_screen"
                 android:layout_height="wrap_content"/>
