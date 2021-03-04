@@ -28,7 +28,7 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/ic_baseline_image_24"
+        android:src="@drawable/ic_baseline_cloud_upload_24"
         app:layout_constraintEnd_toEndOf="@id/guidelineRight"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         app:layout_constraintTop_toTopOf="parent" />
@@ -91,12 +91,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"/>
 
-    <Button
+    <ImageView
         android:id="@+id/btnCreateGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:background="@drawable/button_design"
+        android:src="@drawable/ic_baseline_send_24"
         android:text="@string/erstelle"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
