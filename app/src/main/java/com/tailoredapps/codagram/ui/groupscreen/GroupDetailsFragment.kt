@@ -7,7 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -28,7 +27,6 @@ import com.tailoredapps.codagram.models.KEY
 import com.tailoredapps.codagram.models.UpdateGroup
 import com.tailoredapps.codagram.models.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.io.File
@@ -68,7 +66,7 @@ class GroupDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getAllGroups()
         bindToLiveData()
-        bindgetmyGroupToLiveData()
+        bindGetMyGroupToLiveData()
         myMessage()
 
 
@@ -195,7 +193,7 @@ class GroupDetailsFragment : Fragment() {
     }
 
     @ExperimentalCoroutinesApi
-    private fun bindgetmyGroupToLiveData() {
+    private fun bindGetMyGroupToLiveData() {
         viewModel.getMyGroupMembers().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             groupAdapter.submitList(it)
 
