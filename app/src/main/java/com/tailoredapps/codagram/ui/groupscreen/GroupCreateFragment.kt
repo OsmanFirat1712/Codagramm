@@ -55,7 +55,6 @@ class GroupFragment : Fragment() {
         bindToLiveData()
         createButtonAction()
         uploadClickAction()
-        myMessage()
         searchKey()
 
 
