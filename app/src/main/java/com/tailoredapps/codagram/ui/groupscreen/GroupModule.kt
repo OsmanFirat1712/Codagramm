@@ -18,7 +18,7 @@ internal val groupScreenModule = module {
     fragment { GroupFragment() }
     fragment { GroupDetailsFragment()}
     fragment { NewStoryFragment() }
-    viewModel { NewStoryViewModel (codaGramApi = get()) }
+    viewModel { NewStoryViewModel (codaGramApi = get(),context = androidContext()) }
     viewModel { GroupViewModel (codaGramApi = get(), context = androidContext()) }
     viewModel { GroupDetailsViewModel (codaGramApi = get(), context = androidContext()) }
     factory { GroupAdapter() }

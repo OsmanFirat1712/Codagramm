@@ -18,6 +18,8 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupBinding
+import com.tailoredapps.codagram.ui.newStoryScreen.NewStoryFragmentDirections
+import com.tailoredapps.codagram.ui.newStoryScreen.NewStoryViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -96,7 +98,6 @@ class GroupFragment : Fragment() {
             val selectedUsers =
                 viewModel.getSearchedUser().value?.filter { it.selected }?.map { it.user.id }
 
-            adapter1.currentList
             // (viewModel.createGroup(nameGroup))
             if (selectedUsers == null) {
                 adapter1.currentList
@@ -113,9 +114,6 @@ class GroupFragment : Fragment() {
                 ).show()
             } else if (file != null) {
                 viewModel.createGroup(nameGroup, Uri.fromFile(file))
-                adapter1.currentList
-                view.findNavController()
-                    .navigate(GroupFragmentDirections.actionGroupScreenToMyGroupScreen())
             } else if (file == null) {
                 Snackbar.make(
                     requireView(),
@@ -130,7 +128,16 @@ class GroupFragment : Fragment() {
 
     @ExperimentalCoroutinesApi
     fun bindToLiveData() {
+        viewModel.getEvents().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            when (it){
+                is NewStoryViewModel.Event.ShowMessage -> Snackbar.make(requireView(),it.msg,Snackbar.LENGTH_SHORT).show()
+                is NewStoryViewModel.Event.Navigate -> {
+                    view?.findNavController()
+                        ?.navigate(GroupFragmentDirections.actionGroupScreenToMyGroupScreen())                }
+            }
+        })
         viewModel.getSearchedUser().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
             adapter1.submitList(it)
         })
 
@@ -172,14 +179,4 @@ class GroupFragment : Fragment() {
     }
 
 
-    fun myMessage() {
-
-        viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            it.getContentIfNotHandled()?.let {
-                Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).show()
-
-            }
-        })
-
-    }
 }

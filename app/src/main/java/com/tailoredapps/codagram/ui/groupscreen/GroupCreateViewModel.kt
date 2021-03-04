@@ -13,6 +13,7 @@ import com.tailoredapps.codagram.models.GroupCreate
 import com.tailoredapps.codagram.models.GroupInviteBody
 import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.remoteModels.SelectedUser
+import com.tailoredapps.codagram.ui.newStoryScreen.NewStoryViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -26,6 +27,15 @@ import java.io.File
 
 class GroupViewModel(private val context: Context, private val codaGramApi: CodaGramApi) :
     ViewModel() {
+
+    open class Event{
+        data class ShowMessage(val msg:String) : Event()
+        object Navigate : Event()
+    }
+
+    private val events = MutableLiveData<NewStoryViewModel.Event>()
+    fun getEvents(): LiveData<NewStoryViewModel.Event> = events
+
     @ExperimentalCoroutinesApi
     private val error = MutableLiveData<Boolean>()
 
@@ -38,12 +48,6 @@ class GroupViewModel(private val context: Context, private val codaGramApi: Coda
 
     @ExperimentalCoroutinesApi
     fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
-
-
-    private val statusMessage = MutableLiveData<Event<String>>()
-
-    val message: LiveData<Event<String>>
-        get() = statusMessage
 
 
     @ExperimentalCoroutinesApi
@@ -68,7 +72,7 @@ class GroupViewModel(private val context: Context, private val codaGramApi: Coda
 
     @ExperimentalCoroutinesApi
     fun createGroup(group: String, uri: Uri) {
-        Timber.d("${searchForUser.value}")
+        Timber.e("${searchForUser.value}")
         val file = File(uri.path!!)
         val requestBody: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
         val part: MultipartBody.Part =
@@ -93,10 +97,10 @@ class GroupViewModel(private val context: Context, private val codaGramApi: Coda
 
                 viewModelScope.launch(Dispatchers.Main) {
                     if (response.isSuccessful){
-                        statusMessage.value = Event(context.getString(R.string.statusGroupCreate))
-                    }else{
-                        statusMessage.value = Event( context.getString(R.string.statusError))
-
+                        events.value = NewStoryViewModel.Event.Navigate
+                        events.value = NewStoryViewModel.Event.ShowMessage(context.getString(R.string.eventGroupCreated))
+                    } else{
+                        events.value = NewStoryViewModel.Event.ShowMessage(context.getString(R.string.statusError))
                     }
                 }
 

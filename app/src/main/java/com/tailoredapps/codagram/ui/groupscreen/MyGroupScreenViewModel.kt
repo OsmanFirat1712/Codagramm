@@ -55,7 +55,7 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
 
             viewModelScope.launch(Dispatchers.Main){
                 if (response.body()?.groups?.isEmpty() == true)
-                statusMessage.value = Event("User Updated Successfully")
+                statusMessage.value = Event(context.getString(R.string.eventNoGroups))
 
             }
         }
@@ -80,13 +80,6 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
                     if (!response.isSuccessful){
                         statusMessage.value = Event( context.getString(R.string.statusError))
                     }
-
-                /*    if (response.invites.isEmpty()){
-                        statusMessage.value = Event( context.getString(R.string.statusGroupInviteempty))
-                    }else{
-                        statusMessage.value = Event( context.getString(R.string.statusError))
-
-                    }*/
                 } 
 
             }

@@ -66,6 +66,7 @@ class SearchViewHolder(private val binding: SearchItemsBinding) :
 
         Glide.with(itemView)
             .load(postData.user.image?.url)
+            .placeholder(R.drawable.person)
             .into(binding.ivGroupInviteUserImage)
 
 

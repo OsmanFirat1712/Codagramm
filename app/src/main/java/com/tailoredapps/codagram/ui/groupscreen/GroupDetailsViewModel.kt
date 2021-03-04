@@ -185,18 +185,11 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
                         getGroupById(id)
                     } else {
                         statusMessage.value = Event(context.getString(R.string.statusError))
-
                     }
-
                 }
-
             }
-
         } catch (ie: Exception) {
-
         }
-
-
     }
 
     fun updateGroup(id: String, name: UpdateGroup) {
@@ -217,12 +210,8 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
                     }
                 }
             }
-
-
         } catch (ie: Exception) {
-
         }
-
     }
 
     fun exitGroup(id: String) {

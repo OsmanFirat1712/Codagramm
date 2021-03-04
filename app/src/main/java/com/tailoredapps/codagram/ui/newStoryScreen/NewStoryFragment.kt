@@ -122,8 +122,7 @@ class NewStoryFragment : Fragment() {
             if(description.isEmpty()){
                 Snackbar.make(requireView(),getString(R.string.snackDescription),Snackbar.LENGTH_SHORT).show()
             }else if (::file.isInitialized&& ::getSpinnerItem.isInitialized){
-                val response = viewModel.post(description, getSpinnerItem, Uri.fromFile(file))
-                view?.findNavController()?.navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
+                viewModel.post(description, getSpinnerItem, Uri.fromFile(file))
             } else {
                 Snackbar.make(requireView(),getString(R.string.snackRequireToPost),Snackbar.LENGTH_SHORT).show()
 
@@ -148,11 +147,6 @@ class NewStoryFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-              /*  Snackbar.make(
-                    requireView(),
-                    "You Selected ${adapterView?.getItemAtPosition(position).toString()}",
-                    Snackbar.LENGTH_SHORT
-                ).show()*/
                 getSpinnerItem = adapterView?.getItemAtPosition(position).toString()
                 if (getSpinnerItem.isEmpty()) {
                     Snackbar.make(
@@ -185,12 +179,18 @@ class NewStoryFragment : Fragment() {
     @ExperimentalCoroutinesApi
     @RequiresApi(Build.VERSION_CODES.N)
     fun bindGetMyGroupsLiveData() {
+        viewModel.getEvents().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            when (it){
+                is NewStoryViewModel.Event.ShowMessage -> Snackbar.make(requireView(),it.msg,Snackbar.LENGTH_SHORT).show()
+                is NewStoryViewModel.Event.Navigate -> {
+                    view?.findNavController()?.navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
+                }
+            }
+        })
         viewModel.getMyGroups().observe(viewLifecycleOwner, androidx.lifecycle.Observer { it ->
             it.forEach {
                 val groupName = it.name
                 val groupId = it.id
-
-                //adapter.data.add(groupName)
                 adapter.data.add(groupId)
                 adapter.nameList.add(groupName)
                 adapter.notifyDataSetChanged()

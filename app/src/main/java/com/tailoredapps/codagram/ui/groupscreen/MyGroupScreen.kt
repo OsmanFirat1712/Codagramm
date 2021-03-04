@@ -128,7 +128,6 @@ class MyGroupScreen() : Fragment()  {
             it.getContentIfNotHandled()?.let {
                 Snackbar.make(requireView(),it,Snackbar.LENGTH_SHORT).show()
 
-
             }
         })
 
