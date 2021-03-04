@@ -33,18 +33,14 @@ class LoginFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
 
         binding.btnLogin.setOnClickListener {
-            if (binding.etEmail.text.trim().toString()
-                    .isNotEmpty() || binding.etPassword.text.trim().toString().isNotEmpty()
-            ) {
-                login(
-                    binding.etEmail.text.trim().toString(),
-                    binding.etPassword.text.trim().toString()
-                )
-                //val tokenId = auth.currentUser!!.getIdToken(true)
 
-            } else {
-                Toast.makeText(requireContext(), "input required", Toast.LENGTH_LONG).show()
+            when{
+                binding.etEmail.text.trim().toString().isEmpty() ->Toast.makeText(requireContext(), "email can not be empty", Toast.LENGTH_LONG).show()
+                binding.etPassword.text.trim().toString().isEmpty()-> Toast.makeText(requireContext(), "password can not be empty", Toast.LENGTH_LONG).show()
+                binding.etEmail.text.trim().toString().isEmpty() && binding.etPassword.text.trim().toString().isEmpty() -> Toast.makeText(requireContext(), "Can not be empty!", Toast.LENGTH_LONG).show()
+                else -> login(binding.etEmail.text.trim().toString(), binding.etPassword.text.trim().toString())
             }
+
         }
 
         binding.btnNew.setOnClickListener {
@@ -97,7 +93,7 @@ class LoginFragment : Fragment() {
         }
 
     }
-
+/*
     override fun onStart() {
         super.onStart()
         val user = auth.currentUser
@@ -111,5 +107,7 @@ class LoginFragment : Fragment() {
             Snackbar.make(requireView(), "ssdsad", Snackbar.LENGTH_SHORT).show()
         }
     }
+
+ */
 
 }
