@@ -20,16 +20,36 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="20dp" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tvCommentTittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:cardBackgroundColor="#FDF3F3"
+        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:text="Comments"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.cardview.widget.CardView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCommentsRecyclerview"
+        android:background="#FDF3F3"
         android:layout_width="0dp"
         android:layout_height="400dp"
         android:scrollbars="vertical"
-        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvCommentTittle"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-        app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/comment_screen_items"/>
 
 
@@ -60,37 +80,51 @@
         android:id="@+id/cardComment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:cardElevation="2dp"
-        android:layout_marginTop="2dp"
-        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+        app:cardElevation="0dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintTop_toBottomOf="@id/cardTitle">
 
-        <EditText
-            android:id="@+id/etWriteComment"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:textColor="#FF86FC"
-            android:textColorHint="#FF86FC"
-            android:textSize="15dp"
-            android:padding="5dp"
-            android:drawableLeft="@drawable/ic_baseline_edit_24"
-            android:background="@android:color/transparent"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/ivUserCommentPageImage"
+                app:layout_constraintStart_toStartOf="parent"
+                android:src="@drawable/person"
+                android:layout_width="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height="40dp"
+                tools:ignore="MissingConstraints" />
 
+            <EditText
+                android:id="@+id/etWriteComment"
+                android:layout_width="0dp"
+                android:textColor="#FF86FC"
+                android:textColorHint="#DAD7D7"
+                android:hint="Write a message---"
+                android:layout_marginLeft="5dp"
+                android:textSize="15dp"
+                android:padding="2dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivUserCommentPageImage"
+                app:layout_constraintEnd_toStartOf="@id/btnAdd"
+                android:drawableLeft="@drawable/ic_baseline_edit_24"
+                android:background="@drawable/custom_edittext_comment_screen"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/btnAdd"
+                android:src="@drawable/ic_baseline_send_24"
+                android:layout_width="wrap_content"
+                android:elevation="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
-
-    <Button
-        android:id="@+id/btnAdd"
-        app:layout_constraintTop_toBottomOf="@id/cardComment"
-        android:text="send"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

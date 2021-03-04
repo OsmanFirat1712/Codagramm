@@ -98,19 +98,12 @@ class MyGroupScreen() : Fragment()  {
                     viewModel.answerInvites(id,accept)
                     viewModel.getInvites()
                     viewModel.getAllGroups()
-                    myGroupInviteAdapter.currentList
-                    myGroupInviteAdapter.notifyDataSetChanged()
-                    myGroupInviteAdapter.submitList(it)
-
                 }
 
             })
 
         })
-
-
     }
-
 
     @ExperimentalCoroutinesApi
     private fun respond() {

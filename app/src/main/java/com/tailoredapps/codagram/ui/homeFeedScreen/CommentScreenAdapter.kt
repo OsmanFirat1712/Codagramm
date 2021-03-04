@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -80,6 +81,9 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
         val remove:TextView = itemView.findViewById(R.id.tvRemove)
 
         fun bind(postData: Comment) {
+
+
+
 
             binding.tvUserName.text = postData.user?.firstname.toString()
             binding.tvUserComment.text = postData.text
