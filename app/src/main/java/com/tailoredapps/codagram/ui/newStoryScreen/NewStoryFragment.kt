@@ -189,6 +189,7 @@ class NewStoryFragment : Fragment() {
             it.forEach {
                 val groupName = it.name
                 val groupId = it.id
+
                 //adapter.data.add(groupName)
                 adapter.data.add(groupId)
                 adapter.nameList.add(groupName)

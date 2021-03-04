@@ -46,6 +46,7 @@ class GroupInviteAdapter : ListAdapter<GroupInvite, GroupInviteAdapter.MainViewH
                 myBinding.acceptInvite.visibility = if (curentItem.replyToInvite) {
                     mItemCLicked.let {
                         mItemCLicked.onItemClicked(true, curentItem.id)
+                        mItemCLicked.onItemClicked(curentItem.replyToInvite, curentItem.id)
                     }
                     View.VISIBLE
                 } else {
@@ -57,6 +58,7 @@ class GroupInviteAdapter : ListAdapter<GroupInvite, GroupInviteAdapter.MainViewH
                 myBinding.acceptInvite.visibility = if (curentItem.replyToInvite) {
                     mItemCLicked.let {
                         mItemCLicked.onItemClicked(false, curentItem.id)
+                        mItemCLicked.onItemClicked(curentItem.replyToInvite.not(), curentItem.id)
                     }
                     View.VISIBLE
                 } else {
@@ -67,7 +69,7 @@ class GroupInviteAdapter : ListAdapter<GroupInvite, GroupInviteAdapter.MainViewH
         holder.itemView.setOnClickListener {
             mItemCLicked.let {
                 mItemCLicked.onItemClicked(curentItem.replyToInvite, curentItem.id)
-            }
+        }
         }
     }
 
