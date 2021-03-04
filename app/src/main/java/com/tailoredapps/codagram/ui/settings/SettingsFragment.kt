@@ -29,17 +29,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import java.io.File
 
-class SettingsFragment:Fragment() {
+class SettingsFragment : Fragment() {
 
-    private lateinit var binding:FragmentSettingsBinding
+    private lateinit var binding: FragmentSettingsBinding
     private lateinit var file: File
     private val viewModel: SettingsViewModel by inject()
-
-    private lateinit var firstName:String
-    private lateinit var lastName:String
-    private lateinit var nickname:String
-
-    private lateinit var alertDialogBinding: RegisterDialogBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,14 +53,19 @@ class SettingsFragment:Fragment() {
         bindToLiveData()
         viewModel.getUsers()
         deleteUser()
-
+        myMessage()
         alert()
 
 
         binding.btnUpload.setOnClickListener {
-            viewModel.addPhoto(Uri.fromFile(file))
-            Snackbar.make(requireView()," Bild wurde Hochgeladen",Snackbar.LENGTH_SHORT).show()
-            viewModel.getUsers()
+            if (::file.isInitialized) {
+                viewModel.addPhoto(Uri.fromFile(file))
+                Snackbar.make(requireView(), " Bild wurde Hochgeladen", Snackbar.LENGTH_SHORT)
+                    .show()
+            } else {
+                Snackbar.make(requireView(), "Bitte ändere zuerst dein Bild", Snackbar.LENGTH_SHORT)
+                    .show()
+            }
 
         }
     }
@@ -86,8 +85,8 @@ class SettingsFragment:Fragment() {
                 })
                 .setNegativeButton("DELETE", DialogInterface.OnClickListener { dialog, id ->
                     deleteUserImage()
-                    viewModel.getUsers()
-                    Snackbar.make(requireView()," Das Bild wurde gelöscht",Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(), " Das Bild wurde gelöscht", Snackbar.LENGTH_SHORT)
+                        .show()
 
                     dialog.cancel()
 
@@ -109,8 +108,8 @@ class SettingsFragment:Fragment() {
         viewModel.deleteUserImage()
     }
 
-    private fun uploadClickAction(){
-        Toast.makeText(requireContext(),"Clicked", Toast.LENGTH_LONG).show()
+    private fun uploadClickAction() {
+        Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_LONG).show()
         ImagePicker.with(this)
             .crop()
             .compress(1024)
@@ -126,7 +125,6 @@ class SettingsFragment:Fragment() {
     }
 
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -138,7 +136,7 @@ class SettingsFragment:Fragment() {
             file = ImagePicker.getFile(data)!!
 
             //You can also get File Path from intent
-            val filePath:String = ImagePicker.getFilePath(data)!!
+            val filePath: String = ImagePicker.getFilePath(data)!!
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Snackbar.make(requireView(), ImagePicker.getError(data), Snackbar.LENGTH_SHORT).show()
         } else {
@@ -146,33 +144,31 @@ class SettingsFragment:Fragment() {
         }
     }
 
-    private fun listImages(){
+    private fun listImages() {
         var i = Intent()
         i.type = "image/*"
         i.action = Intent.ACTION_GET_CONTENT
     }
 
 
- /*   private fun changePassword(){
-        binding.tvPassword.setOnClickListener{
-            
+    /*   private fun changePassword(){
+           binding.tvPassword.setOnClickListener{
 
-        }
-    }*/
+
+           }
+       }*/
 
     private fun changeFirstLastNick() {
         binding.tvUserName.setOnClickListener {
 
         }
     }
-    
-
 
 
     @ExperimentalCoroutinesApi
     fun bindToLiveData() {
         viewModel.getMyGroupMembers().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            binding.tvLastName.text =Editable.Factory.getInstance().newEditable(it.firstname)
+            binding.tvLastName.text = Editable.Factory.getInstance().newEditable(it.firstname)
             binding.tvUserName.text = Editable.Factory.getInstance().newEditable(it.lastname)
             binding.tvNickName.text = Editable.Factory.getInstance().newEditable(it.nickname)
             Glide.with(requireContext())
@@ -181,9 +177,14 @@ class SettingsFragment:Fragment() {
                 .into(binding.ivProfileImage)
         })
         binding.btnSaveChanges.setOnClickListener {
-            viewModel.updateNickName(binding.tvNickName.text.toString(),binding.tvUserName.text.toString(),binding.tvLastName.text.toString())
-            viewModel.getUsers()
-            Snackbar.make(requireView(),"Profileinstellungen wurden geändert",Snackbar.LENGTH_SHORT).show()
+
+            viewModel.updateNickName(
+                binding.tvNickName.text.toString(),
+                binding.tvUserName.text.toString(),
+                binding.tvLastName.text.toString()
+            )
+
+
         }
 
     }
@@ -193,12 +194,12 @@ class SettingsFragment:Fragment() {
         binding.deleteUser.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext())
 
-            dialogBuilder.setMessage("Möchst du wirklich dein Account löschen?")
+            dialogBuilder.setMessage(getString(R.string.dialogDelteOwnProfile))
                 .setCancelable(true)
-                .setPositiveButton("CANCEL", DialogInterface.OnClickListener { dialog, id ->
+                .setPositiveButton(getString(R.string.abbrechen), DialogInterface.OnClickListener { dialog, id ->
                 })
                 // negative button text and action
-                .setNegativeButton("DELETE", DialogInterface.OnClickListener { dialog, id ->
+                .setNegativeButton(getString(R.string.delete), DialogInterface.OnClickListener { dialog, id ->
                     viewModel.deleteUser()
 /*
                     view?.findNavController()?.navigate(SettingsFragmentDirections.actionSettingsViewToLogin())
@@ -210,10 +211,18 @@ class SettingsFragment:Fragment() {
 
 
             val alert = dialogBuilder.create()
-            alert.setTitle("AlertDialogExample")
             alert.cancel()
             alert.show()
         }
+
+    }
+    fun myMessage() {
+
+        viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            it.getContentIfNotHandled()?.let {
+                Snackbar.make(requireView(),it,Snackbar.LENGTH_LONG).show()
+            }
+        })
 
     }
 

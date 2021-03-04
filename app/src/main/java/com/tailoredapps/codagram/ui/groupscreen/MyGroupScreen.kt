@@ -8,10 +8,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentThirdBinding
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.GroupInvite
+import kotlinx.android.synthetic.main.fragment_first.*
+import kotlinx.android.synthetic.main.fragment_third.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import java.util.*
@@ -75,6 +78,13 @@ class MyGroupScreen() : Fragment()  {
         bindgetmyGroupToLiveData()
         viewModel.getAllGroups()
         viewModel.getInvites()
+        myMessage()
+
+        bindingGroup.swipeToRefresh.setOnRefreshListener {
+            viewModel.getInvites()
+            bindingGroup.swipeToRefresh.isEnabled = false
+
+        }
     }
 
 
@@ -108,6 +118,18 @@ class MyGroupScreen() : Fragment()  {
     @ExperimentalCoroutinesApi
     private fun respond() {
         viewModel.getSearchedUser().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        })
+
+    }
+
+    fun myMessage() {
+
+        viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            it.getContentIfNotHandled()?.let {
+                Snackbar.make(requireView(),it,Snackbar.LENGTH_SHORT).show()
+
+
+            }
         })
 
     }

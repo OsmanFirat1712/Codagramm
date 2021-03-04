@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Codagram"
+            android:text="@string/codagram"
             android:textColor="@color/white"
             android:textSize="25dp"
             android:drawableRight="@drawable/ic_baseline_favoriteeee_24"
@@ -55,7 +55,7 @@
         android:layout_below="@id/cardViewTop"
         android:layout_marginTop="30dp"
         android:elevation="3dp"
-        android:text="login"
+        android:text="LOGIN"
         android:textSize="40sp"
         android:textStyle="bold"/>
 
@@ -95,7 +95,7 @@
 
                     <EditText
                         android:id="@+id/etEmail"
-                        android:hint="Email"
+                        android:hint="@string/email"
                         android:layout_margin="15dp"
                         android:drawableLeft="@drawable/ic_baseline_person_24"
                         android:drawablePadding="30sp"
@@ -115,7 +115,7 @@
 
                     <EditText
                         android:id="@+id/etPassword"
-                        android:hint="Password"
+                        android:hint="@string/password"
                         android:layout_margin="15dp"
                         android:layout_below="@id/view1"
                         android:drawableLeft="@drawable/ic_baseline_lock_24"
@@ -164,7 +164,7 @@
                     android:id="@+id/btnNewAccountInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dont have an Account Yet?"
+                    android:text="@string/du_hast_noch_keinen_account"
                     android:elevation="3dp"
                     android:textColor="@color/black"
                     android:textSize="15dp"
@@ -176,7 +176,7 @@
                     android:id="@+id/btnNew"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Register"
+                    android:text="@string/jetzt_registrieren"
                     android:layout_marginLeft="5dp"
                     android:elevation="3dp"
                     app:layout_constraintStart_toEndOf="@id/btnNewAccountInfo"

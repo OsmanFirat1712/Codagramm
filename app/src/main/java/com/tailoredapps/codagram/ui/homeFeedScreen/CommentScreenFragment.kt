@@ -5,40 +5,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isNotEmpty
-import androidx.core.widget.addTextChangedListener
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.material.snackbar.Snackbar
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.databinding.FragmentCommentScreenBinding
 import com.tailoredapps.codagram.models.Comment
 import com.tailoredapps.codagram.models.CommentBody
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
 
 
 class CommentScreenFragment : Fragment() {
 
-    private val viewModel:CommentScreenViewModel by inject()
-    private val  commentScreenAdapter: CommentScreenAdapter by inject()
-    private var postId: String? = null
-    lateinit var commentAdapterBinding:CommentScreenItemsBinding
+    private val viewModel: CommentScreenViewModel by inject()
+    private val commentScreenAdapter: CommentScreenAdapter by inject()
+    lateinit var commentAdapterBinding: CommentScreenItemsBinding
 
     var postIds: String? = null
-    var postImage:String ? = null
-    var image:String? = null
+    var postImage: String? = null
+    var image: String? = null
 
-    private lateinit var binding:FragmentCommentScreenBinding
+    private lateinit var binding: FragmentCommentScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         postIds = arguments?.getString("name")
         postImage = arguments?.getString("image")
-
 
 
     }
@@ -49,9 +43,8 @@ class CommentScreenFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentCommentScreenBinding.inflate(inflater, container, false)
-        commentAdapterBinding = CommentScreenItemsBinding.inflate(inflater,container,false)
+        commentAdapterBinding = CommentScreenItemsBinding.inflate(inflater, container, false)
         return binding.root
-
 
 
     }
@@ -65,20 +58,27 @@ class CommentScreenFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
 
-
         }
 
         bindToLiveData()
         getTest()
         viewModel.getCommentPost(postIds.toString())
-        PostComment()
+        postComment()
+        bindComments()
+        myMessage()
+
+        viewModel.getMyCommentsObjecSt(postIds.toString())
 
 
 
+        Glide.with(requireContext())
+            .load(postImage)
+            .placeholder(R.drawable.person)
+            .into(binding.ivUserCommentPageImage)
 
     }
 
-    fun getTest(){
+    fun getTest() {
         viewModel.getPostById(postIds.toString())
     }
 
@@ -87,42 +87,54 @@ class CommentScreenFragment : Fragment() {
         viewModel.getMyComments().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             commentScreenAdapter.submitList(it)
             commentScreenAdapter.notifyDataSetChanged()
-            it.forEach {
-                val image1 = it.user?.image?.url
-                Glide.with(requireContext())
-                    .load(image1)
-                    .placeholder(R.drawable.person)
-                    .into(binding.ivUserCommentPageImage)
-            }
-
         })
-        commentScreenAdapter.setUpListener(object :CommentScreenAdapter.ItemRemove2ClickListener{
+        commentScreenAdapter.setUpListener(object : CommentScreenAdapter.ItemRemove2ClickListener {
             override fun onItemClicked(comment: Comment) {
-                viewModel.deleteComment(postIds.toString(),comment.id)
-/*                    viewModel.getPostById(null.toString())*/
+                viewModel.deleteComment(postIds.toString(), comment.id)
             }
         })
     }
 
+    fun bindComments() {
+        viewModel.getMyCommentsObject().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            Glide.with(requireContext())
+                .load(it.user?.image?.url)
+                .placeholder(R.drawable.person)
+                .into(binding.ivUserCommentPageImage)
+        })
+    }
 
 
     @ExperimentalCoroutinesApi
-    fun PostComment(){
-        binding.btnAdd.setOnClickListener{
+    fun postComment() {
+        binding.btnAdd.setOnClickListener {
 
             val test = binding.etWriteComment.text.toString()
-            viewModel.postComment(postIds.toString(), CommentBody(test))
-            viewModel.getPostById(postIds.toString())
+            if (test.isNotEmpty()) {
+                viewModel.postComment(postIds.toString(), CommentBody(test))
+                viewModel.getPostById(postIds.toString())
+                binding.etWriteComment.setText("")
 
+            } else {
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.snackMinCharakte),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
 
     }
 
+    fun myMessage() {
 
-    fun getPhoto(){
-        viewModel.getMyPost().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            it.getContentIfNotHandled()?.let {
+                Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).show()
+
+
+            }
         })
-
 
     }
 

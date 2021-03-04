@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:layout_marginLeft="20dp"
-                android:text="user" />
+                />
 
             <TextView
                 android:id="@+id/acceptInvite"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toStartOf="@id/denyInvite"
                 android:layout_marginRight="20dp"
-                android:text="accept" />
+                android:text="@string/akzeptieren" />
 
             <TextView
                 android:id="@+id/denyInvite"
@@ -43,7 +43,7 @@
                 android:layout_marginEnd="4dp"
                 android:textSize="15dp"
                 android:textColor="@color/white"
-                android:text="deny"
+                android:text="@string/ablehnen"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

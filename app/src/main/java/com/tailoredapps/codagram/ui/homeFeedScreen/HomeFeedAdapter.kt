@@ -56,18 +56,22 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
         holder.apply {
             Glide.with(itemView)
                 .load(currentItem.image?.url)
+                .placeholder(R.drawable.person)
                 .into(itemView.post_image)
 
             Glide.with(itemView)
                 .load(currentItem.comments?.getOrNull(0)?.user?.image?.url)
+                .placeholder(R.drawable.person)
                 .into(itemView.ivUserImage)
 
             Glide.with(itemView)
                 .load(currentItem.comments?.getOrNull(1)?.user?.image?.url)
+                .placeholder(R.drawable.person)
                 .into(itemView.ivUser2Image)
 
             Glide.with(itemView)
                 .load(currentItem.user?.image?.url)
+                .placeholder(R.drawable.person)
                 .into(itemView.user_photo_image)
 
 

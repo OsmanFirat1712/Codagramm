@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:layout_marginLeft="20dp"
-                android:text="user"
+                android:text="@string/user"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
@@ -48,7 +48,7 @@
                 android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@id/resultText2"
-                android:text="invited"
+                android:text="@string/ausgew_hlt"
                 tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

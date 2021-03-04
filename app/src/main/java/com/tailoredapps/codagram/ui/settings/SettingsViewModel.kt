@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.tailoredapps.Event
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.models.SendUser
 import com.tailoredapps.codagram.models.User
 import com.tailoredapps.codagram.remote.CodaGramApi
@@ -22,8 +24,12 @@ import timber.log.Timber
 import java.io.File
 import java.lang.Exception
 
-class SettingsViewModel(private val context: Context, private val codaGramApi: CodaGramApi):ViewModel() {
+class SettingsViewModel(private val context: Context, private val codaGramApi: CodaGramApi) :
+    ViewModel() {
 
+    val statusMessage = MutableLiveData<Event<String>>()
+    val message: LiveData<Event<String>>
+        get() = statusMessage
 
     @ExperimentalCoroutinesApi
     private val myUser = MutableLiveData<User>()
@@ -35,8 +41,6 @@ class SettingsViewModel(private val context: Context, private val codaGramApi: C
 //In your network successfull response
 
 
-
-
     @ExperimentalCoroutinesApi
     private fun updateMembersList(update: User) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -44,44 +48,33 @@ class SettingsViewModel(private val context: Context, private val codaGramApi: C
         }
     }
 
-    fun getUsers(){
+    fun getUsers() {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-             val response  =   codaGramApi.getUser()
+                val response = codaGramApi.getUser()
                 updateMembersList(response)
             }
-        }catch (ie:Exception){
+        } catch (ie: Exception) {
             Timber.e(ie)
         }
     }
 
-    fun getFireBaseInfo(newPassword:String){
-        val user = FirebaseAuth.getInstance().currentUser
-        val getEmail = user?.email.toString()
-        val updateEmail = user?.updatePassword(newPassword)
-    }
-
-
-
-    fun getUser(){
-        try {
-            viewModelScope.launch(Dispatchers.IO){
-                val getName = codaGramApi.getUser().firstname
-                val getLastName = codaGramApi.getUser().lastname
-                val getNickName = codaGramApi.getUser().nickname
-                val getEmail = codaGramApi.getUser().email
-
-            }
-        }catch (ie:Exception){
-            Timber.e(ie)
-        }
-    }
 
     @ExperimentalCoroutinesApi
-    fun updateNickName(nickname: String,firstName:String,lastName:String) {
+    fun updateNickName(nickname: String, firstName: String, lastName: String) {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                val response = codaGramApi.updateProfile(SendUser(nickname,firstName,lastName))
+                val response = codaGramApi.updateProfile(SendUser(nickname, firstName, lastName))
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        statusMessage.value = Event(context.getString(R.string.statusUserUpdate))
+                        getUsers()
+                    } else {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
+                    }
+                }
+
             }
         } catch (ie: Exception) {
             Timber.e(ie)
@@ -89,13 +82,27 @@ class SettingsViewModel(private val context: Context, private val codaGramApi: C
     }
 
 
-    fun addPhoto(uri: Uri){
+    fun addPhoto(uri: Uri) {
         try {
             val file = File(uri.path!!)
-            val requestBody: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val part: MultipartBody.Part = MultipartBody.Part.createFormData("image", file.name, requestBody)
+            val requestBody: RequestBody =
+                file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val part: MultipartBody.Part =
+                MultipartBody.Part.createFormData("image", file.name, requestBody)
             viewModelScope.launch(Dispatchers.IO) {
-                codaGramApi.updateUserImage(part)
+                val response = codaGramApi.updateUserImage(part)
+
+                viewModelScope.launch(Dispatchers.Main){
+                    if (response.isSuccessful) {
+                        statusMessage.value = Event(context.getString(R.string.updateImage))
+                        getUsers()
+                    } else {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
+
+                    }
+
+                }
+
 
             }
         } catch (ie: Exception) {
@@ -103,30 +110,47 @@ class SettingsViewModel(private val context: Context, private val codaGramApi: C
         }
     }
 
-    fun deleteUserImage(){
+    fun deleteUserImage() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = codaGramApi.deleteUserImage()
-                if (response.isSuccessful){
-                    (Toast.makeText(context,"dasdasda",Toast.LENGTH_LONG).show())
+
+                viewModelScope.launch(Dispatchers.Main){
+                    if (response.isSuccessful) {
+                        statusMessage.value = Event(context.getString(R.string.statusDeletePhoto))
+                        getUsers()
+                    }
+                    else{
+                        statusMessage.value = Event(context.getString(R.string.statusError))
+
+                    }
+
                 }
-                (Toast.makeText(context,"dasdasda",Toast.LENGTH_LONG).show())
 
 
-
-            }catch (ie: Exception) {
+            } catch (ie: Exception) {
                 Timber.e(ie)
             }
 
         }
-        Toast.makeText(context,"dasdasda",Toast.LENGTH_LONG).show()
     }
 
     @ExperimentalCoroutinesApi
     fun deleteUser() {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-              codaGramApi.deleteUser()
+               val response = codaGramApi.deleteUser()
+
+                   viewModelScope.launch(Dispatchers.Main){
+                       if (response.isSuccessful){
+                           statusMessage.value = Event(context.getString(R.string.statusUserDelete))
+                       }
+                       else{
+                           statusMessage.value = Event(context.getString(R.string.statusError))
+
+                       }
+                   }
+
             }
         } catch (ie: Exception) {
             Timber.e(ie)
