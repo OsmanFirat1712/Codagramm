@@ -3,14 +3,17 @@ package com.tailoredapps.codagram.ui.homeFeedScreen
 import android.content.Context
 import android.graphics.Color
 import android.opengl.Visibility
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
@@ -36,6 +39,7 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
     lateinit var mItemCLicked: ItemCLickedListener
     lateinit var mItemRemoveClicked: ItemGroupRemoveListener
     lateinit var post:Post
+     var image: String? = null
 
     class DiffCallback : DiffUtil.ItemCallback<Post>() {
 
@@ -49,9 +53,11 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
 
         }
     }
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: CountryItem, position: Int) {
         holder.bind(getItem(position))
         val currentItem = getItem(position)
+
 
         holder.apply {
             Glide.with(itemView)
@@ -178,11 +184,7 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
                 "name" to postData.id,
             )
 
-<<<<<<< app/src/main/java/com/tailoredapps/codagram/ui/homeFeedScreen/HomeFeedAdapter.kt
 
-
-=======
->>>>>>> app/src/main/java/com/tailoredapps/codagram/ui/homeFeedScreen/HomeFeedAdapter.kt
             binding.captionText.text = postData.description.toString()
             binding.commentImage.setOnClickListener {
                 it.findNavController()

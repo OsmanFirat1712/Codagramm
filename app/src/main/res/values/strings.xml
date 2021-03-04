@@ -40,6 +40,12 @@
     <string name="snackUserSearch">Bitte einen User eingeben</string>
     <string name="snackGroupTitle">Bitte noch ein Titel auswählen</string>
     <string name="snackDescription">Bitte füge eine Beschreibung hinzu</string>
+    <string name="speichern">Speichern</string>
+    <string name="ndere_dein_profilbild">Ändere dein Profilbild</string>
+    <string name="bild_hochladen">BILD HOCHLADEN</string>
+    <string name="l_schen">Löschen</string>
+    <string name="willst_du_deinen_account_l_schen">Willst du deinen Account löschen?</string>
+    <string name="snackProfilUpdated">Profileinstellungen wurden geändert</string>
 
 
 </resources>

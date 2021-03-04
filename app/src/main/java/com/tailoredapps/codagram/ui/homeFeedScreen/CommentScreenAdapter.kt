@@ -1,9 +1,11 @@
 package com.tailoredapps.codagram.ui.homeFeedScreen
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,9 +16,14 @@ import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.models.Comment
 import com.tailoredapps.codagram.remote.CodaGramApi
 import kotlinx.android.synthetic.main.comment_screen_items.view.*
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 
-class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(DiffCallback()) {
+class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, CommentScreenAdapter.CountryItem>(
+    DiffCallback()
+) {
 
     lateinit var mItemCLicked: ItemRemove2ClickListener
 
@@ -42,7 +49,10 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
                 .placeholder(R.drawable.person)
                 .into(itemView.ivUserImage)
 
-        }
+            itemView.tvCommendTime.text = "${convertDateToString(currentItem.createdAt)}"
+
+
+                }
 
 
         when{
@@ -61,9 +71,23 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun convertDateToString(date:String):String{
+        val orgFormat = SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss.SSS'Z'")
+        val needFormat = SimpleDateFormat( "YY-MM-dd")
+        val date:Date = orgFormat.parse(date)
+
+        return needFormat.format(date)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryItem {
 
-        return CountryItem(CommentScreenItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CountryItem(
+            CommentScreenItemsBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
 
         )
     }
@@ -81,16 +105,19 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
 
         fun bind(postData: Comment) {
 
+
+
             binding.tvUserName.text = postData.user?.firstname.toString()
             binding.tvUserComment.text = postData.text
-            binding.tvCommendTime.text = postData.createdAt
 
         }
     }
 
+
     interface ItemRemove2ClickListener{
         fun onItemClicked(comment: Comment)
     }
+
 
 }
 

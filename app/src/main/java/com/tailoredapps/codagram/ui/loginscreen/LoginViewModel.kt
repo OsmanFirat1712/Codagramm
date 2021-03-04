@@ -145,7 +145,7 @@ class LoginViewModel(private val context: Context, private val codaGramApi: Coda
             return false
         }
 
-        else if (nn.length < 5){
+        else if (nn.length < 3){
             nickName.setError("nick name must be more than 5 character!")
             nickNameStatusIcon.setImageResource(R.drawable.icons8_cancel_24px_2)
             return false

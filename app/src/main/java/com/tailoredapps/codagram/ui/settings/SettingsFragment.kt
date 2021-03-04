@@ -35,12 +35,6 @@ class SettingsFragment:Fragment() {
     private lateinit var file: File
     private val viewModel: SettingsViewModel by inject()
 
-    private lateinit var firstName:String
-    private lateinit var lastName:String
-    private lateinit var nickname:String
-
-    private lateinit var alertDialogBinding: RegisterDialogBinding
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -183,7 +177,7 @@ class SettingsFragment:Fragment() {
         binding.btnSaveChanges.setOnClickListener {
             viewModel.updateNickName(binding.tvNickName.text.toString(),binding.tvUserName.text.toString(),binding.tvLastName.text.toString())
             viewModel.getUsers()
-            Snackbar.make(requireView(),"Profileinstellungen wurden geändert",Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(),getString(R.string.snackProfilUpdated),Snackbar.LENGTH_SHORT).show()
         }
 
     }

@@ -32,6 +32,8 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
     @ExperimentalCoroutinesApi
     fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
 
+//In your network successfull response
+
     /*    val coroutineExceptionHandler = CoroutineExceptionHandler{_, t ->
             run {
                 t.printStackTrace()
@@ -120,6 +122,7 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.getSearchedUser(input)
                 updateSearchList(response.users.map { (SelectedUser(it)) })
+
             }
         } catch (ie: Exception) {
             Timber.e(ie)

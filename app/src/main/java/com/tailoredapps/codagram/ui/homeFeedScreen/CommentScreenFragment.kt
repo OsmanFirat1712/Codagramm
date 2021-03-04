@@ -97,7 +97,7 @@ class CommentScreenFragment : Fragment() {
 
     @ExperimentalCoroutinesApi
     fun PostComment(){
-        binding.btnAdd.addTextChangedListener{
+        binding.btnAdd.setOnClickListener{
 
             val test = binding.etWriteComment.text.toString()
             viewModel.postComment(postIds.toString(), CommentBody(test))

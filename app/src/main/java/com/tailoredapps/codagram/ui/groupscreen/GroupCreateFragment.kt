@@ -32,7 +32,6 @@ import java.util.Collections.emptyList
 
 
 class GroupFragment : Fragment() {
-
     private val adapter1: SearchAdapter by inject()
     private lateinit var binding: FragmentGroupBinding
     private val viewModel: GroupViewModel by inject()
@@ -51,30 +50,15 @@ class GroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.searchResult.apply {
-
-
             adapter = this@GroupFragment.adapter1
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-
-
-            /*
-            if (adapter1.currentList.isEmpty()){
-                binding.tvEmptyData.visibility = View.VISIBLE
-                binding.searchResult.visibility = View.GONE
-            }
-            else{
-                binding.tvEmptyData.visibility = View.GONE
-                binding.searchResult.visibility = View.VISIBLE
-            }
-
-             */
         }
+
         bindToLiveData()
         createButtonAction()
         uploadClickAction()
         cancelButtonAction()
-
 
         binding.auto.addTextChangedListener {
             searchKey()
