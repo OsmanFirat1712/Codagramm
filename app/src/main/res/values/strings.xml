@@ -108,7 +108,6 @@
     <string name="dialogDelteOwnProfile">Möchst du wirklich dein Account löschen?</string>
     <string name="snackMinCharakte">Bitte mindestens ein Zeichen schreiben</string>
     <string name="statusGroupInvite">Auf Gruppeneinladung geantwortet</string>
-    <string name="snackUserRequired">Bitte einen User eingeben</string>
     <string name="snackCancelled">Abgebrochen</string>
 
 

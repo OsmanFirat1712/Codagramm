@@ -91,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivUserCommentPageImage"
                 app:layout_constraintStart_toStartOf="parent"
                 android:src="@drawable/person"
@@ -103,19 +103,18 @@
             <EditText
                 android:id="@+id/etWriteComment"
                 android:layout_width="0dp"
-                android:textColor="#FF86FC"
-                android:textColorHint="#DAD7D7"
+                android:textColor="#A6A6A6"
+                android:textColorHint="#A6A6A6"
                 android:hint="@string/schreibe_ein_kommentar"
                 android:layout_marginLeft="5dp"
                 android:textSize="15dp"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
-                android:padding="2dp"
+                android:padding="4dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ivUserCommentPageImage"
                 app:layout_constraintEnd_toStartOf="@id/btnAdd"
-                android:drawableLeft="@drawable/ic_baseline_edit_24"
                 android:background="@drawable/custom_edittext_comment_screen"
                 android:layout_height="wrap_content"/>
 

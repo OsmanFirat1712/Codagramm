@@ -30,6 +30,7 @@ class GroupFragment : Fragment() {
     private lateinit var binding: FragmentGroupBinding
     private val viewModel: GroupViewModel by inject()
     private var file: File? = null
+    private lateinit var input:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +54,7 @@ class GroupFragment : Fragment() {
         createButtonAction()
         uploadClickAction()
         myMessage()
+        searchKey()
 
 
 
@@ -63,10 +65,13 @@ class GroupFragment : Fragment() {
 
     @ExperimentalCoroutinesApi
     private fun searchKey() {
+        input = ""
+        input = binding.auto.text.toString()
 
-        val input = binding.auto.text.toString()
         if (input.isEmpty()) {
             binding.searchResult.visibility = View.GONE
+            binding.btnCreateGroup.isEnabled = false
+            binding.btnCreateGroup.setImageResource(R.drawable.ic_baseline_add_box_inactive_24)
             Snackbar.make(
                 requireView(),
                 getString(R.string.snackUserRequired),
@@ -76,6 +81,8 @@ class GroupFragment : Fragment() {
         } else {
             viewModel.searchUser(input)
             binding.searchResult.visibility = View.VISIBLE
+            binding.btnCreateGroup.setImageResource(R.drawable.ic_baseline_add_box_24)
+            binding.btnCreateGroup.isEnabled = true
             Timber.d(input)
         }
     }

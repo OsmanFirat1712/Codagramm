@@ -123,9 +123,8 @@ class CommentScreenFragment : Fragment() {
                 ).show()
             }
         }
-
     }
-
+    
     fun myMessage() {
 
         viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {

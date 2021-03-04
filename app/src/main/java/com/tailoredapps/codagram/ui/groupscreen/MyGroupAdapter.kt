@@ -71,7 +71,7 @@ class GroupScreenViewHolder(private val binding: GroupscreenMygroupsBinding) :
 
         Glide.with(binding.root)
             .load(postData.image?.url)
-            .placeholder(R.drawable.ic_baseline_image_48)
+            .placeholder(R.drawable.hhhhhelp)
             .into(binding.groupImage)
 
         binding.tvGroupName.text = postData.name.toString()
