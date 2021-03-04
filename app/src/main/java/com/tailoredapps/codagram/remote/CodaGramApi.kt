@@ -18,7 +18,7 @@ interface CodaGramApi {
     suspend fun getSearchedUser(@Query ("query") input:String?): SearchResult
 
     @PUT("user")
-    suspend fun updateProfile(@Body user:SendUser):User
+    suspend fun updateProfile(@Body user:SendUser):Response<User>
 
     @DELETE("user")
     suspend fun deleteUser():Response<Unit>
@@ -33,10 +33,10 @@ interface CodaGramApi {
     //                   GROUP ///
 
     @POST("group")
-    suspend fun createGroup(@Body group: GroupCreate):Group
+    suspend fun createGroup(@Body group: GroupCreate):Response<Group>
 
     @GET("group")
-    suspend fun getAllGroups(): GroupList
+    suspend fun getAllGroups():Response<GroupList>
 
     @POST("group/invites")
     suspend fun sendGroupInvites(@Body groupInviteBody: GroupInviteBody?):Response<Unit>
@@ -45,7 +45,7 @@ interface CodaGramApi {
     suspend fun getGroupbyId(@Path("id" )id:String):Group
 
     @GET("group/invites")
-    suspend fun getGroupInvitees(): InvitesList
+    suspend fun getGroupInvitees(): Response<InvitesList>
 
     @PUT("group/invites/{id}")
     suspend fun replyToanyInvite(@Path("id" ) id:String, @Body accept: ReplyToInvite?):Response<Unit>
@@ -80,11 +80,11 @@ interface CodaGramApi {
     suspend fun newStoryPost(@Body postBody: PostBody):Response<Post>
 
     @GET("post")
-    suspend fun getStoryPostbyQuery(@Query("group")id:String?): PostList
+    suspend fun getStoryPostbyQuery(@Query("group")id:String?): Response<PostList>
 
 
     @GET("post")
-    suspend fun getStoryPost(@Query("grou")id:String?): PostList
+    suspend fun getStoryPost(@Query("grou")id:String?): Response<PostList>
 
     @GET("post/{id}")
     suspend fun getPostId(@Path("id")id:String):Post

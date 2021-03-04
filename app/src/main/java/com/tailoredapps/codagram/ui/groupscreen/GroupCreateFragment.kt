@@ -10,26 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.os.bundleOf
-import androidx.core.view.isEmpty
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupBinding
-import com.tailoredapps.codagram.models.Group
-import com.tailoredapps.codagram.models.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.io.File
 import java.util.*
-import java.util.Collections.emptyList
-
 
 class GroupFragment : Fragment() {
 
@@ -51,28 +44,15 @@ class GroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.searchResult.apply {
-
-
             adapter = this@GroupFragment.adapter1
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
 
-
-            /*
-            if (adapter1.currentList.isEmpty()){
-                binding.tvEmptyData.visibility = View.VISIBLE
-                binding.searchResult.visibility = View.GONE
-            }
-            else{
-                binding.tvEmptyData.visibility = View.GONE
-                binding.searchResult.visibility = View.VISIBLE
-            }
-
-             */
         }
         bindToLiveData()
         createButtonAction()
         uploadClickAction()
+        myMessage()
 
 
 
@@ -80,17 +60,22 @@ class GroupFragment : Fragment() {
             searchKey()
         }
     }
+
     @ExperimentalCoroutinesApi
     private fun searchKey() {
 
         val input = binding.auto.text.toString()
-        if (input.isEmpty()){
+        if (input.isEmpty()) {
             binding.searchResult.visibility = View.GONE
-            Snackbar.make(requireView(),"Bitte einen User eingeben",Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(
+                requireView(),
+                getString(R.string.snackUserRequired),
+                Snackbar.LENGTH_SHORT
+            ).show()
 
         } else {
             viewModel.searchUser(input)
-            binding.searchResult.visibility =View.VISIBLE
+            binding.searchResult.visibility = View.VISIBLE
             Timber.d(input)
         }
     }
@@ -120,23 +105,20 @@ class GroupFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
             } else if (file != null) {
-
                 viewModel.createGroup(nameGroup, Uri.fromFile(file))
                 adapter1.currentList
                 view.findNavController()
                     .navigate(GroupFragmentDirections.actionGroupScreenToMyGroupScreen())
-            } else if (nameGroup.isEmpty()) {
+            } else if (file == null) {
                 Snackbar.make(
                     requireView(),
-                    getString(R.string.snackGroupTitle),
+                    getString(R.string.snackGroupCreate),
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
 
         }
     }
-
-
 
 
     @ExperimentalCoroutinesApi
@@ -177,13 +159,20 @@ class GroupFragment : Fragment() {
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Snackbar.make(requireView(), ImagePicker.getError(data), Snackbar.LENGTH_SHORT).show()
         } else {
-            Snackbar.make(requireView(), "Task Cancelled", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), getString(R.string.snackCancelled), Snackbar.LENGTH_SHORT)
+                .show()
         }
     }
 
-    fun getError() {
-        viewModel.getError().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
+    fun myMessage() {
+
+        viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            it.getContentIfNotHandled()?.let {
+                Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).show()
+
+            }
         })
+
     }
 }

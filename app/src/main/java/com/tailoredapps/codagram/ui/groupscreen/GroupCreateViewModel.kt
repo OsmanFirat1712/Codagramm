@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tailoredapps.Event
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.models.GroupCreate
 import com.tailoredapps.codagram.models.GroupInviteBody
 import com.tailoredapps.codagram.remote.CodaGramApi
@@ -36,6 +38,12 @@ class GroupViewModel(private val context: Context, private val codaGramApi: Coda
 
     @ExperimentalCoroutinesApi
     fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
+
+
+    private val statusMessage = MutableLiveData<Event<String>>()
+
+    val message: LiveData<Event<String>>
+        get() = statusMessage
 
 
     @ExperimentalCoroutinesApi
@@ -72,16 +80,25 @@ class GroupViewModel(private val context: Context, private val codaGramApi: Coda
                 val response =
                     codaGramApi.createGroup(GroupCreate(group, selectedUsers as List<String>))
                         .also {
-                            codaGramApi.addImageToGroup(it.id, part)
-                            codaGramApi.getGroupbyId(it.id)
+                            it.body()?.let { it1 -> codaGramApi.addImageToGroup(it1.id, part) }
+                            it.body()?.id?.let { it1 -> codaGramApi.getGroupbyId(it1) }
                             codaGramApi.sendGroupInvites(
                                 GroupInviteBody(
-                                    it.id,
+                                    it.body()?.id,
                                     selectedUsers as List<String>,
                                 )
                             )
 
                         }
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful){
+                        statusMessage.value = Event(context.getString(R.string.statusGroupCreate))
+                    }else{
+                        statusMessage.value = Event( context.getString(R.string.statusError))
+
+                    }
+                }
 
 
             }

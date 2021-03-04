@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tailoredapps.Event
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.GroupInvite
 import com.tailoredapps.codagram.remote.CodaGramApi
@@ -13,11 +15,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 class MyGroupScreenViewMode(private val context: Context, private val codaGramApi: CodaGramApi) :
     ViewModel() {
+
+    private val statusMessage = MutableLiveData<Event<String>>()
+
+    val message : LiveData<Event<String>>
+        get() = statusMessage
 
     @ExperimentalCoroutinesApi
     private val searchForUser = MutableLiveData<GroupInvite>()
@@ -39,22 +47,19 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
     fun getMyGroups(): LiveData<List<Group>> = myGroups
 
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = codaGramApi.getAllGroups()
-            updateUi(response.groups)
-            delay(1000)
-
-        }
-    }
 
     fun getAllGroups() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getAllGroups()
-            updateUi(response.groups)
-            delay(1000)
+            response.body()?.let { updateUi(it.groups) }
 
+            viewModelScope.launch(Dispatchers.Main){
+                if (response.body()?.groups?.isEmpty() == true)
+                statusMessage.value = Event("User Updated Successfully")
+
+            }
         }
+
     }
 
     @ExperimentalCoroutinesApi
@@ -68,8 +73,22 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.getGroupInvitees()
-                updateList(response.invites)
+                response.body()?.invites?.let { updateList(it) }
                 searchForUser.value?.replyToInvite
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (!response.isSuccessful){
+                        statusMessage.value = Event( context.getString(R.string.statusError))
+                    }
+
+                /*    if (response.invites.isEmpty()){
+                        statusMessage.value = Event( context.getString(R.string.statusGroupInviteempty))
+                    }else{
+                        statusMessage.value = Event( context.getString(R.string.statusError))
+
+                    }*/
+                } 
+
             }
         } catch (ie: Exception) {
             Timber.e(ie)
@@ -87,14 +106,30 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
     }
 
     fun answerInvites(id: String, accept: Boolean) {
+        var response: Response<Unit>
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                val response = codaGramApi.replyToanyInvite(id, ReplyToInvite(accept))
-                searchForUser.value?.replyToInvite
-                if (response.isSuccessful) {
-                    getAllGroups()
+                 response = codaGramApi.replyToanyInvite(id, ReplyToInvite(accept))
+
+                viewModelScope.launch(Dispatchers.Main) {
+                    searchForUser.value?.replyToInvite
+                    if (response.isSuccessful) {
+                        statusMessage.value = Event(context.getString(R.string.statusGroupInvite))
+
+                        getAllGroups()
+                        getInvites()
+
+                    } else{
+                        statusMessage.value = Event( context.getString(R.string.statusError))
+
+                    }
                 }
+
             }
+
+
+
+
         } catch (ie: Exception) {
             Timber.e(ie)
 
