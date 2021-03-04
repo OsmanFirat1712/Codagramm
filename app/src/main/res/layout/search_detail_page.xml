@@ -48,7 +48,7 @@
                         android:textStyle="italic"
                         app:layout_constraintStart_toEndOf="@id/ivUserProfileImage"
                         app:layout_constraintTop_toBottomOf="@id/resultText"
-                        android:text="userName"
+                        android:text="@string/username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
@@ -56,7 +56,7 @@
                         android:id="@+id/tvLastNameMemberCards"
                         app:layout_constraintStart_toEndOf="@id/tvUserNameMemberCards"
                         app:layout_constraintTop_toBottomOf="@id/resultText"
-                        android:text="lastName"
+                        android:text="@string/lastname"
                         android:textStyle="italic"
                         android:layout_marginTop="1dp"
                         android:layout_marginLeft="4dp"
@@ -67,7 +67,7 @@
                         android:id="@+id/tvEmailMemberCards"
                         app:layout_constraintTop_toBottomOf="@id/tvUserNameMemberCards"
                         app:layout_constraintStart_toEndOf="@id/ivUserProfileImage"
-                        android:text="email"
+                        android:text="@string/emails"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="1dp"
                         android:layout_width="wrap_content"

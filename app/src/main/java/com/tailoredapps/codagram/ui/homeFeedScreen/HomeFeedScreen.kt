@@ -23,7 +23,6 @@ import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
-import java.net.InetAddress
 
 
 class HomeFeedScreen : Fragment() {
@@ -34,13 +33,6 @@ class HomeFeedScreen : Fragment() {
     private val navController by lazy(::findNavController)  //Method referencing
     private lateinit var binding: FragmentFirstBinding
     private val myGroupsAdapter: FilterGroupAdapter by inject()
-    private lateinit var binding2:HomeFeedScreenBinding
-
-    private lateinit var text: String
-
-    /*
-        var groupId: String? = null
-    */
     private lateinit var alertDialogBinding: AlertDialogFilterBinding
 
 
@@ -68,11 +60,10 @@ class HomeFeedScreen : Fragment() {
         binding.homeFeedScreen.apply {
             adapter = this@HomeFeedScreen.adapter
         }
-
         view.findNavController().popBackStack(R.id.action_first_view_to_login, false)
 
-
         bindPostLiveData()
+        myMessage()
         viewModel.getStoryPost(null.toString())
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -92,7 +83,6 @@ class HomeFeedScreen : Fragment() {
                 filter()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
 
@@ -123,10 +113,7 @@ class HomeFeedScreen : Fragment() {
             adapter.notifyDataSetChanged()
             adapter.setUpListener(object : HomeFeedAdapter.ItemCLickedListener {
                 override fun onItemClicked(like: Boolean, post: Post) {
-                  likePost(post.id,like)
-                    /*     adapter.notifyDataSetChanged()
-                    adapter.submitList(it)*/
-                }
+                  likePost(post.id,like) }
             })
             adapter.removeUpListener(object : HomeFeedAdapter.ItemGroupRemoveListener {
                 override fun onGroupRemoved(post: Post) {
@@ -154,11 +141,11 @@ class HomeFeedScreen : Fragment() {
 
             myGroupsAdapter.setUpListener(object : FilterGroupAdapter.ItemFilterListener {
                 override fun onItemClicked(group: Group) {
-                    viewModel.getStoryPostbyQuery(group.id.toString())
+                    viewModel.getStoryPostByQuery(group.id.toString())
                     Snackbar.make(
                         requireView(),
-                        "Die Gruppe ${group.name} wird angezeigt",
-                        Snackbar.LENGTH_LONG
+                        "${group.name} ausgewählt",
+                        Snackbar.LENGTH_SHORT
                     ).show()
 
                 }
@@ -174,17 +161,13 @@ class HomeFeedScreen : Fragment() {
             dialogBuilder.setMessage(getString(R.string.deletePost))
                 .setPositiveButton(getString(R.string.cancel), DialogInterface.OnClickListener { dialog, id ->
                 })
-                // negative button text and action
                 .setNegativeButton(getString(R.string.delete), DialogInterface.OnClickListener { dialog, id ->
                     viewModel.removePost(ids)
-                    Snackbar.make(requireView(), getString(R.string.postDeleteSnack), Snackbar.LENGTH_SHORT).show()
-
                     dialog.cancel()
 
                 })
 
             val alert = dialogBuilder.create()
-            alert.setTitle("AlertDialogExample")
             alert.show()
         }
 
@@ -195,4 +178,14 @@ class HomeFeedScreen : Fragment() {
         viewModel.likeComment(ids,like)
     }
 
+
+    fun myMessage() {
+
+        viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            it.getContentIfNotHandled()?.let {
+                Snackbar.make(requireView(),it,Snackbar.LENGTH_LONG).show()
+            }
+        })
+
+    }
 }

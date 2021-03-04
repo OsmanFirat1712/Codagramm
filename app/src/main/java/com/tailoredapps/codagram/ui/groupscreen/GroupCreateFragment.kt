@@ -73,6 +73,7 @@ class GroupFragment : Fragment() {
         bindToLiveData()
         createButtonAction()
         uploadClickAction()
+        myMessage()
 
 
 
@@ -120,15 +121,14 @@ class GroupFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
             } else if (file != null) {
-
                 viewModel.createGroup(nameGroup, Uri.fromFile(file))
                 adapter1.currentList
                 view.findNavController()
                     .navigate(GroupFragmentDirections.actionGroupScreenToMyGroupScreen())
-            } else if (nameGroup.isEmpty()) {
+            } else if (file == null) {
                 Snackbar.make(
                     requireView(),
-                    getString(R.string.snackGroupTitle),
+                   getString(R.string.snackGroupCreate),
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
@@ -181,9 +181,15 @@ class GroupFragment : Fragment() {
         }
     }
 
-    fun getError() {
-        viewModel.getError().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
+    fun myMessage() {
+
+        viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            it.getContentIfNotHandled()?.let {
+                Snackbar.make(requireView(),it,Snackbar.LENGTH_SHORT).show()
+
+            }
         })
+
     }
 }
