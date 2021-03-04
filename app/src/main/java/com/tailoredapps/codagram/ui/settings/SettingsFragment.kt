@@ -36,7 +36,7 @@ class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var file: File
     private val viewModel: SettingsViewModel by inject()
-    private lateinit var auth:FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,27 +66,20 @@ class SettingsFragment : Fragment() {
         binding.btnUpload.setOnClickListener {
             if (::file.isInitialized) {
                 viewModel.addPhoto(Uri.fromFile(file))
-                Snackbar.make(requireView(), " Bild wurde Hochgeladen", Snackbar.LENGTH_SHORT)
-                    .show()
-            } else {
-                Snackbar.make(requireView(), "Bitte ändere zuerst dein Bild", Snackbar.LENGTH_SHORT)
-                    .show()
             }
-
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_group_exit,menu)
+        inflater.inflate(R.menu.menu_group_exit, menu)
 
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        when{
+        when {
             R.id.logout == id -> {
-
                 auth.signOut()
                 findNavController().navigate(SettingsFragmentDirections.actionSettingsViewToLogin())
             }
@@ -98,29 +91,18 @@ class SettingsFragment : Fragment() {
     fun alert() {
         binding.ivProfileImage.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext())
-
-            Snackbar.make(requireView(), "saasd", Snackbar.LENGTH_SHORT).show()
-            dialogBuilder.setMessage("Willst du das Bild ändern oder Löschen?")
+            dialogBuilder.setMessage(getString(R.string.deleteOrEdit))
                 .setCancelable(true)
-                .setPositiveButton("EDIT", DialogInterface.OnClickListener { dialog, id ->
+                .setPositiveButton(getString(R.string.alertEdit), DialogInterface.OnClickListener { dialog, id ->
                     uploadClickAction()
                     viewModel.getUsers()
-
                 })
-                .setNegativeButton("DELETE", DialogInterface.OnClickListener { dialog, id ->
+                .setNegativeButton(getString(R.string.alertDelete), DialogInterface.OnClickListener { dialog, id ->
                     deleteUserImage()
-                    Snackbar.make(requireView(), " Das Bild wurde gelöscht", Snackbar.LENGTH_SHORT)
-                        .show()
-
                     dialog.cancel()
-
                 })
 
-            // create dialog box
             val alert = dialogBuilder.create()
-            // set title for alert dialog box
-            alert.setTitle("AlertDialogExample")
-            // show alert dialog
             alert.show()
         }
     }
@@ -130,18 +112,11 @@ class SettingsFragment : Fragment() {
     }
 
     private fun uploadClickAction() {
-        Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_LONG).show()
         ImagePicker.with(this)
             .crop()
             .compress(1024)
             .maxResultSize(1080, 1080)
             .start()
-
-
-        /*if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(requireActivity(),
-                Array(1){Manifest.permission.READ_EXTERNAL_STORAGE},121)
-        }*/
         listImages()
     }
 
@@ -152,16 +127,14 @@ class SettingsFragment : Fragment() {
             //Image Uri will not be null for RESULT_OK
             val fileUri = data?.data
             binding.ivProfileImage.setImageURI(fileUri)
-
             //You can get File object from intent
             file = ImagePicker.getFile(data)!!
-
             //You can also get File Path from intent
             val filePath: String = ImagePicker.getFilePath(data)!!
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Snackbar.make(requireView(), ImagePicker.getError(data), Snackbar.LENGTH_SHORT).show()
         } else {
-            Snackbar.make(requireView(), "Task Cancelled", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), getString(R.string.cancelled), Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -170,14 +143,6 @@ class SettingsFragment : Fragment() {
         i.type = "image/*"
         i.action = Intent.ACTION_GET_CONTENT
     }
-
-
-    /*   private fun changePassword(){
-           binding.tvPassword.setOnClickListener{
-
-
-           }
-       }*/
 
     private fun changeFirstLastNick() {
         binding.tvUserName.setOnClickListener {
@@ -204,10 +169,7 @@ class SettingsFragment : Fragment() {
                 binding.tvUserName.text.toString(),
                 binding.tvLastName.text.toString()
             )
-
-
         }
-
     }
 
     @ExperimentalCoroutinesApi
@@ -217,18 +179,18 @@ class SettingsFragment : Fragment() {
 
             dialogBuilder.setMessage(getString(R.string.dialogDelteOwnProfile))
                 .setCancelable(true)
-                .setPositiveButton(getString(R.string.abbrechen), DialogInterface.OnClickListener { dialog, id ->
-                })
-                // negative button text and action
-                .setNegativeButton(getString(R.string.delete), DialogInterface.OnClickListener { dialog, id ->
-                    viewModel.deleteUser()
-/*
-                    view?.findNavController()?.navigate(SettingsFragmentDirections.actionSettingsViewToLogin())
-*/
-                    dialog.cancel()
-                    dialog.dismiss()
+                .setPositiveButton(
+                    getString(R.string.abbrechen),
+                    DialogInterface.OnClickListener { dialog, id ->
+                    })
+                .setNegativeButton(
+                    getString(R.string.delete),
+                    DialogInterface.OnClickListener { dialog, id ->
+                        viewModel.deleteUser()
+                        dialog.cancel()
+                        dialog.dismiss()
 
-                })
+                    })
 
 
             val alert = dialogBuilder.create()
@@ -237,14 +199,13 @@ class SettingsFragment : Fragment() {
         }
 
     }
+
     fun myMessage() {
 
         viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it.getContentIfNotHandled()?.let {
-                Snackbar.make(requireView(),it,Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), it, Snackbar.LENGTH_LONG).show()
             }
         })
-
     }
-
 }

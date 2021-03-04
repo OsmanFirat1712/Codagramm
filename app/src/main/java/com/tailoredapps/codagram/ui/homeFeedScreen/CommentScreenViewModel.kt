@@ -17,7 +17,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
 
-class CommentScreenViewModel(private val context : Context, private val codaGramApi: CodaGramApi) : ViewModel(){
+class CommentScreenViewModel(private val context: Context, private val codaGramApi: CodaGramApi) :
+    ViewModel() {
 
     private val statusMessage = MutableLiveData<Event<String>>()
 
@@ -26,70 +27,65 @@ class CommentScreenViewModel(private val context : Context, private val codaGram
 
     @ExperimentalCoroutinesApi
     private val myPost = MutableLiveData<Post>()
+
     @ExperimentalCoroutinesApi
-    fun getMyPost():LiveData<Post> = myPost
+    fun getMyPost(): LiveData<Post> = myPost
 
     @ExperimentalCoroutinesApi
     private val myCommentsObject = MutableLiveData<Comment>()
+
     @ExperimentalCoroutinesApi
-    fun getMyCommentsObject():LiveData<Comment> = myCommentsObject
+    fun getMyCommentsObject(): LiveData<Comment> = myCommentsObject
 
     @ExperimentalCoroutinesApi
     private val myComments = MutableLiveData<List<Comment>>()
+
     @ExperimentalCoroutinesApi
-    fun getMyComments():LiveData<List<Comment>> = myComments
+    fun getMyComments(): LiveData<List<Comment>> = myComments
 
 
-
-    fun getMyCommentsObjecSt(id: String){
+    fun getMyCommentsObjecSt(id: String) {
         try {
-            viewModelScope.launch(Dispatchers.IO){
-                val response = codaGramApi.getComment(id)
-
-                }
-        }catch (ie:Exception){
+            viewModelScope.launch(Dispatchers.IO) {
+                codaGramApi.getComment(id)
+            }
+        } catch (ie: Exception) {
             Timber.e(ie)
         }
     }
-    fun updateCommentbyObject(comment:Comment){
+
+    fun updateCommentbyObject(comment: Comment) {
         viewModelScope.launch(Dispatchers.Main) {
             myCommentsObject.value = comment
         }
     }
-    fun getPostById(id:String){
+
+    fun getPostById(id: String) {
         try {
-            viewModelScope.launch(Dispatchers.IO){
-                val response = codaGramApi.getPostId(id)
-               // updatePost(response)
+            viewModelScope.launch(Dispatchers.IO) {
+                codaGramApi.getPostId(id)
             }
-        }catch (ie:Exception){
+        } catch (ie: Exception) {
             Timber.e(ie)
         }
     }
 
-    fun getCommentPost(id:String){
+    fun getCommentPost(id: String) {
         try {
-            viewModelScope.launch(Dispatchers.IO){
+            viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.getComment(id)
                 updateComment(response.comments)
             }
-        }catch (ie:Exception){
+        } catch (ie: Exception) {
             Timber.e(ie)
-        }
-    }
-
-    fun updatePost(post:Post){
-        viewModelScope.launch(Dispatchers.Main){
-            myPost.value = post
         }
     }
 
     @ExperimentalCoroutinesApi
-    fun updateComment(comment:List<Comment>) {
+    fun updateComment(comment: List<Comment>) {
         viewModelScope.launch(Dispatchers.Main) {
             myComments.value = comment
         }
-
     }
 
     @ExperimentalCoroutinesApi
@@ -97,32 +93,28 @@ class CommentScreenViewModel(private val context : Context, private val codaGram
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.deleteComment(id, commentId)
 
-            viewModelScope.launch(Dispatchers.Main){
-                if (response.isSuccessful){
+            viewModelScope.launch(Dispatchers.Main) {
+                if (response.isSuccessful) {
                     val update = codaGramApi.getComment(id)
                     updateComment(update.comments)
                     statusMessage.value = Event(context.getString(R.string.statusDeleteComment))
-                }else{
-                    statusMessage.value = Event( context.getString(R.string.statusError))
+                } else {
+                    statusMessage.value = Event(context.getString(R.string.statusError))
                 }
             }
         }
     }
 
-        @ExperimentalCoroutinesApi
-        fun postComment(id: String, text: CommentBody) {
-            viewModelScope.launch(Dispatchers.IO) {
-                val response = codaGramApi.postComment(id, text)
-
-                if (response.isSuccessful){
-                    val updates = codaGramApi.getComment(id)
-                    updateComment(updates.comments)
-
-                }
-
-
+    @ExperimentalCoroutinesApi
+    fun postComment(id: String, text: CommentBody) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = codaGramApi.postComment(id, text)
+            if (response.isSuccessful) {
+                val updates = codaGramApi.getComment(id)
+                updateComment(updates.comments)
             }
         }
+    }
 
 
 }

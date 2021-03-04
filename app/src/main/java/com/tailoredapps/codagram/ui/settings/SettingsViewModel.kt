@@ -37,17 +37,12 @@ class SettingsViewModel(private val context: Context, private val codaGramApi: C
     @ExperimentalCoroutinesApi
     fun getMyGroupMembers(): LiveData<User> = myUser
 
-    var status = MutableLiveData<Boolean?>()
-//In your network successfull response
-
-
     @ExperimentalCoroutinesApi
     private fun updateMembersList(update: User) {
         viewModelScope.launch(Dispatchers.Main) {
             myUser.value = update
         }
     }
-
     fun getUsers() {
         try {
             viewModelScope.launch(Dispatchers.IO) {
@@ -58,7 +53,6 @@ class SettingsViewModel(private val context: Context, private val codaGramApi: C
             Timber.e(ie)
         }
     }
-
 
     @ExperimentalCoroutinesApi
     fun updateNickName(nickname: String, firstName: String, lastName: String) {
@@ -74,13 +68,11 @@ class SettingsViewModel(private val context: Context, private val codaGramApi: C
                         statusMessage.value = Event(context.getString(R.string.statusError))
                     }
                 }
-
             }
         } catch (ie: Exception) {
             Timber.e(ie)
         }
     }
-
 
     fun addPhoto(uri: Uri) {
         try {
@@ -92,7 +84,7 @@ class SettingsViewModel(private val context: Context, private val codaGramApi: C
             viewModelScope.launch(Dispatchers.IO) {
                 val response = codaGramApi.updateUserImage(part)
 
-                viewModelScope.launch(Dispatchers.Main){
+                viewModelScope.launch(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         statusMessage.value = Event(context.getString(R.string.updateImage))
                         getUsers()
@@ -100,10 +92,7 @@ class SettingsViewModel(private val context: Context, private val codaGramApi: C
                         statusMessage.value = Event(context.getString(R.string.statusError))
 
                     }
-
                 }
-
-
             }
         } catch (ie: Exception) {
             Timber.e(ie)
@@ -115,23 +104,17 @@ class SettingsViewModel(private val context: Context, private val codaGramApi: C
             try {
                 val response = codaGramApi.deleteUserImage()
 
-                viewModelScope.launch(Dispatchers.Main){
+                viewModelScope.launch(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         statusMessage.value = Event(context.getString(R.string.statusDeletePhoto))
                         getUsers()
-                    }
-                    else{
+                    } else {
                         statusMessage.value = Event(context.getString(R.string.statusError))
-
                     }
-
                 }
-
-
             } catch (ie: Exception) {
                 Timber.e(ie)
             }
-
         }
     }
 
@@ -139,17 +122,16 @@ class SettingsViewModel(private val context: Context, private val codaGramApi: C
     fun deleteUser() {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-               val response = codaGramApi.deleteUser()
+                val response = codaGramApi.deleteUser()
 
-                   viewModelScope.launch(Dispatchers.Main){
-                       if (response.isSuccessful){
-                           statusMessage.value = Event(context.getString(R.string.statusUserDelete))
-                       }
-                       else{
-                           statusMessage.value = Event(context.getString(R.string.statusError))
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        statusMessage.value = Event(context.getString(R.string.statusUserDelete))
+                    } else {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
 
-                       }
-                   }
+                    }
+                }
 
             }
         } catch (ie: Exception) {

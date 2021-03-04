@@ -48,7 +48,6 @@ class RegisterFragment : Fragment() {
     var image: String? = null
     private lateinit var file: File
     private lateinit var waveHeader: MultiWaveHeader
-
     val check: Boolean? = null
 
 
@@ -59,7 +58,6 @@ class RegisterFragment : Fragment() {
         statusInfo()
         createActive(view)
         uploadClickAction()
-
 
         binding.btnDialogCancel.setOnClickListener {
             view.findNavController().popBackStack()
@@ -73,8 +71,6 @@ class RegisterFragment : Fragment() {
         binding = RegisterFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
 
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -83,10 +79,8 @@ class RegisterFragment : Fragment() {
             //Image Uri will not be null for RESULT_OK
             val fileUri = data?.data
             binding.ivImageView.setImageURI(fileUri)
-
             //You can get File object from intent
             file = ImagePicker.getFile(data)!!
-
             //You can also get File Path from intent
             val filePath: String = ImagePicker.getFilePath(data)!!
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
@@ -139,10 +133,6 @@ class RegisterFragment : Fragment() {
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start()
-            /*if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(requireActivity(),
-                    Array(1){Manifest.permission.READ_EXTERNAL_STORAGE},121)
-            }*/
             listImages()
         }
     }

@@ -28,14 +28,15 @@ import java.io.File
 class NewStoryViewModel(private val context: Context, val codaGramApi: CodaGramApi) : ViewModel() {
     private lateinit var ids: String
 
-    open class Event{
-        data class ShowMessage(val msg:String) : Event()
+    open class Event {
+        data class ShowMessage(val msg: String) : Event()
         object Navigate : Event()
     }
 
 
     private val events = MutableLiveData<Event>()
     fun getEvents(): LiveData<Event> = events
+
     @ExperimentalCoroutinesApi
     private val myGroupMembers = MutableLiveData<List<User>>()
 
@@ -55,13 +56,11 @@ class NewStoryViewModel(private val context: Context, val codaGramApi: CodaGramA
     fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
 
 
-
     @ExperimentalCoroutinesApi
     fun getGroups() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getAllGroups()
             response.body()?.groups?.let { updateUi(it) }
-
         }
     }
 
@@ -99,7 +98,7 @@ class NewStoryViewModel(private val context: Context, val codaGramApi: CodaGramA
                 codaGramApi.getAllGroups()
                 val selectedUsers = searchForUser.value?.filter { it.selected }?.map { it.user.id }
 
-                  val response = codaGramApi.newStoryPost(
+                val response = codaGramApi.newStoryPost(
                     PostBody(
                         description,
                         groupId,
@@ -110,10 +109,11 @@ class NewStoryViewModel(private val context: Context, val codaGramApi: CodaGramA
 
                 }
                 viewModelScope.launch(Dispatchers.Main) {
-                    if (response.isSuccessful){
+                    if (response.isSuccessful) {
                         events.value = Event.Navigate
-                        events.value = Event.ShowMessage(context.getString(R.string.eventPostCreate))
-                    } else{
+                        events.value =
+                            Event.ShowMessage(context.getString(R.string.eventPostCreate))
+                    } else {
                         events.value = Event.ShowMessage(context.getString(R.string.statusError))
                     }
                 }

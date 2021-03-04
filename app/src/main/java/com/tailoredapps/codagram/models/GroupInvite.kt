@@ -2,8 +2,6 @@ package com.tailoredapps.codagram.models
 
 import com.tailoredapps.codagram.remoteModels.ReplyToInvite
 import java.util.*
-
-
 data class GroupInvite(
     val id: String,
     val inviter: User,

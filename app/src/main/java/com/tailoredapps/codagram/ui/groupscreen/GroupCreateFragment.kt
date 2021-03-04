@@ -32,7 +32,7 @@ class GroupFragment : Fragment() {
     private lateinit var binding: FragmentGroupBinding
     private val viewModel: GroupViewModel by inject()
     private var file: File? = null
-    private lateinit var input:String
+    private lateinit var input: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,15 +50,12 @@ class GroupFragment : Fragment() {
             adapter = this@GroupFragment.adapter1
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-
         }
+
         bindToLiveData()
         createButtonAction()
         uploadClickAction()
-        myMessage()
         searchKey()
-
-
 
         binding.auto.addTextChangedListener {
             searchKey()
@@ -74,11 +71,6 @@ class GroupFragment : Fragment() {
             binding.searchResult.visibility = View.GONE
             binding.btnCreateGroup.isEnabled = false
             binding.btnCreateGroup.setImageResource(R.drawable.ic_baseline_add_box_inactive_24)
-            Snackbar.make(
-                requireView(),
-                getString(R.string.snackUserRequired),
-                Snackbar.LENGTH_SHORT
-            ).show()
 
         } else {
             viewModel.searchUser(input)
@@ -98,7 +90,6 @@ class GroupFragment : Fragment() {
             val selectedUsers =
                 viewModel.getSearchedUser().value?.filter { it.selected }?.map { it.user.id }
 
-            // (viewModel.createGroup(nameGroup))
             if (selectedUsers == null) {
                 adapter1.currentList
                 Snackbar.make(
@@ -121,7 +112,6 @@ class GroupFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
-
         }
     }
 
@@ -129,15 +119,19 @@ class GroupFragment : Fragment() {
     @ExperimentalCoroutinesApi
     fun bindToLiveData() {
         viewModel.getEvents().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            when (it){
-                is NewStoryViewModel.Event.ShowMessage -> Snackbar.make(requireView(),it.msg,Snackbar.LENGTH_SHORT).show()
+            when (it) {
+                is NewStoryViewModel.Event.ShowMessage -> Snackbar.make(
+                    requireView(),
+                    it.msg,
+                    Snackbar.LENGTH_SHORT
+                ).show()
                 is NewStoryViewModel.Event.Navigate -> {
                     view?.findNavController()
-                        ?.navigate(GroupFragmentDirections.actionGroupScreenToMyGroupScreen())                }
+                        ?.navigate(GroupFragmentDirections.actionGroupScreenToMyGroupScreen())
+                }
             }
         })
         viewModel.getSearchedUser().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-
             adapter1.submitList(it)
         })
 
@@ -145,7 +139,6 @@ class GroupFragment : Fragment() {
 
     private fun uploadClickAction() {
         binding.groupImage.setOnClickListener {
-            Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_LONG).show()
             ImagePicker.with(this)
                 .crop()
                 .compress(524)

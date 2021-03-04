@@ -69,11 +69,9 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
 
             Glide.with(itemView)
                 .load(postData.image?.url)
+                .placeholder(R.drawable.person)
                 .into(binding.ivUserProfileImage)
-
-
         }
-
 
     }
 
@@ -86,11 +84,6 @@ class GroupDetailsAdapter : ListAdapter<User, GroupDetailsAdapter.GroupDetailsSe
                 mItemCLicked.let {
                     mItemCLicked.onItemClicked(getItem(position))
                 }
-
-                Glide.with(itemView)
-                    .load(selectedItem.image?.url)
-                    .placeholder(R.drawable.person)
-                    .into(itemView.ivUserProfileImage)
 
             }
             true

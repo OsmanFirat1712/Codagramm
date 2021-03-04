@@ -25,7 +25,7 @@
         app:layout_constraintGuide_end="20dp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/ivProfileImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="20dp"
@@ -42,7 +42,7 @@
         android:src="@drawable/ic_baseline_save_24"
         app:layout_constraintTop_toBottomOf="@id/tvGroupCreatedBy"
         android:layout_marginTop="30dp"
-        app:layout_constraintStart_toEndOf="@id/imageView2"/>
+        app:layout_constraintStart_toEndOf="@id/ivProfileImage"/>
 
     <TextView
         android:id="@+id/tvGroupTitle"
@@ -55,7 +55,7 @@
         android:drawableRight="@drawable/ic_baseline_edit_24"
         android:hint="@string/gruppename"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@id/imageView2"
+        app:layout_constraintStart_toEndOf="@id/ivProfileImage"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,7 +67,7 @@
         android:textSize="15sp"
         android:layout_marginLeft="5dp"
         android:text="@string/ersteller"
-        app:layout_constraintStart_toEndOf="@id/imageView2"
+        app:layout_constraintStart_toEndOf="@id/ivProfileImage"
         app:layout_constraintTop_toBottomOf="@id/tvGroupTitle"/>
 
     <TextView
@@ -88,7 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         app:cardBackgroundColor="#FF86FC"
-        app:layout_constraintTop_toBottomOf="@id/imageView2"
+        app:layout_constraintTop_toBottomOf="@id/ivProfileImage"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft">
 
         <TextView

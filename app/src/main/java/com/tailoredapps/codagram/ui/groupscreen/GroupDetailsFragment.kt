@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.FragmentGroupDetailsBinding
 import com.tailoredapps.codagram.databinding.RegisterDialogBinding
+import com.tailoredapps.codagram.models.KEY
 import com.tailoredapps.codagram.models.UpdateGroup
 import com.tailoredapps.codagram.models.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,7 +37,6 @@ import java.io.File
 class GroupDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentGroupDetailsBinding
-
     @ExperimentalCoroutinesApi
     private val viewModel: GroupDetailsViewModel by inject()
     private val adapter: SearchAdapter by inject()
@@ -46,8 +46,6 @@ class GroupDetailsFragment : Fragment() {
     private lateinit var alertDialogBinding: RegisterDialogBinding
     private lateinit var file: File
     private lateinit var groupName: String
-    private lateinit var image: String
-    private lateinit var creatorName: String
     private lateinit var input:String
 
 
@@ -60,11 +58,8 @@ class GroupDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for his fragment
         binding = FragmentGroupDetailsBinding.inflate(layoutInflater, container, false)
         return binding.root
-
-
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -115,28 +110,22 @@ class GroupDetailsFragment : Fragment() {
         }
 
         alert()
-        groupName = arguments?.getString("name").toString()
-        groupId = arguments?.getString("id").toString()
-        creatorId = arguments?.getString("creatorId")
-        image = arguments?.getString("imageUrl").toString()
-        creatorName = arguments?.getString("creatorName").toString()
-        //if post crashes, comment theses
+        groupName = arguments?.getString(KEY.groupNameKey).toString()
+        groupId = arguments?.getString(KEY.groupIdKey).toString()
+        creatorId = arguments?.getString(KEY.creatorIdKey).toString()
 
 
         viewModel.getGroupById(groupId.toString())
         viewModel.getAllGroupsByObject(groupId)
         bindImage()
-
         groupDetailPageAccess()
         searchKey()
-
     }
-
 
     @RequiresApi(Build.VERSION_CODES.N)
     @ExperimentalCoroutinesApi
     fun alert() {
-        binding.imageView2.setOnClickListener {
+        binding.ivProfileImage.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext())
 
             dialogBuilder.setMessage(getString(R.string.alertDeleteOrEdit))
@@ -147,7 +136,6 @@ class GroupDetailsFragment : Fragment() {
                             uploadClickAction()
                             binding.ivSaveButton.visibility = View.VISIBLE
 
-
                         } else {
                             Snackbar.make(
                                 requireView(),
@@ -155,34 +143,25 @@ class GroupDetailsFragment : Fragment() {
                                 Snackbar.LENGTH_SHORT
                             ).show()
                         }
-
                     })
-                // negative button text and action
                 .setNegativeButton(
                     getString(R.string.alertDelete),
                     DialogInterface.OnClickListener { dialog, id ->
                         deleteGroupImage()
                         viewModel.getGroupById(groupId.toString())
-
                         dialog.cancel()
-
                     })
-
             val alert = dialogBuilder.create()
-            alert.setTitle("AlertDialogExample")
+            alert.setTitle(getString(R.string.GroupPictureUpdate))
             alert.show()
         }
-
-
     }
-
 
     @ExperimentalCoroutinesApi
     fun bindToLiveData() {
         viewModel.getSearchedUser().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             adapter.submitList(it)
         })
-
     }
 
     @ExperimentalCoroutinesApi
@@ -193,22 +172,15 @@ class GroupDetailsFragment : Fragment() {
             binding.searchEditRecyclerview.visibility = View.GONE
             binding.inviteButton.isEnabled = false
             binding.inviteButton.setImageResource(R.drawable.ic_baseline_add_box_inactive_24)
-            Snackbar.make(
-                requireView(),
-                getString(R.string.snackUserRequired),
-                Snackbar.LENGTH_SHORT
-            ).show()
         } else {
             viewModel.searchUser(input)
             binding.searchEditRecyclerview.visibility = View.VISIBLE
             binding.inviteButton.isEnabled = true
             binding.inviteButton.setImageResource(R.drawable.ic_baseline_add_box_24)
             Timber.d(input)
-
         }
-
-
     }
+
     private fun groupDetailPageAccess(){
 
         if (FirebaseAuth.getInstance().currentUser?.uid == creatorId){
@@ -220,10 +192,7 @@ class GroupDetailsFragment : Fragment() {
             binding.auto.isVisible = false
             binding.inviteButton.isVisible = false
         }
-
-
     }
-
 
     @ExperimentalCoroutinesApi
     private fun bindgetmyGroupToLiveData() {
@@ -257,7 +226,7 @@ class GroupDetailsFragment : Fragment() {
                                 dialog.cancel()
                             })
                     val alert = dialogBuilder.create()
-                    alert.setTitle("AlertDialogExample")
+                    alert.setTitle(getString(R.string.alertAlert))
                     alert.show()
                 }
             })
@@ -318,7 +287,7 @@ class GroupDetailsFragment : Fragment() {
 
         val dialogBuilder = AlertDialog.Builder(requireContext())
 
-        dialogBuilder.setMessage("Möchst du die folgende Gruppe  ${groupName} wirklich löschen/verlassen?")
+        dialogBuilder.setMessage(getString(R.string.alertDeleteMemberOrGroup,"${groupName}"))
             .setCancelable(true)
             .setPositiveButton(
                 getString(R.string.cancel),
@@ -333,16 +302,11 @@ class GroupDetailsFragment : Fragment() {
                         view?.findNavController()?.popBackStack()
                         Snackbar.make(
                             requireView(),
-                            "$groupName wurde gelöscht/verlassen",
+                            requireContext().getString(R.string.alertDeleteGroup,"${groupName}"),
                             Snackbar.LENGTH_SHORT
                         ).show()
                     } else {
                         viewModel.exitGroup(groupId.toString())
-                        Snackbar.make(
-                            requireView(),
-                            "Möchstes du wirklich die Gruppe $groupName verlassen?",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
                         view?.findNavController()?.popBackStack()
                     }
 
@@ -352,7 +316,7 @@ class GroupDetailsFragment : Fragment() {
                 })
 
         val alert = dialogBuilder.create()
-        alert.setTitle("AlertDialogExample")
+        alert.setTitle(getString(R.string.alertAlert))
         alert.show()
 
     }
@@ -361,12 +325,10 @@ class GroupDetailsFragment : Fragment() {
     @ExperimentalCoroutinesApi
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-
             R.id.delete -> {
                 getDelete()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
 
@@ -392,13 +354,12 @@ class GroupDetailsFragment : Fragment() {
         viewModel.updateGroupImage(groupId.toString(), Uri.fromFile(file))
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             //Image Uri will not be null for RESULT_OK
             val fileUri = data?.data
-            binding.imageView2.setImageURI(fileUri)
+            binding.ivProfileImage.setImageURI(fileUri)
 
             //You can get File object from intent
             file = ImagePicker.getFile(data)!!
@@ -408,13 +369,12 @@ class GroupDetailsFragment : Fragment() {
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Snackbar.make(requireView(), ImagePicker.getError(data), Snackbar.LENGTH_SHORT).show()
         } else {
-            Snackbar.make(requireView(), "Task Cancelled", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), getString(R.string.cancelled), Snackbar.LENGTH_SHORT).show()
         }
     }
 
 
     private fun uploadClickAction() {
-        Toast.makeText(requireContext(), "Clicked", Toast.LENGTH_LONG).show()
         ImagePicker.with(this)
             .crop()
             .compress(1024)
@@ -436,7 +396,7 @@ class GroupDetailsFragment : Fragment() {
             Glide.with(requireContext())
                 .load(it.image?.url)
                 .placeholder(R.drawable.ic_baseline_image_48)
-                .into(binding.imageView2)
+                .into(binding.ivProfileImage)
         })
     }
 

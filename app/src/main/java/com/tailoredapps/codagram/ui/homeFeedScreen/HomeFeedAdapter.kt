@@ -38,14 +38,16 @@ import kotlinx.android.synthetic.main.home_feed_screen.view.ivUserImage
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : ListAdapter<Post, HomeFeedAdapter.CountryItem>(DiffCallback()) {
+class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) :
+    ListAdapter<Post, HomeFeedAdapter.CountryItem>(DiffCallback()) {
     lateinit var mItemCLicked: ItemCLickedListener
     lateinit var mItemRemoveClicked: ItemGroupRemoveListener
-    lateinit var post:Post
+    lateinit var post: Post
 
     class DiffCallback : DiffUtil.ItemCallback<Post>() {
 
-        override fun areContentsTheSame(oldItem: Post, newItem: Post
+        override fun areContentsTheSame(
+            oldItem: Post, newItem: Post
         ): Boolean {
             return oldItem.comments?.size == newItem.comments?.size && oldItem.likes == newItem.likes
         }
@@ -55,6 +57,7 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
 
         }
     }
+
     override fun onBindViewHolder(holder: CountryItem, position: Int) {
         holder.bind(getItem(position))
         val currentItem = getItem(position)
@@ -85,32 +88,32 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
             myBinding.likesText.text = currentItem.likes.toString()
             myBinding.tvTagSize.text = currentItem.tags.size.toString()
             myBinding.tvGroupName.text = currentItem.group?.name.toString()
-            myBinding.tvNickName.text = "(" + currentItem.user?.nickname.toString() +")"
+            myBinding.tvNickName.text = "(" + currentItem.user?.nickname.toString() + ")"
 
-            if (currentItem.comments == null || currentItem.comments.isEmpty()){
+            if (currentItem.comments == null || currentItem.comments.isEmpty()) {
                 myBinding.cl1.isVisible = false
-            }
-            else if (currentItem.comments?.size!! > 1 ){
+            } else if (currentItem.comments?.size!! > 1) {
                 myBinding.lastCvv.visibility = View.VISIBLE
-                myBinding.tvWrittenBy.text = currentItem.comments?.get(0)?.user?.firstname.toString()
+                myBinding.tvWrittenBy.text =
+                    currentItem.comments?.get(0)?.user?.firstname.toString()
                 myBinding.tvFirstComment.text = currentItem.comments?.get(0)?.text
 
-                myBinding.tvWrittenBy2.text = currentItem.comments?.get(1)?.user?.firstname.toString()
+                myBinding.tvWrittenBy2.text =
+                    currentItem.comments?.get(1)?.user?.firstname.toString()
                 myBinding.tvFirstComment2.text = currentItem.comments?.get(1)?.text.toString()
-            }
-
-            else if(currentItem.comments?.size == 1){
-                myBinding.tvWrittenBy.text = currentItem.comments?.get(0)?.user?.firstname.toString()
+            } else if (currentItem.comments?.size == 1) {
+                myBinding.tvWrittenBy.text =
+                    currentItem.comments?.get(0)?.user?.firstname.toString()
                 myBinding.tvFirstComment.text = currentItem.comments?.get(0)?.text.toString()
                 myBinding.cl2.isVisible = false
 
             }
 
-            myBinding.commentText.text = currentItem.comments?.size.toString()+" "+"Comment"
+            myBinding.commentText.text = currentItem.comments?.size.toString() + " " + "Comment"
 
-            if (currentItem.userLiked){
+            if (currentItem.userLiked) {
                 myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_true_24)
-            }else{
+            } else {
                 myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_border_false_24)
             }
 
@@ -119,18 +122,18 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
                 myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_true_24)
                 currentItem.userLiked = currentItem.userLiked.not()
 
-                when{
+                when {
                     currentItem.userLiked -> {
                         mItemCLicked.let {
-                            mItemCLicked.onItemClicked(true,getItem(position))
+                            mItemCLicked.onItemClicked(true, getItem(position))
                             myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_true_24)
-                            if (FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id ){
+                            if (FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id) {
                                 myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_true_24)
                             }
                         }
                     }
-                    else->{
-                        mItemCLicked.onItemClicked(false,getItem(position))
+                    else -> {
+                        mItemCLicked.onItemClicked(false, getItem(position))
 
                         myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_border_false_24)
                     }
@@ -145,12 +148,13 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
             }
 
             when {
-                FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id-> myBinding.ivDelete.visibility = View.VISIBLE
-                else->myBinding.ivDelete.visibility = View.INVISIBLE
+                FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id -> myBinding.ivDelete.visibility =
+                    View.VISIBLE
+                else -> myBinding.ivDelete.visibility = View.INVISIBLE
             }
 
             myBinding.ivDelete.setOnClickListener {
-                mItemRemoveClicked.let{
+                mItemRemoveClicked.let {
                     mItemRemoveClicked.onGroupRemoved(getItem(position))
                 }
             }
@@ -167,19 +171,19 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
         )
     }
 
-    fun setUpListener(itemCLicked:ItemCLickedListener) {
+    fun setUpListener(itemCLicked: ItemCLickedListener) {
         mItemCLicked = itemCLicked
     }
 
-    fun removeUpListener(itemRemoved:ItemGroupRemoveListener) {
+    fun removeUpListener(itemRemoved: ItemGroupRemoveListener) {
         mItemRemoveClicked = itemRemoved
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun convertDateString(oldString: String): String {
 
-        val originalFormat = SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss.SSS'Z'")
-         val targetFormat = SimpleDateFormat("YYYY-MM-dd")
+        val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'")
+        val targetFormat = SimpleDateFormat("MM-dd-yyyy")
         val date: Date = originalFormat.parse(oldString)
 
         return targetFormat.format(date)
@@ -197,7 +201,6 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
                 "name" to postData.id,
                 "image" to postData.user?.image?.url
             )
-
 
             binding.captionText.text = postData.description.toString()
             binding.commentImage.setOnClickListener {
@@ -219,10 +222,12 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
         }
 
     }
+
     interface ItemCLickedListener {
         fun onItemClicked(like: Boolean, post: Post)
     }
+
     interface ItemGroupRemoveListener {
-        fun onGroupRemoved(post:Post)
+        fun onGroupRemoved(post: Post)
     }
 }

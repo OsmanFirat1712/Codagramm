@@ -25,12 +25,6 @@ import java.io.File
 import java.lang.Exception
 import java.util.*
 
-/*    val coroutineExceptionHandler = CoroutineExceptionHandler{_, t ->
-         run {
-             t.printStackTrace()
-            // showErrorOrSomething()
-         }
-     }*/
 @ExperimentalCoroutinesApi
 class GroupDetailsViewModel(private val context: Context, private val codaGramApi: CodaGramApi) :
     ViewModel() {
@@ -40,13 +34,11 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
     val message: LiveData<Event<String>>
         get() = statusMessage
 
-
     @ExperimentalCoroutinesApi
     private val searchForUser = MutableLiveData<List<SelectedUser>>()
 
     @ExperimentalCoroutinesApi
     fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
-
 
     @ExperimentalCoroutinesApi
     private val myImage = MutableLiveData<Group>()
@@ -91,14 +83,11 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
                     if (!response.isSuccessful) {
                         statusMessage.value = Event(context.getString(R.string.statusError))
                     }
-
                 }
             }
 
         } catch (ie: Exception) {
-
         }
-
     }
 
     @ExperimentalCoroutinesApi
@@ -311,4 +300,5 @@ class GroupDetailsViewModel(private val context: Context, private val codaGramAp
         }
 
     }
+
 }

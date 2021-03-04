@@ -87,16 +87,15 @@ class NewStoryFragment : Fragment() {
             //Image Uri will not be null for RESULT_OK
             val fileUri = data?.data
             binding.tvUpload.setImageURI(fileUri)
-
             //You can get File object from intent
             file = ImagePicker.getFile(data)!!
-
             //You can also get File Path from intent
             val filePath: String = ImagePicker.getFilePath(data)!!
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Snackbar.make(requireView(), ImagePicker.getError(data), Snackbar.LENGTH_SHORT).show()
         } else {
-            Snackbar.make(requireView(), "Task Cancelled", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), getString(R.string.ausgew_hlt), Snackbar.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -119,26 +118,28 @@ class NewStoryFragment : Fragment() {
         binding.btnPost.setOnClickListener {
             val description = binding.etDescription.text.toString()
 
-            if(description.isEmpty()){
-                Snackbar.make(requireView(),getString(R.string.snackDescription),Snackbar.LENGTH_SHORT).show()
-            }else if (::file.isInitialized&& ::getSpinnerItem.isInitialized){
+            if (description.isEmpty()) {
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.snackDescription),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            } else if (::file.isInitialized && ::getSpinnerItem.isInitialized) {
                 viewModel.post(description, getSpinnerItem, Uri.fromFile(file))
             } else {
-                Snackbar.make(requireView(),getString(R.string.snackRequireToPost),Snackbar.LENGTH_SHORT).show()
-
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.snackRequireToPost),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
-
         }
-
-
     }
 
     @ExperimentalCoroutinesApi
     private fun spinnerSelectedItem() {
         binding.spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                Toast.makeText(requireContext(), "You Selected .toString()}", Toast.LENGTH_LONG)
-                    .show()
             }
 
             override fun onItemSelected(
@@ -180,10 +181,15 @@ class NewStoryFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     fun bindGetMyGroupsLiveData() {
         viewModel.getEvents().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            when (it){
-                is NewStoryViewModel.Event.ShowMessage -> Snackbar.make(requireView(),it.msg,Snackbar.LENGTH_SHORT).show()
+            when (it) {
+                is NewStoryViewModel.Event.ShowMessage -> Snackbar.make(
+                    requireView(),
+                    it.msg,
+                    Snackbar.LENGTH_SHORT
+                ).show()
                 is NewStoryViewModel.Event.Navigate -> {
-                    view?.findNavController()?.navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
+                    view?.findNavController()
+                        ?.navigate(NewStoryFragmentDirections.actionSecondViewToFirstView())
                 }
             }
         })

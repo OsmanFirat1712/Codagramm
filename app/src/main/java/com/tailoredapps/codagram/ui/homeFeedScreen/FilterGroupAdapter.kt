@@ -24,8 +24,6 @@ class FilterGroupAdapter : ListAdapter<Group, GroupScreenViewHolder>(
 ) {
     lateinit var mItemCLicked: ItemFilterListener
 
-
-
     class DiffCallback : DiffUtil.ItemCallback<Group>() {
         override fun areItemsTheSame(oldItem: Group, newItem: Group): Boolean {
             return oldItem.id == newItem.id
@@ -37,15 +35,11 @@ class FilterGroupAdapter : ListAdapter<Group, GroupScreenViewHolder>(
 
     }
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupScreenViewHolder {
         return GroupScreenViewHolder(
             FilterGroupItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
-
-
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -57,63 +51,29 @@ class FilterGroupAdapter : ListAdapter<Group, GroupScreenViewHolder>(
                     mItemCLicked.onItemClicked(getItem(position))
                 }
             }
-
-
         }
-
     }
+
     fun setUpListener(itemCLicked: ItemFilterListener) {
         mItemCLicked = itemCLicked
     }
 
-    interface ItemFilterListener{
+    interface ItemFilterListener {
         fun onItemClicked(group: Group)
     }
-
-
 }
-
-
 
 class GroupScreenViewHolder(private val binding: FilterGroupItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun bind(postData: Group) {
-
-        val bundle = bundleOf(
-
-
-            "name" to postData.name,
-            "id" to postData.id,
-            "creatorId" to postData.creator?.id
-        )
-        val name = postData.name
-        Timber.e("gesndet")
-
-
-      /*  binding.root.setOnClickListener { view ->
-            view.findNavController().navigate(R.id.action_group_view_to_groupdetails, bundle)
-
-        }*/
-        postData.members.forEach {
-            val userName = it.id
-        }
-
         Glide.with(itemView)
             .load(postData.image?.url)
             .placeholder(R.drawable.ic_baseline_image_48)
             .into(binding.groupImage)
 
-
         binding.tvGroupName.text = postData.name.toString()
         binding.tvCreatorName.text = postData.creator?.lastname.toString()
-
-
     }
-
-
-
-
-
 }

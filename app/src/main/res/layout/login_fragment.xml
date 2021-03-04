@@ -164,14 +164,15 @@
                     android:id="@+id/switch1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Keep Login" />
+                    android:text="@string/eingeloggt_bleiben"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
 
                 <TextView
                     android:id="@+id/btnNewAccountInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/switch1"
-                    android:text="Dont have an Account Yet?"
+                    android:text="@string/noch_keinen_account"
                     android:elevation="3dp"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/black"

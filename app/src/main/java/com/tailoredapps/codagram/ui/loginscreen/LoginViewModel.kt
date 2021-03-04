@@ -97,13 +97,13 @@ class LoginViewModel(private val context: Context, private val codaGramApi: Coda
         var fn:String = firstName.text.toString()
 
         if(fn.isEmpty()){
-            firstName.setError("Group name cannot be Empty!")
+            firstName.error = context.getString(R.string.firstNameNotEmpty)
             lastNameStatusIcon.setImageResource(R.drawable.icons8_cancel_24px_2)
             return false
         }
 
-        else if(fn.length < 5){
-            firstName.setError("last name must be more than 6 character!")
+        else if(fn.length < 3){
+            firstName.error = context.getString(R.string.register_firstName_info)
             lastNameStatusIcon.setImageResource(R.drawable.icons8_cancel_24px_2)
             return false
         }
@@ -118,13 +118,13 @@ class LoginViewModel(private val context: Context, private val codaGramApi: Coda
 
         var ln = lastName.text.toString()
          if(ln.isEmpty()){
-            lastName.setError("last name can not be Empty!")
+            lastName.error=(context.getString(R.string.lastNameNotEmpty))
             lastNameStatusIcon.setImageResource(R.drawable.icons8_cancel_24px_2)
              return false
         }
 
-        else if(ln.length < 5){
-             lastName.setError("last name must be more than 6 character!")
+        else if(ln.length < 3){
+             lastName.error = context.getString(R.string.register_lastName_info)
              lastNameStatusIcon.setImageResource(R.drawable.icons8_cancel_24px_2)
              return false
          }
@@ -140,13 +140,13 @@ class LoginViewModel(private val context: Context, private val codaGramApi: Coda
     fun statusRulesNickName(nickName: EditText,nickNameStatusIcon: ImageView):Boolean{
         val nn = nickName.text.toString()
         if(nn.isEmpty()){
-            nickName.setError("Nick name can not be Empty!")
+            nickName.setError(context.getString(R.string.nickNameNotEmpty))
             nickNameStatusIcon.setImageResource(R.drawable.icons8_cancel_24px_2)
             return false
         }
 
-        else if (nn.length < 5){
-            nickName.setError("nick name must be more than 5 character!")
+        else if (nn.length < 4){
+            nickName.error = (context.getString(R.string.register_nickName_info))
             nickNameStatusIcon.setImageResource(R.drawable.icons8_cancel_24px_2)
             return false
         }
@@ -159,15 +159,15 @@ class LoginViewModel(private val context: Context, private val codaGramApi: Coda
 
     fun statusRulesEmail(email: EditText):Boolean{
         var emailPattern:String = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        var em:String = email.text.toString()
+        val em:String = email.text.toString()
 
         if(em.isEmpty()){
 
-            email.setError("Email can not be Empty!")
+            email.error = context.getString(R.string.emailNotEmpty)
             return false
         }
         else if(em.length < 5){
-            email.setError("Email can not be less than 5 character!")
+            email.error = context.getString(R.string.register_email_info)
             return false
         }
 
@@ -179,13 +179,13 @@ class LoginViewModel(private val context: Context, private val codaGramApi: Coda
     fun statusRulesPassword(password: EditText,passwordStatusIcon: ImageView):Boolean{
         val pw = password.text.toString()
         if(pw.isEmpty()){
-            password.setError("can not be Empty!")
+            password.error = context.getString(R.string.pwNotEmpty)
             passwordStatusIcon.setImageResource(R.drawable.icons8_cancel_24px_2)
             return false
         }
 
         else if (pw.length < 5){
-            password.setError("have to be more than 5 character!!")
+            password.error = context.getString(R.string.register_password_info)
             passwordStatusIcon.setImageResource(R.drawable.icons8_cancel_24px_2)
             return false
         }

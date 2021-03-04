@@ -79,7 +79,6 @@ class GroupInviteAdapter : ListAdapter<GroupInvite, GroupInviteAdapter.MainViewH
         val myBinding = binding
         
         fun bind(postData: GroupInvite) {
-
             binding.resultText.text = "Invited By :" + postData.inviter.firstname.toString()
 
         }

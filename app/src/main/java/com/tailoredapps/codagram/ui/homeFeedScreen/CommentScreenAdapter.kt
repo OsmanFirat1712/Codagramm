@@ -23,8 +23,6 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
 
     lateinit var mItemCLicked: ItemRemove2ClickListener
 
-
-
     class DiffCallback : DiffUtil.ItemCallback<Comment>() {
 
         override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean {
@@ -46,7 +44,6 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
                 .into(itemView.ivUserImage)
 
             itemView.tvCommendTime.text = "${convertDateToString(currentItem.createdAt)}"
-
         }
 
 
@@ -54,7 +51,6 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
             FirebaseAuth.getInstance().currentUser!!.uid == currentItem.user?.id -> holder.remove.visibility = View.VISIBLE
             FirebaseAuth.getInstance().currentUser!!.uid != currentItem.user?.id -> holder.remove.visibility = View.INVISIBLE
             //We need a creatorId after creatorId you can delete all comments!
-
         }
 
         holder.remove.setOnClickListener {
@@ -62,14 +58,10 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
                 mItemCLicked.onItemClicked(getItem(position))
             }
         }
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryItem {
-
         return CountryItem(CommentScreenItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
         )
     }
 
@@ -78,11 +70,11 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
     }
 
     fun convertDateToString(date:String):String{
-        val orgFormat = SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss.SSS'Z'")
-        val needFormat = SimpleDateFormat( "YYYY-MM-dd")
-        val date: Date = orgFormat.parse(date)
+        val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'")
+        val targetFormat = SimpleDateFormat("MM-dd-yyyy")
+        val date: Date = originalFormat.parse(date)
 
-        return needFormat.format(date)
+        return targetFormat.format(date)
     }
 
     class CountryItem(private val binding: CommentScreenItemsBinding) :
@@ -93,14 +85,9 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
         val remove:TextView = itemView.findViewById(R.id.tvRemove)
 
         fun bind(postData: Comment) {
-
-
-
-
             binding.tvUserName.text = postData.user?.firstname.toString()
             binding.tvUserComment.text = postData.text
             binding.tvCommendTime.text = postData.createdAt
-
         }
     }
 

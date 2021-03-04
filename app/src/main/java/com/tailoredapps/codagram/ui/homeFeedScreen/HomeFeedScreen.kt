@@ -36,7 +36,6 @@ class HomeFeedScreen : Fragment() {
     private val myGroupsAdapter: FilterGroupAdapter by inject()
     private lateinit var alertDialogBinding: AlertDialogFilterBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -95,7 +94,7 @@ class HomeFeedScreen : Fragment() {
         val alertDialog = MaterialAlertDialogBuilder(requireContext())
         alertDialog.setView(alertDialogBinding.root)
         alertDialog.create()
-        val alert = alertDialog.show()
+        alertDialog.show()
         alertDialogBinding.filterView.apply {
             adapter = this@HomeFeedScreen.myGroupsAdapter
             setHasFixedSize(true)
@@ -114,7 +113,8 @@ class HomeFeedScreen : Fragment() {
             adapter.notifyDataSetChanged()
             adapter.setUpListener(object : HomeFeedAdapter.ItemCLickedListener {
                 override fun onItemClicked(like: Boolean, post: Post) {
-                  likePost(post.id,like) }
+                    likePost(post.id, like)
+                }
             })
             adapter.removeUpListener(object : HomeFeedAdapter.ItemGroupRemoveListener {
                 override fun onGroupRemoved(post: Post) {
@@ -157,26 +157,29 @@ class HomeFeedScreen : Fragment() {
     }
 
     fun alert(ids: String) {
-            val dialogBuilder = AlertDialog.Builder(requireContext())
+        val dialogBuilder = AlertDialog.Builder(requireContext())
 
-            dialogBuilder.setMessage(getString(R.string.deletePost))
-                .setPositiveButton(getString(R.string.cancel), DialogInterface.OnClickListener { dialog, id ->
+        dialogBuilder.setMessage(getString(R.string.deletePost))
+            .setPositiveButton(
+                getString(R.string.cancel),
+                DialogInterface.OnClickListener { dialog, id ->
                 })
-                .setNegativeButton(getString(R.string.delete), DialogInterface.OnClickListener { dialog, id ->
+            .setNegativeButton(
+                getString(R.string.delete),
+                DialogInterface.OnClickListener { dialog, id ->
                     viewModel.removePost(ids)
                     dialog.cancel()
 
                 })
 
-            val alert = dialogBuilder.create()
-            alert.show()
-        }
-
+        val alert = dialogBuilder.create()
+        alert.show()
+    }
 
 
     @ExperimentalCoroutinesApi
-    fun likePost(ids: String, like:Boolean) {
-        viewModel.likeComment(ids,like)
+    fun likePost(ids: String, like: Boolean) {
+        viewModel.likeComment(ids, like)
     }
 
 
@@ -184,9 +187,10 @@ class HomeFeedScreen : Fragment() {
 
         viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it.getContentIfNotHandled()?.let {
-                Snackbar.make(requireView(),it,Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).show()
             }
         })
 
     }
+
 }

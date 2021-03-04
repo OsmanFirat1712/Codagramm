@@ -24,7 +24,7 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
 
     private val statusMessage = MutableLiveData<Event<String>>()
 
-    val message : LiveData<Event<String>>
+    val message: LiveData<Event<String>>
         get() = statusMessage
 
     @ExperimentalCoroutinesApi
@@ -47,19 +47,16 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
     fun getMyGroups(): LiveData<List<Group>> = myGroups
 
 
-
     fun getAllGroups() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = codaGramApi.getAllGroups()
             response.body()?.let { updateUi(it.groups) }
 
-            viewModelScope.launch(Dispatchers.Main){
+            viewModelScope.launch(Dispatchers.Main) {
                 if (response.body()?.groups?.isEmpty() == true)
-                statusMessage.value = Event(context.getString(R.string.eventNoGroups))
-
+                    statusMessage.value = Event(context.getString(R.string.eventNoGroups))
             }
         }
-
     }
 
     @ExperimentalCoroutinesApi
@@ -77,18 +74,14 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
                 searchForUser.value?.replyToInvite
 
                 viewModelScope.launch(Dispatchers.Main) {
-                    if (!response.isSuccessful){
-                        statusMessage.value = Event( context.getString(R.string.statusError))
+                    if (!response.isSuccessful) {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
                     }
-                } 
-
+                }
             }
         } catch (ie: Exception) {
             Timber.e(ie)
-
         }
-
-
     }
 
     @ExperimentalCoroutinesApi
@@ -102,7 +95,7 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
         var response: Response<Unit>
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                 response = codaGramApi.replyToanyInvite(id, ReplyToInvite(accept))
+                response = codaGramApi.replyToanyInvite(id, ReplyToInvite(accept))
 
                 viewModelScope.launch(Dispatchers.Main) {
                     searchForUser.value?.replyToInvite
@@ -112,24 +105,17 @@ class MyGroupScreenViewMode(private val context: Context, private val codaGramAp
                         getAllGroups()
                         getInvites()
 
-                    } else{
-                        statusMessage.value = Event( context.getString(R.string.statusError))
+                    } else {
+                        statusMessage.value = Event(context.getString(R.string.statusError))
 
                     }
                 }
 
             }
 
-
-
-
         } catch (ie: Exception) {
             Timber.e(ie)
 
         }
-
-
     }
-
-
 }

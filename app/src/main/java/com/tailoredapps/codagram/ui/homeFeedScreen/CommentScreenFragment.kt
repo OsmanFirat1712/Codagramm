@@ -13,6 +13,7 @@ import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.databinding.FragmentCommentScreenBinding
 import com.tailoredapps.codagram.models.Comment
 import com.tailoredapps.codagram.models.CommentBody
+import com.tailoredapps.codagram.models.KEY
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 
@@ -30,11 +31,8 @@ class CommentScreenFragment : Fragment() {
     private lateinit var binding: FragmentCommentScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        postIds = arguments?.getString("name")
-        postImage = arguments?.getString("image")
-
-
+        postIds = arguments?.getString(KEY.postIds).toString()
+        postImage = arguments?.getString(KEY.postImage).toString()
     }
 
     override fun onCreateView(
@@ -45,8 +43,6 @@ class CommentScreenFragment : Fragment() {
         binding = FragmentCommentScreenBinding.inflate(inflater, container, false)
         commentAdapterBinding = CommentScreenItemsBinding.inflate(inflater, container, false)
         return binding.root
-
-
     }
 
     @ExperimentalCoroutinesApi
@@ -57,7 +53,6 @@ class CommentScreenFragment : Fragment() {
             adapter = this@CommentScreenFragment.commentScreenAdapter
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-
         }
 
         bindToLiveData()
@@ -68,14 +63,6 @@ class CommentScreenFragment : Fragment() {
         myMessage()
 
         viewModel.getMyCommentsObjecSt(postIds.toString())
-
-
-
-        Glide.with(requireContext())
-            .load(postImage)
-            .placeholder(R.drawable.person)
-            .into(binding.ivUserCommentPageImage)
-
     }
 
     fun getTest() {
@@ -95,6 +82,7 @@ class CommentScreenFragment : Fragment() {
         })
     }
 
+    @ExperimentalCoroutinesApi
     fun bindComments() {
         viewModel.getMyCommentsObject().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             Glide.with(requireContext())
@@ -108,7 +96,6 @@ class CommentScreenFragment : Fragment() {
     @ExperimentalCoroutinesApi
     fun postComment() {
         binding.btnAdd.setOnClickListener {
-
             val test = binding.etWriteComment.text.toString()
             if (test.isNotEmpty()) {
                 viewModel.postComment(postIds.toString(), CommentBody(test))
@@ -126,15 +113,10 @@ class CommentScreenFragment : Fragment() {
     }
     
     fun myMessage() {
-
         viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it.getContentIfNotHandled()?.let {
                 Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).show()
-
-
             }
         })
-
     }
-
 }

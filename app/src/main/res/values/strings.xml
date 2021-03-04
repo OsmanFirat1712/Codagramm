@@ -10,7 +10,7 @@
 
 
     <string name="register_firstName_info">Vorname muss mindestens 3 Charakter beinhalten </string>
-    <string name="register_lastName_info"> Nachname muss mindestens 5 Charakter beinhalten</string>
+    <string name="register_lastName_info"> Nachname muss mindestens 3 Charakter beinhalten</string>
     <string name="register_nickName_info">Nickname muss mindestens 3 Charakter beinhalten</string>
     <string name="register_email_info">Deine Email muss mindestens 4 Charakter beinhalten</string>
     <string name="register_password_info">Dein Password muss mindestens 6 Charakter beinhalten</string>
@@ -27,8 +27,8 @@
     <string name="snackOnlyDeleteownPost">Du kannst nur deine eigenen Posts Löschen</string>
     <string name="alertDeleteOrEdit">Willst du das Gruppenfoto ändern oder löschen?</string>
     <string name="alertOnlyCreatorEdit">Du kannst nur als Ersteller der Gruppe das Foto bearbeiten</string>
-    <string name="alertEdit">EDIT</string>
-    <string name="alertDelete">DELETE</string>
+    <string name="alertEdit">ÄNDERN</string>
+    <string name="alertDelete">LÖSCHEN</string>
     <string name="snackOnlyCreatorCanDeleteMember">Du kannst nur als Ersteller der Gruppe Mitglieder entfernen</string>
     <string name="snackOnlyCreatorCanEditTitle">Du kannst nur als Ersteller den Gruppennamen ändern</string>
     <string name="alertCancel">Abbrechen</string>
@@ -38,7 +38,7 @@
     <string name="snackRequireToPost">Bitte füge ein Foto zu deiner Story hinzu und wähle eine Gruppe aus</string>
     <string name="snackTagOneMember">Du musst mindestens eine Person taggen</string>
     <string name="snackUserSearch">Bitte einen User eingeben</string>
-    <string name="snackGroupTitle">Bitte noch ein Titel auswählen</string>
+    <string name="snackGroupTitle">Bitte noch ein Titel angeben</string>
     <string name="snackDescription">Bitte füge eine Beschreibung hinzu</string>
     <string name="willst_du_deinen_account_l_schen">Willst du deinen Account löschen?</string>
     <string name="l_schen">Löschen</string>
@@ -104,20 +104,31 @@
     <string name="statusUserUpdate">Deine Profildaten wurden aktualisiert</string>
     <string name="updateImage">Dein Profilfoto wurde aktualisiert</string>
     <string name="statusDeletePhoto">Dein Profilbild wurde gelöscht</string>
-    <string name="statusUserDelete">Dein Profil wurde gelöscht</string>
+    <string name="statusUserDelete">Dein Profil wurde gelöscht, Bitte starte die App neu um dich anzumelden</string>
     <string name="dialogDelteOwnProfile">Möchst du wirklich dein Account löschen?</string>
     <string name="snackMinCharakte">Bitte mindestens ein Zeichen schreiben</string>
     <string name="statusGroupInvite">Auf Gruppeneinladung geantwortet</string>
-<<<<<<< app/src/main/res/values/strings.xml
     <string name="snackUserRequireds">Bitte einen User eingeben</string>
-=======
->>>>>>> app/src/main/res/values/strings.xml
     <string name="snackCancelled">Abgebrochen</string>
     <string name="alertText">"Möchst den folgenden User %s aus der Gruppe entfernen"</string>
     <string name="eventPostCreate">Post wurde erstellt</string>
     <string name="alertInputText">Eingabefeld darf nicht Leer sein</string>
     <string name="eventGroupCreated">Deine Gruppe wurde erstellt</string>
     <string name="eventNoGroups">Du hast derzeit keine Gruppen, bitte füge welche zu in dem auf den Button klickst</string>
+    <string name="GroupPictureUpdate">Gruppenbild bearbeiten</string>
+    <string name="alertAlert">Achtung</string>
+    <string name="toastSizung">Sitzung abgelaufen</string>
+    <string name="firstNameNotEmpty">Vorname darf nicht leer sein !</string>
+    <string name="lastNameNotEmpty">Nachname darf nicht leer sein!</string>
+    <string name="nickNameNotEmpty">Nickname darf nicht leer sein!</string>
+    <string name="emailNotEmpty">Email darf nicht leer sein !</string>
+    <string name="pwNotEmpty">Passwort darf nicht leer sein !</string>
+    <string name="cancelled">abgebrochen</string>
+    <string name="deleteOrEdit">Willst du das Bild ändern oder Löschen?</string>
+    <string name="alertDeleteMemberOrGroup">Möchest du die folgende Gruppe %s wirklich löschen/verlassen?"</string>
+    <string name="alertDeleteGroup">%s wurde gelöscht/verlassen"</string>
+    <string name="eingeloggt_bleiben">Eingeloggt bleiben?</string>
+    <string name="noch_keinen_account">Noch keinen Account?</string>
 
 
 </resources>

@@ -36,11 +36,7 @@ class GroupAdapter :
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: GroupScreenViewHolder, position: Int) {
         holder.bind(getItem(position))
-
-
     }
-
-
 }
 
 class GroupScreenViewHolder(private val binding: GroupscreenMygroupsBinding) :
@@ -50,23 +46,14 @@ class GroupScreenViewHolder(private val binding: GroupscreenMygroupsBinding) :
     fun bind(postData: Group) {
 
         val bundle = bundleOf(
-
-
             "name" to postData.name,
             "id" to postData.id,
             "creatorId" to postData.creator?.id,
             "imageUrl" to postData.image?.url
         )
-        val name = postData.name
-        Timber.e("gesndet")
-
 
         binding.root.setOnClickListener { view ->
             view.findNavController().navigate(R.id.action_group_view_to_groupdetails, bundle)
-
-        }
-        postData.members.forEach {
-            val userName = it.id
         }
 
         Glide.with(binding.root)
@@ -77,7 +64,6 @@ class GroupScreenViewHolder(private val binding: GroupscreenMygroupsBinding) :
         binding.tvGroupName.text = postData.name.toString()
         binding.tvCreatorName.text = postData.creator?.lastname.toString()
         binding.tvGroupInviter.text = postData.inviter?.lastname
-
 
     }
 

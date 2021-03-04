@@ -10,6 +10,7 @@ import com.tailoredapps.codagram.remote.remoteModule
 import com.tailoredapps.codagram.ui.groupscreen.groupScreenModule
 import com.tailoredapps.codagram.ui.homeFeedScreen.firstViewModule
 import com.tailoredapps.codagram.ui.loginscreen.loginScreenModule
+import com.tailoredapps.codagram.ui.newStoryScreen.newStoryScreenModule
 import com.tailoredapps.codagram.ui.settings.SettingsModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Interceptor
@@ -76,4 +77,5 @@ internal val appModules = immutableListOf(
     loginScreenModule,
     SettingsModule,
     groupScreenModule,
+    newStoryScreenModule
 )

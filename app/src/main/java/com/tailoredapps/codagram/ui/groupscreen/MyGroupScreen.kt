@@ -87,14 +87,11 @@ class MyGroupScreen() : Fragment()  {
         }
     }
 
-
     @ExperimentalCoroutinesApi
     private fun bindgetmyGroupToLiveData() {
         viewModel.getMyGroups().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             myGroupsAdapter.submitList(it)
-
         })
-
     }
 
 
@@ -109,9 +106,7 @@ class MyGroupScreen() : Fragment()  {
                     viewModel.getInvites()
                     viewModel.getAllGroups()
                 }
-
             })
-
         })
     }
 
@@ -119,18 +114,16 @@ class MyGroupScreen() : Fragment()  {
     private fun respond() {
         viewModel.getSearchedUser().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
         })
-
     }
 
+    @ExperimentalCoroutinesApi
     fun myMessage() {
-
         viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it.getContentIfNotHandled()?.let {
                 Snackbar.make(requireView(),it,Snackbar.LENGTH_SHORT).show()
 
             }
         })
-
     }
 
     }

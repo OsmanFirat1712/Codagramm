@@ -48,7 +48,6 @@
              <TextView
                  android:id="@+id/tvUserName"
                  app:layout_constraintStart_toEndOf="@id/ivUserImage"
-                 android:text="User Name"
                  android:textColor="@color/black"
                  android:padding="5dp"
                  android:textStyle="bold"
@@ -58,10 +57,9 @@
             <TextView
                 android:id="@+id/tvCommendTime"
                 app:layout_constraintStart_toEndOf="@id/ivUserImage"
-                android:text="Time"
                 app:layout_constraintTop_toBottomOf="@id/tvUserName"
                 android:textColor="@color/black"
-                android:textSize="10dp"
+                android:textSize="10sp"
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -80,11 +78,11 @@
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/tvUserComment"
                 android:padding="5dp"
-                android:layout_marginLeft="20dp"
-                android:drawableRight="@drawable/ic_baseline_delete_24"
+                android:layout_marginStart="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:drawableEndCompat="@drawable/ic_baseline_delete_24" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

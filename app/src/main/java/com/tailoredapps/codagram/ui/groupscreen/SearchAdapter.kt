@@ -35,10 +35,7 @@ class SearchAdapter :
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(getItem(position))
-
-
     }
-
 }
 
 class SearchViewHolder(private val binding: SearchItemsBinding) :
@@ -46,8 +43,6 @@ class SearchViewHolder(private val binding: SearchItemsBinding) :
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun bind(postData: SelectedUser) {
-
-        val myBinding = binding
 
         binding.root.setOnClickListener {
             postData.selected = postData.selected.not()
@@ -68,12 +63,6 @@ class SearchViewHolder(private val binding: SearchItemsBinding) :
             .load(postData.user.image?.url)
             .placeholder(R.drawable.person)
             .into(binding.ivGroupInviteUserImage)
-
-
-/*
-        binding.resultText.text = postData.users.toString()
-
-*/
 
         binding.resultText2.text = postData.user.firstname
 

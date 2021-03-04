@@ -34,17 +34,11 @@ class GroupViewModel(private val context: Context, private val codaGramApi: Coda
     }
 
     private val events = MutableLiveData<NewStoryViewModel.Event>()
+
     fun getEvents(): LiveData<NewStoryViewModel.Event> = events
-
-    @ExperimentalCoroutinesApi
-    private val error = MutableLiveData<Boolean>()
-
-    @ExperimentalCoroutinesApi
-    fun getError(): LiveData<Boolean> = error
 
 
     private val searchForUser = MutableLiveData<List<SelectedUser>>()
-
 
     @ExperimentalCoroutinesApi
     fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser

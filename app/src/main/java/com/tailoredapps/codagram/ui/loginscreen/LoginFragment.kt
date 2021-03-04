@@ -17,6 +17,7 @@ import com.google.android.gms.auth.GoogleAuthUtil.getToken
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.LoginFragmentBinding
 import org.koin.android.ext.android.inject
 import java.net.InetAddress
@@ -53,8 +54,6 @@ class LoginFragment : Fragment() {
         binding.btnNew.setOnClickListener {
             it.findNavController().navigate(LoginFragmentDirections.actionLoginToRegister())
         }
-
-
     }
 
     override fun onCreateView(
@@ -111,7 +110,7 @@ class LoginFragment : Fragment() {
             }
         }
         else{
-            Toast.makeText(context,"test",Toast.LENGTH_LONG).show()
+            Toast.makeText(context,getString(R.string.toastSizung),Toast.LENGTH_LONG).show()
         }
     }
 
