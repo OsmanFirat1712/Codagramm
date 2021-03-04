@@ -8,15 +8,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.tailoredapps.codagram.R
@@ -25,6 +26,7 @@ import com.tailoredapps.codagram.databinding.FragmentSettingsBinding
 import com.tailoredapps.codagram.databinding.RegisterDialogBinding
 import com.tailoredapps.codagram.models.UpdateGroup
 import com.tailoredapps.codagram.ui.groupscreen.GroupViewModel
+import com.tailoredapps.codagram.ui.loginscreen.LoginFragmentDirections
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import java.io.File
@@ -34,7 +36,7 @@ class SettingsFragment:Fragment() {
     private lateinit var binding:FragmentSettingsBinding
     private lateinit var file: File
     private val viewModel: SettingsViewModel by inject()
-
+    private lateinit var auth: FirebaseAuth
     private lateinit var firstName:String
     private lateinit var lastName:String
     private lateinit var nickname:String
@@ -47,6 +49,8 @@ class SettingsFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
+
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -54,6 +58,7 @@ class SettingsFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        auth = FirebaseAuth.getInstance()
 
         changeFirstLastNick()
         bindToLiveData()
@@ -69,6 +74,26 @@ class SettingsFragment:Fragment() {
             viewModel.getUsers()
 
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_group_exit,menu)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        when{
+            R.id.logout == id -> {
+
+                auth.signOut()
+                findNavController().navigate(SettingsFragmentDirections.actionSettingsViewToLogin())
+
+            }
+
+        }
+        return true
     }
 
 

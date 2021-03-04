@@ -32,13 +32,13 @@ class LoginViewModel(private val context: Context, private val codaGramApi: Coda
 
     fun getToken() {
         val mUser = FirebaseAuth.getInstance().currentUser
-        mUser!!.getIdToken(true)
-            .addOnCompleteListener { task ->
+        mUser?.getIdToken(true)
+            ?.addOnCompleteListener { task ->
                 if (task.isSuccessful()) {
                     val idToken: String = task.result!!.token.toString()
                     Log.e("idtoken", idToken)
                     sessionManager.saveAuthToken(idToken)
-                  val ok=  sessionManager.fetchAuthToken()
+                    val ok=  sessionManager.fetchAuthToken()
                     Log.e("savetoken", "dssd")
 
                 } else {
