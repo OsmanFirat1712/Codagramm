@@ -65,11 +65,11 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
                 .into(itemView.post_image)
 
             Glide.with(itemView)
-                .load(currentItem.user?.image?.url)
+                .load(currentItem.comments?.getOrNull(0)?.user?.image?.url)
                 .into(itemView.ivUserImage)
 
             Glide.with(itemView)
-                .load(currentItem.user?.image?.url)
+                .load(currentItem.comments?.getOrNull(1)?.user?.image?.url)
                 .into(itemView.ivUser2Image)
 
             Glide.with(itemView)
@@ -106,6 +106,8 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
 
             if (currentItem.userLiked){
                 myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_24)
+            }else{
+                myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
 
             myBinding.likeImage.setOnClickListener {
@@ -182,6 +184,7 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
 
             val bundle = bundleOf(
                 "name" to postData.id,
+                "image" to postData.user?.image?.url
             )
 
 

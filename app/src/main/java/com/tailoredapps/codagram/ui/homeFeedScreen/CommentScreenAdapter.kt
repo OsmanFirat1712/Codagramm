@@ -107,6 +107,7 @@ class CommentScreenAdapter(val codaGramApi: CodaGramApi) : ListAdapter<Comment, 
 
 
 
+
             binding.tvUserName.text = postData.user?.firstname.toString()
             binding.tvUserComment.text = postData.text
 

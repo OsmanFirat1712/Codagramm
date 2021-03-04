@@ -9,6 +9,9 @@ import androidx.core.view.isNotEmpty
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.databinding.CommentScreenItemsBinding
 import com.tailoredapps.codagram.databinding.FragmentCommentScreenBinding
 import com.tailoredapps.codagram.models.Comment
@@ -26,12 +29,17 @@ class CommentScreenFragment : Fragment() {
     lateinit var commentAdapterBinding:CommentScreenItemsBinding
 
     var postIds: String? = null
+    var postImage:String ? = null
+    var image:String? = null
 
     private lateinit var binding:FragmentCommentScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         postIds = arguments?.getString("name")
+        postImage = arguments?.getString("image")
+
+
 
     }
 
@@ -61,13 +69,11 @@ class CommentScreenFragment : Fragment() {
         }
 
         bindToLiveData()
-
         getTest()
-        buttonClickListener()
-
         viewModel.getCommentPost(postIds.toString())
-
         PostComment()
+
+
 
 
     }
@@ -81,6 +87,14 @@ class CommentScreenFragment : Fragment() {
         viewModel.getMyComments().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             commentScreenAdapter.submitList(it)
             commentScreenAdapter.notifyDataSetChanged()
+            it.forEach {
+                val image1 = it.user?.image?.url
+                Glide.with(requireContext())
+                    .load(image1)
+                    .placeholder(R.drawable.person)
+                    .into(binding.ivUserCommentPageImage)
+            }
+
         })
         commentScreenAdapter.setUpListener(object :CommentScreenAdapter.ItemRemove2ClickListener{
             override fun onItemClicked(comment: Comment) {
@@ -90,10 +104,7 @@ class CommentScreenFragment : Fragment() {
         })
     }
 
-    fun buttonClickListener(){
 
-
-    }
 
     @ExperimentalCoroutinesApi
     fun PostComment(){
@@ -102,14 +113,17 @@ class CommentScreenFragment : Fragment() {
             val test = binding.etWriteComment.text.toString()
             viewModel.postComment(postIds.toString(), CommentBody(test))
             viewModel.getPostById(postIds.toString())
+
         }
 
     }
 
 
-    fun bidning(){
+    fun getPhoto(){
         viewModel.getMyPost().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
         })
+
+
     }
 
 }

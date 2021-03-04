@@ -58,7 +58,7 @@ class GroupFragment : Fragment() {
         bindToLiveData()
         createButtonAction()
         uploadClickAction()
-        cancelButtonAction()
+
 
         binding.auto.addTextChangedListener {
             searchKey()
@@ -120,12 +120,7 @@ class GroupFragment : Fragment() {
         }
     }
 
-    fun cancelButtonAction() {
-        binding.btnCancel.setOnClickListener { view ->
-            view.findNavController()
-                .navigate(GroupFragmentDirections.actionGroupScreenToGroupDetailScreens())
-        }
-    }
+
 
 
     @ExperimentalCoroutinesApi
