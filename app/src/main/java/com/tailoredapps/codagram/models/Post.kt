@@ -17,6 +17,7 @@ data class Post(
     val likes:Int?,
     var userLiked:Boolean = false,
     val comments:List<Comment>?,
+    val createdAt: String?,
     val tags:List<User>
 ):Serializable
 

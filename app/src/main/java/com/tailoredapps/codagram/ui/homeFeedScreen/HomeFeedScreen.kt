@@ -23,6 +23,7 @@ import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedAdapter
 import com.tailoredapps.codagram.ui.homeFeedScreen.HomeFeedViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
+import java.util.*
 
 
 class HomeFeedScreen : Fragment() {
@@ -183,7 +184,7 @@ class HomeFeedScreen : Fragment() {
 
         viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it.getContentIfNotHandled()?.let {
-                Snackbar.make(requireView(),it,Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(),it,Snackbar.LENGTH_SHORT).show()
             }
         })
 

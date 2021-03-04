@@ -108,8 +108,13 @@
     <string name="dialogDelteOwnProfile">Möchst du wirklich dein Account löschen?</string>
     <string name="snackMinCharakte">Bitte mindestens ein Zeichen schreiben</string>
     <string name="statusGroupInvite">Auf Gruppeneinladung geantwortet</string>
-    <string name="snackUserRequired">Bitte einen User eingeben</string>
+    <string name="snackUserRequireds">Bitte einen User eingeben</string>
     <string name="snackCancelled">Abgebrochen</string>
+    <string name="alertText">"Möchst den folgenden User %s aus der Gruppe entfernen"</string>
+    <string name="eventPostCreate">Post wurde erstellt</string>
+    <string name="alertInputText">Eingabefeld darf nicht Leer sein</string>
+    <string name="eventGroupCreated">Deine Gruppe wurde erstellt</string>
+    <string name="eventNoGroups">Du hast derzeit keine Gruppen, bitte füge welche zu in dem auf den Button klickst</string>
 
 
 </resources>

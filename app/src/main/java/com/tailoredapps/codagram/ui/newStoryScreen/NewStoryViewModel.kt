@@ -1,5 +1,6 @@
 package com.tailoredapps.codagram.ui.newStoryScreen
 
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -7,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tailoredapps.codagram.R
 import com.tailoredapps.codagram.models.Group
 import com.tailoredapps.codagram.models.PostBody
 import com.tailoredapps.codagram.models.User
@@ -23,9 +25,17 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import timber.log.Timber
 import java.io.File
 
-class NewStoryViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
+class NewStoryViewModel(private val context: Context, val codaGramApi: CodaGramApi) : ViewModel() {
     private lateinit var ids: String
 
+    open class Event{
+        data class ShowMessage(val msg:String) : Event()
+        object Navigate : Event()
+    }
+
+
+    private val events = MutableLiveData<Event>()
+    fun getEvents(): LiveData<Event> = events
     @ExperimentalCoroutinesApi
     private val myGroupMembers = MutableLiveData<List<User>>()
 
@@ -43,6 +53,7 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
 
     @ExperimentalCoroutinesApi
     fun getSearchedUser(): LiveData<List<SelectedUser>> = searchForUser
+
 
 
     @ExperimentalCoroutinesApi
@@ -88,7 +99,7 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
                 codaGramApi.getAllGroups()
                 val selectedUsers = searchForUser.value?.filter { it.selected }?.map { it.user.id }
 
-                codaGramApi.newStoryPost(
+                  val response = codaGramApi.newStoryPost(
                     PostBody(
                         description,
                         groupId,
@@ -97,6 +108,14 @@ class NewStoryViewModel(private val codaGramApi: CodaGramApi) : ViewModel() {
                 ).also {
                     codaGramApi.addPhoto(it.body()?.id.toString(), part)
 
+                }
+                viewModelScope.launch(Dispatchers.Main) {
+                    if (response.isSuccessful){
+                        events.value = Event.Navigate
+                        events.value = Event.ShowMessage(context.getString(R.string.eventPostCreate))
+                    } else{
+                        events.value = Event.ShowMessage(context.getString(R.string.statusError))
+                    }
                 }
 
             } catch (ie: Exception) {

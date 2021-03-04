@@ -54,10 +54,7 @@ class GroupDetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -229,23 +226,17 @@ class GroupDetailsFragment : Fragment() {
                 @RequiresApi(Build.VERSION_CODES.N)
                 override fun onItemClicked(user: User) {
                     val dialogBuilder = AlertDialog.Builder(requireContext())
-                    dialogBuilder.setMessage("Möchst den folgenden User ${user.firstname} aus der Gruppe entfernen")
+                    dialogBuilder.setMessage(getString(R.string.alertText,"${user.firstname}"))
                         .setCancelable(true)
                         .setPositiveButton(
                             getString(R.string.alertCancel),
                             DialogInterface.OnClickListener { dialog, id ->
                             })
-                        // negative button text and action
                         .setNegativeButton(
                             getString(R.string.alertDelete),
                             DialogInterface.OnClickListener { dialog, id ->
                                 if (FirebaseAuth.getInstance().currentUser?.uid == creatorId) {
                                     viewModel.deleteMember(groupId.toString(), user.id.toString())
-                               /*     Snackbar.make(
-                                        requireView(),
-                                        " User ${user.firstname} wurde aus der Gruppe entfernt",
-                                        Snackbar.LENGTH_SHORT
-                                    ).show()*/
 
                                 } else {
                                     Snackbar.make(
@@ -254,33 +245,21 @@ class GroupDetailsFragment : Fragment() {
                                         Snackbar.LENGTH_SHORT
                                     ).show()
                                 }
-
-
-
                                 viewModel.getGroupById(groupId.toString())
                                 dialog.cancel()
-
                             })
-
                     val alert = dialogBuilder.create()
                     alert.setTitle("AlertDialogExample")
                     alert.show()
-
-
                 }
-
             })
         })
-
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     @ExperimentalCoroutinesApi
     fun createAlertDialog() {
         binding.tvGroupTitle.setOnClickListener {
-/*
-            val view: View = layoutInflater.inflate(R.layout.register_dialog, alertDialogBinding.root)
-*/
             alertDialogBinding = RegisterDialogBinding.inflate(layoutInflater)
             val alertDialog = MaterialAlertDialogBuilder(requireContext())
             alertDialog.setView(alertDialogBinding.root)
@@ -305,19 +284,12 @@ class GroupDetailsFragment : Fragment() {
                     alertDialogBinding.groupName.text.toString()
                         .isEmpty() -> Toast.makeText(
                         context,
-                        "nick name can not be empty!",
+                        getString(R.string.alertInputText),
                         Toast.LENGTH_LONG
                     ).show()
-
-                    else -> {
-                        /*    viewModel.getMyGroups()
-                            viewModel.getGroupById(groupId.toString())*/
-                    }
                 }
-
             }
             alertDialogBinding.cancelbtn.setOnClickListener {
-                Log.e("message", "clicked")
                 alert.dismiss()
             }
         }
@@ -464,13 +436,7 @@ class GroupDetailsFragment : Fragment() {
 
         viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it.getContentIfNotHandled()?.let {
-                Snackbar.make(requireView(),getString(R.string.snackDeleteMember),Snackbar.LENGTH_SHORT).show()
-                    Snackbar.make(requireView(),getString(R.string.snackGroupNames),Snackbar.LENGTH_SHORT).show()
                 Snackbar.make(requireView(),it,Snackbar.LENGTH_SHORT).show()
-
-
-
-
             }
         })
 

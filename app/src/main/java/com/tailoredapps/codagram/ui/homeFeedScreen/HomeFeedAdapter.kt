@@ -3,12 +3,14 @@ package com.tailoredapps.codagram.ui.homeFeedScreen
 import android.content.Context
 import android.graphics.Color
 import android.opengl.Visibility
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
@@ -28,9 +30,13 @@ import com.tailoredapps.codagram.databinding.HomeFeedScreenBinding
 import com.tailoredapps.codagram.models.Post
 import com.tailoredapps.codagram.remote.CodaGramApi
 import com.tailoredapps.codagram.remote.SessionManager
+import kotlinx.android.synthetic.main.comment_screen_items.view.*
 import kotlinx.android.synthetic.main.fragment_group.view.*
 import kotlinx.android.synthetic.main.fragment_group_details.view.*
 import kotlinx.android.synthetic.main.home_feed_screen.view.*
+import kotlinx.android.synthetic.main.home_feed_screen.view.ivUserImage
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : ListAdapter<Post, HomeFeedAdapter.CountryItem>(DiffCallback()) {
     lateinit var mItemCLicked: ItemCLickedListener
@@ -108,6 +114,7 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
                 myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
 
+            myBinding.tvTime.text = "${currentItem.createdAt?.let { convertDateString(it) }}"
             myBinding.likeImage.setOnClickListener {
                 myBinding.likeImage.setImageResource(R.drawable.ic_baseline_favoritelike_24)
                 currentItem.userLiked = currentItem.userLiked.not()
@@ -130,11 +137,7 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
                 }
             }
 
-            itemView.setOnClickListener {
-                mItemCLicked.let {
-                    mItemCLicked.onItemClicked(currentItem.userLiked,getItem(position))
-                }
-            }
+
 
             when (FirebaseAuth.getInstance().currentUser!!.uid) {
                 currentItem.user?.id -> myBinding.ivDelete.visibility = View.VISIBLE
@@ -172,6 +175,16 @@ class HomeFeedAdapter(val codaGramApi: CodaGramApi, val context: Context) : List
         mItemRemoveClicked = itemRemoved
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun convertDateString(oldString: String): String {
+
+        val originalFormat = SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss.SSS'Z'")
+         val targetFormat = SimpleDateFormat("YYYY-MM-dd")
+        val date: Date = originalFormat.parse(oldString)
+
+        return targetFormat.format(date)
+
+    }
 
     class CountryItem(val binding: HomeFeedScreenBinding) :
         RecyclerView.ViewHolder(binding.root) {
