@@ -15,4 +15,6 @@ The user/delete call is unfortunately not working, it has been reported and ther
 
 Unfortunately we made a small mistake due to the merge.
 Please replace the return true in the settings fragment on line 87, with the following code -> return super.onOptionsItemSelected(item)
-There may be some bugs, please be considerate
+And on the GroupCreateFragment.kt at line 106, under the if please add this code "adapter1.currentList"
+There may be some bugs, please be considerate.
+Thank you.
